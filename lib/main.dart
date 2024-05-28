@@ -1,6 +1,7 @@
+import 'package:attendance_management_system_ams/screens/attendense_screen.dart';
 import 'package:flutter/material.dart';
-
-import 'splash.dart';
+import 'package:get/get_navigation/src/root/get_material_app.dart';
+import 'screens/splash.dart';
 
 void main() {
   runApp(MyApp());
@@ -9,13 +10,15 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       initialRoute: '/',
       routes: {
-        '/': (context) => splash(),
+        '/': (context) => splash(), 
         '/Welcome': (context) => Welcome(),
+        '/AttendanceScreen': (context) => AttendanceScreen(), 
       },
+      // home:splash()
     );
   }
 }

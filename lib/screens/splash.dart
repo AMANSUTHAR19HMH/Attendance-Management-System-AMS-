@@ -1,6 +1,7 @@
 import 'dart:async';
-
+import 'package:attendance_management_system_ams/screens/attendense_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 
 class splash extends StatefulWidget {
@@ -15,12 +16,12 @@ class _SplashState extends State<splash> {
   }
 
   startTimer() {
-    var duration = Duration(milliseconds: 2100);
+    var duration = Duration(milliseconds: 20);
     return Timer(duration, route);
   }
 
   route() {
-    Navigator.pushReplacementNamed(context, '/Welcome');
+    Navigator.pushReplacementNamed(context, '/AttendanceScreen');
   }
 
   @override
