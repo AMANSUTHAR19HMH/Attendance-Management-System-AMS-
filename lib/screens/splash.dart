@@ -1,7 +1,6 @@
 import 'dart:async';
-import 'package:attendance_management_system_ams/screens/attendense_screen.dart';
+
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 
 class splash extends StatefulWidget {
@@ -16,12 +15,12 @@ class _SplashState extends State<splash> {
   }
 
   startTimer() {
-    var duration = Duration(milliseconds: 20);
+    var duration = Duration(milliseconds: 2300);
     return Timer(duration, route);
   }
 
   route() {
-    Navigator.pushReplacementNamed(context, '/AttendanceScreen');
+    Navigator.pushReplacementNamed(context, '/LoginScreen');
   }
 
   @override
@@ -37,10 +36,10 @@ class _SplashState extends State<splash> {
       child: Container(
         color: Colors.black,
         child: Lottie.asset(
-          'assets/D.json',
+          'assets/logo/D.json',
           // Ensure you have your Lottie file in the assets directory
-          width: 200, // Adjust width as needed
-          height: 200, // Adjust height as needed
+          width: 500, // Adjust width as needed
+          height: 500, // Adjust height as needed
           fit: BoxFit.fill,
         ),
       ),

@@ -1,6 +1,8 @@
 import 'package:attendance_management_system_ams/screens/attendense_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
+
+import 'authntication/LoginScreen.dart';
 import 'screens/splash.dart';
 
 void main() {
@@ -14,9 +16,11 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       initialRoute: '/',
       routes: {
-        '/': (context) => splash(), 
+        '/': (context) => splash(),
         '/Welcome': (context) => Welcome(),
-        '/AttendanceScreen': (context) => AttendanceScreen(), 
+        '/LoginScreen': (context) => LoginScreen(),
+        // '/SignupScreen': (context) => SignupScreen(),
+        '/AttendanceScreen': (context) => AttendanceScreen(),
       },
       // home:splash()
     );
