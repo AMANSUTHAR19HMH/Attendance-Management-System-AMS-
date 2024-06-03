@@ -1,8 +1,9 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'SignupScreen.dart';
+import 'package:attendance_management_system_ams/Dashboard/dashBoard.dart';
 
-import '../Dashboard/DashBoard.dart';
-import 'SignupScreen.dart'; // Adjust the import as needed
+
+// Adjust the import as needed
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -14,28 +15,6 @@ class LoginScreen extends StatefulWidget {
 class LoginScreenState extends State<LoginScreen> {
   final TextEditingController passwordTextController = TextEditingController();
   final TextEditingController emailTextController = TextEditingController();
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-
-  Future<void> _login() async {
-    try {
-      UserCredential userCredential = await _auth.signInWithEmailAndPassword(
-        email: emailTextController.text,
-        password: passwordTextController.text,
-      );
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Login successful')),
-      );
-      // Navigate to another screen after login
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => DashboardScreen()), // Replace with your actual dashboard screen
-      );
-    } on FirebaseAuthException catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Login failed: ${e.message}')),
-      );
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -62,7 +41,7 @@ class LoginScreenState extends State<LoginScreen> {
               children: <Widget>[
                 imageWidget("assets/image/amslogo.png"),
                 SizedBox(height: 30),
-                reusableTextField("Enter Email", Icons.email_outlined, false,
+                reusableTextField("Enter UserName", Icons.person_outline, false,
                     emailTextController),
                 SizedBox(height: 20),
                 reusableTextField("Enter Password", Icons.lock_outline, true,
@@ -71,9 +50,11 @@ class LoginScreenState extends State<LoginScreen> {
                 signInSignUpButton(
                   context: context,
                   text: 'LOG IN',
-                  onTap: _login,
+                  onTap: () {
+                    //        Dashboard Implementaion on successful login //
+                  },
                 ),
-                signUpOption(context),
+                signUpOption(context)
               ],
             ),
           ),
@@ -184,7 +165,7 @@ Row signUpOption(BuildContext context) {
         Navigator.push(
             context, MaterialPageRoute(builder: (context) => SignupScreen()));
       },
-      child: const Text(" Sign Up",
+      child: const Text("Sign Up",
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
     )
   ]);
