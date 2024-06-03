@@ -1,4 +1,5 @@
 import 'package:attendance_management_system_ams/Dashboard/DashBoard.dart';
+import 'package:attendance_management_system_ams/Dashboard/profile.dart';
 import 'package:attendance_management_system_ams/authntication/SignupScreen.dart';
 import 'package:attendance_management_system_ams/screens/attendense_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -25,6 +26,7 @@ class MyApp extends StatelessWidget {
         '/LoginScreen': (context) => LoginScreen(),
         '/SignupScreen': (context) => SignupScreen(),
         '/Dashboard': (context) => DashboardScreen(),
+        '/profile': (context) => Profile(),
         '/AttendanceScreen': (context) => AttendanceScreen(),
       },
       // home:splash()
