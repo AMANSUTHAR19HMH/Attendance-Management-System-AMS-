@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-
 import 'SignupScreen.dart';
+import 'package:attendance_management_system_ams/Dashboard/dashBoard.dart';
+
 
 // Adjust the import as needed
 
@@ -49,7 +50,9 @@ class LoginScreenState extends State<LoginScreen> {
                 signInSignUpButton(
                   context: context,
                   text: 'LOG IN',
-                  onTap: () {},
+                  onTap: () {
+                    //        Dashboard Implementaion on successful login //
+                  },
                 ),
                 signUpOption(context)
               ],

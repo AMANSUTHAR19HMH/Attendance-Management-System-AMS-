@@ -1,8 +1,8 @@
-
 import 'package:community_material_icon/community_material_icon.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'profile.dart';
 
 // Main Function  //
 void main() {
@@ -21,18 +21,18 @@ class _DashboardScreenState extends State<DashboardScreen> {
         debugShowCheckedModeBanner: false,
         title: 'Dashboard',
         theme: ThemeData(primarySwatch: Colors.purple),
-        home: const HomeScreen());
+        home: const dashboard());
   }
 }
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+class dashboard extends StatefulWidget {
+  const dashboard({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<dashboard> createState() => _dashboardState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _dashboardState extends State<dashboard> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -82,14 +82,16 @@ class _HomeScreenState extends State<HomeScreen> {
                 mainAxisSpacing: 30,
                 //  DashBoard Icons //
                 children: [
-                  itemDashboard(
-                      'Attendance', CupertinoIcons.calendar, Colors.blueAccent),
+                  itemDashboard('Attendance', FontAwesomeIcons.calendar,
+                      Colors.blueAccent),
                   itemDashboard('Notifications', FontAwesomeIcons.bell,
                       Colors.yellowAccent.shade400),
                   itemDashboard(
                       'Events', FontAwesomeIcons.star, Colors.orangeAccent),
-                  itemDashboard('Profile', CupertinoIcons.profile_circled,
+                  itemDashboard('Profile', FontAwesomeIcons.user,
                       Colors.greenAccent.shade700),
+                  itemDashboard(
+                      'Admin', FontAwesomeIcons.userLock, Colors.cyan.shade900),
                   itemDashboard('Logout', CommunityMaterialIcons.logout,
                       Colors.red.shade400),
                 ],
