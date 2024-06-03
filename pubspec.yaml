@@ -31,6 +31,11 @@ dependencies:
   flutter:
     sdk: flutter
   lottie: ^1.2.0
+  firebase_core: ^2.13.0
+  firebase_auth: ^4.11.0
+  cloud_firestore: ^4.0.0
+  font_awesome_flutter: ^10.1.0
+  community_material_icon: ^5.9.55
 
 
   # The following adds the Cupertino Icons font to your application.

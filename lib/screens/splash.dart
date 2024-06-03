@@ -20,7 +20,7 @@ class _SplashState extends State<splash> {
   }
 
   route() {
-    Navigator.pushReplacementNamed(context, '/LoginScreen');
+    Navigator.pushReplacementNamed(context, '/Dashboard');
   }
 
   @override
