@@ -3,21 +3,16 @@ import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
-void main() {
-  runApp(Profile());
-}
+import 'DashBoard.dart';
 
 class Profile extends StatelessWidget {
-  const Profile({super.key});
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'profile',
+      title: 'edit profile',
       theme: ThemeData(primarySwatch: Colors.deepPurple),
-      home: editprofile(),
+      home: const editprofile(),
     );
   }
 }
@@ -108,7 +103,9 @@ class _editprofileState extends State<editprofile> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   OutlinedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/Dashboard');
+                    },
                     child: Text(
                       "Cancel",
                       style: TextStyle(
