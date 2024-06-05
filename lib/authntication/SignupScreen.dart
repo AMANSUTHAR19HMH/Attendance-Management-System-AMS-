@@ -1,4 +1,8 @@
-import 'package:flutter/material.dart'; // Adjust the import as neede // Adjust the import as needed
+import 'package:attendance_management_system_ams/Dashboard/DashBoard.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+
+// Import your DashboardScreen
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({Key? key}) : super(key: key);
@@ -11,6 +15,33 @@ class SignupScreenState extends State<SignupScreen> {
   final TextEditingController passwordTextController = TextEditingController();
   final TextEditingController emailTextController = TextEditingController();
   final TextEditingController userNameTextController = TextEditingController();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  Future<void> _signup() async {
+    try {
+      UserCredential userCredential =
+          await _auth.createUserWithEmailAndPassword(
+        email: emailTextController.text,
+        password: passwordTextController.text,
+      );
+      // Optionally update the user's display name
+      await userCredential.user?.updateDisplayName(userNameTextController.text);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Signup successful')),
+      );
+      // Navigate to the DashboardScreen after successful signup
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+            builder: (context) =>
+                DashboardScreen()), // Replace with your actual dashboard screen
+      );
+    } on FirebaseAuthException catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Signup failed: ${e.message}')),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,9 +80,7 @@ class SignupScreenState extends State<SignupScreen> {
                 signInSignUpButton(
                   context: context,
                   text: 'SIGN UP',
-                  onTap: () {
-                    // Implement your sign-up logic here
-                  },
+                  onTap: _signup,
                 ),
               ],
             ),
