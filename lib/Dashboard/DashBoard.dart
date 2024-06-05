@@ -2,31 +2,16 @@ import 'package:attendance_management_system_ams/Dashboard/profile.dart';
 import 'package:community_material_icon/community_material_icon.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
-
-import 'profile.dart';
-
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 
 import '../authntication/LoginScreen.dart';
 import '../screens/attendense_screen.dart';
-
 
 // Main Function
 void main() {
   runApp(DashboardScreen());
 }
-
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:get/get.dart';
-import 'package:google_nav_bar/google_nav_bar.dart';
-
-import '../authntication/LoginScreen.dart';
-import '../screens/attendense_screen.dart';
-import 'navbar.dart';
-// Main Function
-
 
 class DashboardScreen extends StatefulWidget {
   @override
@@ -37,18 +22,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-
-        debugShowCheckedModeBanner: false,
-        title: 'Dashboard',
-        theme: ThemeData(primarySwatch: Colors.purple),
-        home: const dashboard());
-
       debugShowCheckedModeBanner: false,
       title: 'Dashboard',
       theme: ThemeData(primarySwatch: Colors.purple),
       home: const HomeScreen(),
     );
-
   }
 }
 
@@ -59,46 +37,13 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-
-class _dashboardState extends State<dashboard> {
-
-      debugShowCheckedModeBanner: false,
-      title: 'Dashboard',
-      theme: ThemeData(primarySwatch: Colors.purple),
-      home: const dash_Screen(),
-    );
-  }
-}
-
-class dash_Screen extends StatefulWidget {
-  const dash_Screen({super.key});
-
-  @override
-  State<dash_Screen> createState() => _dash_ScreenState();
-}
-
-class _dash_ScreenState extends State<dash_Screen> {
-
 class _HomeScreenState extends State<HomeScreen> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: const navbar_top(),
-      appBar: AppBar(
-        backgroundColor: Colors.purple,
-        title: Text(
-          "DashBoard",
-          style: TextStyle(
-            color: Colors.white,
-          ),
-        ),
-        elevation: 1,
-      ),
       body: ListView(
         padding: EdgeInsets.zero,
         children: [
-
           Container(
             decoration: BoxDecoration(
               color: Theme.of(context).primaryColor,
@@ -127,69 +72,29 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
 
-
-          // Main Dashboard Components for navigation ///
-
           // Main Dashboard Components for navigation
-
-          // Main Dashboard Components for navigation
-
           Container(
             color: Theme.of(context).primaryColor,
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 30),
               decoration: BoxDecoration(
-
-                  color: Colors.white,
-                  borderRadius:
-                      BorderRadius.only(topLeft: Radius.circular(100))),
-
-                color: Colors.white,
-              ),
-
                 color: Colors.white,
                 borderRadius: BorderRadius.only(topLeft: Radius.circular(100)),
               ),
-
               child: GridView.count(
                 crossAxisCount: 2,
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
-                padding: EdgeInsets.only(
-                  top: 50,
-                ),
-                crossAxisSpacing: 50,
+                crossAxisSpacing: 40,
                 mainAxisSpacing: 30,
                 // DashBoard Icons
                 children: [
-
-                  itemDashboard('Attendance', FontAwesomeIcons.calendar,
-                      Colors.blueAccent),
-
                   itemDashboard(
                       'Attendance', CupertinoIcons.calendar, Colors.blueAccent),
-
                   itemDashboard('Notifications', FontAwesomeIcons.bell,
                       Colors.yellowAccent.shade400),
                   itemDashboard(
                       'Events', FontAwesomeIcons.star, Colors.orangeAccent),
-
-                  itemDashboard('Profile', FontAwesomeIcons.user,
-                      Colors.greenAccent.shade700),
-                  itemDashboard(
-                      'Admin', FontAwesomeIcons.userLock, Colors.cyan.shade900),
-
-                  itemDashboard(
-                      'Attendance', CupertinoIcons.calendar, Colors.blueAccent),
-                  itemDashboard('Profile', CupertinoIcons.profile_circled,
-                      Colors.greenAccent.shade700),
-                  itemDashboard(
-                      'Events', FontAwesomeIcons.star, Colors.orangeAccent),
-                  itemDashboard('Notifications', FontAwesomeIcons.bell,
-                      Colors.yellowAccent.shade400),
-                  itemDashboard('Admin', CommunityMaterialIcons.lock,
-                      Colors.greenAccent.shade700),
-
                   itemDashboard('Logout', CommunityMaterialIcons.logout,
                       Colors.red.shade400),
                   itemDashboard('Profile', CupertinoIcons.profile_circled,
@@ -199,23 +104,6 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
         ],
-      ),
-      bottomNavigationBar: Container(
-        color: Color.fromARGB(255, 165, 149, 149),
-        child: GNav(
-          gap: 8,
-          backgroundColor: Color.fromARGB(255, 165, 149, 149),
-          color: Colors.white,
-          activeColor: Colors.blueGrey.shade900,
-          tabs: [
-            GButton(
-              icon: Icons.dashboard,
-            ),
-            GButton(icon: Icons.calendar_month_outlined),
-            GButton(icon: Icons.qr_code_scanner),
-            GButton(icon: Icons.person),
-          ],
-        ),
       ),
     );
   }
