@@ -1,20 +1,9 @@
-import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
-import 'package:image_picker/image_picker.dart';
-import 'package:attendance_management_system_ams/resources/savedata.dart';
-
-void main() {
-  runApp(Profile());
-}
-
 import 'DashBoard.dart';
-
 
 class Profile extends StatelessWidget {
   @override
@@ -36,41 +25,6 @@ class editprofile extends StatefulWidget {
 }
 
 class _editprofileState extends State<editprofile> {
-  final TextEditingController fullname_value = TextEditingController();
-  final TextEditingController email_value = TextEditingController();
-
-// selectin image for profile from the Local Gallery //
-  Uint8List? profileimage;
-  pickImage(ImageSource source) async {
-    final ImagePicker imagePicker = ImagePicker();
-    XFile? proflieimg = await imagePicker.pickImage(source: source);
-    if (proflieimg != null) {
-      return await proflieimg.readAsBytes();
-    } else {
-      print("no Image picked");
-    }
-  }
-
-  // image from pickimage ()//
-  Future<void> selectImage() async {
-    Uint8List img = await pickImage(ImageSource.gallery);
-
-    setState(() {
-      profileimage = img;
-    });
-  }
-
-  // Save Profile to the Database using Firebase //
-  void saveprofile() async {
-    String name = fullname_value.text;
-    String email = email_value.text;
-    String resp = await StoreData().saveData(
-      name: name,
-      email: email,
-      file: profileimage!,
-    );
-  }
-
   bool showpassword = false;
   @override
   Widget build(BuildContext context) {
@@ -106,16 +60,13 @@ class _editprofileState extends State<editprofile> {
                     Container(
                       width: 130,
                       height: 130,
-                      child: profileimage != null
-                          ? CircleAvatar(
-                              radius: 64,
-                              backgroundImage: MemoryImage(profileimage!),
-                            )
-                          : const CircleAvatar(
-                              radius: 64,
-                              backgroundImage:
-                                  AssetImage('/Image/assest/jackwilliam.png'),
-                            ),
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        image: DecorationImage(
+                          fit: BoxFit.cover,
+                          image: AssetImage('assets/image/JackWilliam.png'),
+                        ),
+                      ),
                     ),
                     Positioned(
                         bottom: 0,
@@ -133,17 +84,21 @@ class _editprofileState extends State<editprofile> {
                               ),
                               color: Colors.purple,
                             ),
-                            child: IconButton(
-                              icon: Icon(
-                                FontAwesomeIcons.penToSquare,
-                                color: Colors.white,
-                              ),
-                              onPressed: selectImage,
+                            child: Icon(
+                              FontAwesomeIcons.penToSquare,
+                              color: Colors.white,
                             )))
                   ],
                 ),
               ),
-              mainText(fullname_value, 'Enter Your Name', false),
+              mainText("Full Name", "Enter your Full Name", false),
+              mainText("Email", "Enter your Email", false),
+              mainText("Phone no", "Please Enter 10 digits", false),
+              mainText("Password", "Enter Your Password", true),
+              mainText("Address", "Please Enter Address", false),
+              mainText("Department", "Working Department", false),
+              mainText("Father Name", "", false),
+              mainText("Mother Name", "", false),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -160,7 +115,7 @@ class _editprofileState extends State<editprofile> {
                     ),
                   ),
                   ElevatedButton(
-                    onPressed: saveprofile,
+                    onPressed: () {},
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.purple,
                       shadowColor: Colors.grey,
@@ -182,12 +137,11 @@ class _editprofileState extends State<editprofile> {
     );
   }
 
-  Widget mainText(TextEditingController labelText, String placeholder,
-      bool isPasswordTextField) {
+  Widget mainText(
+      String labelText, String placeholder, bool isPasswordTextField) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 35.0),
       child: TextField(
-        controller: fullname_value,
         obscureText: isPasswordTextField ? showpassword : false,
         decoration: InputDecoration(
             suffixIcon: isPasswordTextField
@@ -203,6 +157,7 @@ class _editprofileState extends State<editprofile> {
                       color: Colors.purple,
                     ))
                 : null,
+            labelText: labelText,
             floatingLabelBehavior: FloatingLabelBehavior.always,
             hintText: placeholder,
             hintStyle: TextStyle(
