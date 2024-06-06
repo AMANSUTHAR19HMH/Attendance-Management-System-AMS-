@@ -20,15 +20,18 @@ class SignupScreenState extends State<SignupScreen> {
   Future<void> _signup() async {
     try {
       UserCredential userCredential =
-          await _auth.createUserWithEmailAndPassword(
+      await _auth.createUserWithEmailAndPassword(
         email: emailTextController.text,
         password: passwordTextController.text,
       );
-      // Optionally update the user's display name
+
+      // Set display name
       await userCredential.user?.updateDisplayName(userNameTextController.text);
+
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Signup successful')),
       );
+
       // Navigate to the DashboardScreen after successful signup
       Navigator.pushReplacement(
         context,
@@ -66,7 +69,7 @@ class SignupScreenState extends State<SignupScreen> {
                 15, MediaQuery.of(context).size.height * 0.1, 20, 0),
             child: Column(
               children: <Widget>[
-                imageWidget("assets/image/amslogo.png"),
+                imageWidget("assets/applogo/amslogo.png"),
                 SizedBox(height: 30),
                 reusableTextField("Enter UserName", Icons.person_outline, false,
                     userNameTextController),

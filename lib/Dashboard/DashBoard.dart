@@ -171,7 +171,7 @@ class _dash_ScreenState extends State<dash_Screen> {
         if (title == 'Attendance') {
           Get.to(AttendanceScreen());
         } else if (title == 'Profile') {
-          Get.to(editprofile());
+          Get.to(Profile());
         } else if (title == 'Logout') {
           _showLogoutConfirmation(context);
         } else {

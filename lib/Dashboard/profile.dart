@@ -1,224 +1,253 @@
-import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/widgets.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-<<<<<<< Updated upstream
-=======
-import 'package:image_picker/image_picker.dart';
-import 'package:attendance_management_system_ams/resources/saveprofile.dart';
->>>>>>> Stashed changes
+import 'dart:typed_data';
 
-void main() {
+import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:image_picker/image_picker.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(Profile());
 }
 
 class Profile extends StatelessWidget {
-  const Profile({super.key});
+  const Profile({Key? key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'profile',
+      title: 'Profile',
       theme: ThemeData(primarySwatch: Colors.deepPurple),
-      home: editprofile(),
+      home: EditProfile(),
     );
   }
 }
 
-class editprofile extends StatefulWidget {
-  const editprofile({super.key});
+class EditProfile extends StatefulWidget {
+  const EditProfile({Key? key});
 
   @override
-  State<editprofile> createState() => _editprofileState();
+  State<EditProfile> createState() => _EditProfileState();
 }
 
-class _editprofileState extends State<editprofile> {
-<<<<<<< Updated upstream
-=======
-  final TextEditingController fullname_value = TextEditingController();
-  final TextEditingController email_value = TextEditingController();
+class _EditProfileState extends State<EditProfile> {
+  final TextEditingController fullNameController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController phoneController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+  final TextEditingController addressController = TextEditingController();
+  final TextEditingController departmentController = TextEditingController();
+  final TextEditingController fatherNameController = TextEditingController();
+  final TextEditingController motherNameController = TextEditingController();
 
-// selectin image for profile from the Local Gallery //
-  Uint8List? profileimage;
-  pickImage(ImageSource source) async {
+  Uint8List? profileImage;
+
+  Future<void> pickImage(ImageSource source) async {
     final ImagePicker imagePicker = ImagePicker();
-    XFile? proflieimg = await imagePicker.pickImage(source: source);
-    if (proflieimg != null) {
-      return await proflieimg.readAsBytes();
-    } else {
-      print("no Image picked");
+    XFile? pickedImage = await imagePicker.pickImage(source: source);
+    if (pickedImage != null) {
+      Uint8List bytes = await pickedImage.readAsBytes();
+      setState(() {
+        profileImage = bytes;
+      });
     }
   }
 
-  // image from pickimage ()//
-  Future<void> selectImage() async {
-    Uint8List img = await pickImage(ImageSource.gallery);
+  void saveProfile() async {
+    try {
+      await FirebaseFirestore.instance.collection('profiles').add({
+        'fullName': fullNameController.text,
+        'email': emailController.text,
+        'phone': phoneController.text,
+        'password': passwordController.text,
+        'address': addressController.text,
+        'department': departmentController.text,
+        'fatherName': fatherNameController.text,
+        'motherName': motherNameController.text,
+        // Add other fields here
+      });
 
-    setState(() {
-      profileimage = img;
-    });
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Profile saved successfully')),
+      );
+    } catch (error) {
+      print('Error saving profile: $error');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to save profile')),
+      );
+    }
   }
 
-  // Save Profile to the Database using Firebase //
-  void saveprofile() async {
-    String resp = await StoreData().saveData(
-      file: profileimage!,
-    );
-  }
+  bool showPassword = false;
 
->>>>>>> Stashed changes
-  bool showpassword = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 1,
-        leading: //Back button to navigate to home page//
-            IconButton(
+        leading: IconButton(
           icon: Icon(
             Icons.arrow_back,
-            color: Colors.purple,
+            color: Colors.deepPurple,
           ),
-          onPressed: () {},
+          onPressed: () {
+            Navigator.pop(context);
+          },
         ),
       ),
-      body: Container(
-        padding: EdgeInsets.only(left: 16, top: 25, right: 16),
-        child: GestureDetector(
-          onTap: () {
-            FocusScope.of(context).unfocus();
-          },
-          child: ListView(
-            children: [
-              Text(
-                "Edit Profile",
-                style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-                textAlign: TextAlign.center,
-              ),
-              Center(
+      body: SingleChildScrollView(
+        padding: EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Text(
+              "Edit Profile",
+              style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+              textAlign: TextAlign.center,
+            ),
+            SizedBox(height: 20),
+            GestureDetector(
+              onTap: () {
+                pickImage(ImageSource.gallery);
+              },
+              child: Center(
                 child: Stack(
                   children: [
                     Container(
                       width: 130,
                       height: 130,
-<<<<<<< Updated upstream
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        image: DecorationImage(
-                          fit: BoxFit.cover,
-                          image: AssetImage('assets/image/JackWilliam.png'),
-                        ),
+                        color: Colors.deepPurple,
                       ),
-=======
-                      child: profileimage != null
-                          ? CircleAvatar(
-                              radius: 64,
-                              backgroundImage: MemoryImage(profileimage!),
-                            )
-                          : const CircleAvatar(
-                              radius: 64,
-                              
-                            ),
->>>>>>> Stashed changes
+                      child: profileImage != null && profileImage!.isNotEmpty
+                          ? ClipOval(
+                        child: Image.memory(
+                          profileImage!,
+                          fit: BoxFit.cover,
+                        ),
+                      )
+                          : Icon(
+                        Icons.person,
+                        size: 60,
+                        color: Colors.white,
+                      ),
                     ),
                     Positioned(
-                        bottom: 0,
-                        right: 0,
-                        child: Container(
-                            alignment: Alignment.center,
-                            height: 40,
-                            width: 40,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              border: Border.all(
-                                width: 3,
-                                color:
-                                    Theme.of(context).scaffoldBackgroundColor,
-                              ),
-                              color: Colors.purple,
-                            ),
-                            child: Icon(
-                              FontAwesomeIcons.penToSquare,
-                              color: Colors.white,
-                            )))
+                      bottom: 0,
+                      right: 0,
+                      child: Container(
+                        alignment: Alignment.center,
+                        height: 40,
+                        width: 40,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                            width: 3,
+                            color: Theme.of(context).scaffoldBackgroundColor,
+                          ),
+                          color: Colors.deepPurple,
+                        ),
+                        child: Icon(
+                          Icons.camera_alt,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),
-              mainText("Full Name", "Enter your Full Name", false),
-              mainText("Email", "Enter your Email", false),
-              mainText("Phone no", "Please Enter 10 digits", false),
-              mainText("Password", "Enter Your Password", true),
-              mainText("Address", "Please Enter Address", false),
-              mainText("Department", "Working Department", false),
-              mainText("Father Name", "", false),
-              mainText("Mother Name", "", false),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  OutlinedButton(
-                    onPressed: () {},
-                    child: Text(
-                      "Cancel",
-                      style: TextStyle(
-                          fontSize: 14,
-                          letterSpacing: 2.2,
-                          color: Colors.black),
-                    ),
+            ),
+            SizedBox(height: 20),
+            _buildTextField(
+                fullNameController, "Full Name", "Enter your Full Name"),
+            _buildTextField(emailController, "Email", "Enter your Email"),
+            _buildTextField(
+                phoneController, "Phone no", "Please Enter 10 digits"),
+            _buildTextField(
+                passwordController, "Password", "Enter Your Password",
+                isPassword: true),
+            _buildTextField(
+                addressController, "Address", "Please Enter Address"),
+            _buildTextField(
+                departmentController, "Department", "Working Department"),
+            _buildTextField(fatherNameController, "Father's Name", ""),
+            _buildTextField(motherNameController, "Mother's Name", ""),
+            SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                OutlinedButton(
+                  onPressed: () {
+                    // Cancel action
+                  },
+                  child: Text(
+                    "Cancel",
+                    style: TextStyle(
+                        fontSize: 14,
+                        letterSpacing: 2.2,
+                        color: Colors.deepPurple),
                   ),
-                  ElevatedButton(
-                    onPressed: () {},
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.purple,
-                      shadowColor: Colors.grey,
-                      padding: EdgeInsets.symmetric(horizontal: 50),
-                    ),
-                    child: Text("SAVE",
-                        style: TextStyle(
-                          fontSize: 14,
-                          letterSpacing: 2.2,
-                          color: Colors.white,
-                        )),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    saveProfile();
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.deepPurple,
+                    shadowColor: Colors.grey,
+                    padding: EdgeInsets.symmetric(horizontal: 50),
                   ),
-                ],
-              )
-            ],
-          ),
+                  child: Text(
+                    "SAVE",
+                    style: TextStyle(
+                        fontSize: 14, letterSpacing: 2.2, color: Colors.white),
+                  ),
+                ),
+              ],
+            )
+          ],
         ),
       ),
     );
   }
 
-  Widget mainText(
-      String labelText, String placeholder, bool isPasswordTextField) {
+  Widget _buildTextField(
+      TextEditingController controller, String labelText, String placeholder,
+      {bool isPassword = false}) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 35.0),
+      padding: const EdgeInsets.only(bottom: 20),
       child: TextField(
-        obscureText: isPasswordTextField ? showpassword : false,
+        controller: controller,
+        obscureText: isPassword ? showPassword : false,
         decoration: InputDecoration(
-            suffixIcon: isPasswordTextField
-                ? IconButton(
-                    //Function for Password Icon //
-                    onPressed: () {
-                      setState(() {
-                        showpassword = !showpassword;
-                      });
-                    },
-                    icon: Icon(
-                      Icons.remove_red_eye,
-                      color: Colors.purple,
-                    ))
-                : null,
-            labelText: labelText,
-            floatingLabelBehavior: FloatingLabelBehavior.always,
-            hintText: placeholder,
-            hintStyle: TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.bold,
-              color: Colors.grey,
-            )),
+          suffixIcon: isPassword
+              ? IconButton(
+            onPressed: () {
+              setState(() {
+                showPassword = !showPassword;
+              });
+            },
+            icon: Icon(
+              Icons.remove_red_eye,
+              color: Colors.deepPurple,
+            ),
+          )
+              : null,
+          labelText: labelText,
+          floatingLabelBehavior: FloatingLabelBehavior.always,
+          hintText: placeholder,
+          hintStyle: TextStyle(
+              fontSize: 14, fontWeight: FontWeight.bold, color: Colors.grey),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
+          focusedBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: Colors.deepPurple, width: 2.0),
+            borderRadius: BorderRadius.circular(10),
+          ),
+        ),
       ),
     );
   }

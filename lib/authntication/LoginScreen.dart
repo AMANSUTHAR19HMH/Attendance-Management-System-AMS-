@@ -1,8 +1,9 @@
+import 'package:attendance_management_system_ams/Dashboard/DashBoard.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-import '../Dashboard/DashBoard.dart';
-import 'SignupScreen.dart'; // Adjust the import as needed
+import 'SignupScreen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -22,13 +23,28 @@ class LoginScreenState extends State<LoginScreen> {
         email: emailTextController.text,
         password: passwordTextController.text,
       );
+
+      // Check if user data exists in Firestore, if not add basic info
+      DocumentReference userDoc = FirebaseFirestore.instance
+          .collection('users')
+          .doc(userCredential.user!.uid);
+
+      DocumentSnapshot docSnapshot = await userDoc.get();
+
+      if (!docSnapshot.exists) {
+        await userDoc.set({
+          'email': emailTextController.text,
+        });
+      }
+
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Login successful')),
       );
+
       // Navigate to another screen after login
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => DashboardScreen()), // Replace with your actual dashboard screen
+        MaterialPageRoute(builder: (context) => DashboardScreen()),
       );
     } on FirebaseAuthException catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -60,7 +76,7 @@ class LoginScreenState extends State<LoginScreen> {
                 15, MediaQuery.of(context).size.height * 0.1, 20, 0),
             child: Column(
               children: <Widget>[
-                imageWidget("assets/image/amslogo.png"),
+                imageWidget("assets/applogo/amslogo.png"),
                 SizedBox(height: 30),
                 reusableTextField("Enter Email", Icons.email_outlined, false,
                     emailTextController),
