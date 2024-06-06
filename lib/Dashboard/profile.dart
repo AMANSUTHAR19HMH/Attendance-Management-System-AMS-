@@ -3,6 +3,11 @@ import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+<<<<<<< Updated upstream
+=======
+import 'package:image_picker/image_picker.dart';
+import 'package:attendance_management_system_ams/resources/saveprofile.dart';
+>>>>>>> Stashed changes
 
 void main() {
   runApp(Profile());
@@ -30,6 +35,40 @@ class editprofile extends StatefulWidget {
 }
 
 class _editprofileState extends State<editprofile> {
+<<<<<<< Updated upstream
+=======
+  final TextEditingController fullname_value = TextEditingController();
+  final TextEditingController email_value = TextEditingController();
+
+// selectin image for profile from the Local Gallery //
+  Uint8List? profileimage;
+  pickImage(ImageSource source) async {
+    final ImagePicker imagePicker = ImagePicker();
+    XFile? proflieimg = await imagePicker.pickImage(source: source);
+    if (proflieimg != null) {
+      return await proflieimg.readAsBytes();
+    } else {
+      print("no Image picked");
+    }
+  }
+
+  // image from pickimage ()//
+  Future<void> selectImage() async {
+    Uint8List img = await pickImage(ImageSource.gallery);
+
+    setState(() {
+      profileimage = img;
+    });
+  }
+
+  // Save Profile to the Database using Firebase //
+  void saveprofile() async {
+    String resp = await StoreData().saveData(
+      file: profileimage!,
+    );
+  }
+
+>>>>>>> Stashed changes
   bool showpassword = false;
   @override
   Widget build(BuildContext context) {
@@ -65,6 +104,7 @@ class _editprofileState extends State<editprofile> {
                     Container(
                       width: 130,
                       height: 130,
+<<<<<<< Updated upstream
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
                         image: DecorationImage(
@@ -72,6 +112,17 @@ class _editprofileState extends State<editprofile> {
                           image: AssetImage('assets/image/JackWilliam.png'),
                         ),
                       ),
+=======
+                      child: profileimage != null
+                          ? CircleAvatar(
+                              radius: 64,
+                              backgroundImage: MemoryImage(profileimage!),
+                            )
+                          : const CircleAvatar(
+                              radius: 64,
+                              
+                            ),
+>>>>>>> Stashed changes
                     ),
                     Positioned(
                         bottom: 0,
