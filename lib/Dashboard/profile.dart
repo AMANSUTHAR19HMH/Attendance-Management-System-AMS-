@@ -1,13 +1,12 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-<<<<<<< Updated upstream
-=======
 import 'package:image_picker/image_picker.dart';
 import 'package:attendance_management_system_ams/resources/saveprofile.dart';
->>>>>>> Stashed changes
 
 void main() {
   runApp(Profile());
@@ -35,8 +34,6 @@ class editprofile extends StatefulWidget {
 }
 
 class _editprofileState extends State<editprofile> {
-<<<<<<< Updated upstream
-=======
   final TextEditingController fullname_value = TextEditingController();
   final TextEditingController email_value = TextEditingController();
 
@@ -68,7 +65,6 @@ class _editprofileState extends State<editprofile> {
     );
   }
 
->>>>>>> Stashed changes
   bool showpassword = false;
   @override
   Widget build(BuildContext context) {
@@ -104,15 +100,6 @@ class _editprofileState extends State<editprofile> {
                     Container(
                       width: 130,
                       height: 130,
-<<<<<<< Updated upstream
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        image: DecorationImage(
-                          fit: BoxFit.cover,
-                          image: AssetImage('assets/image/JackWilliam.png'),
-                        ),
-                      ),
-=======
                       child: profileimage != null
                           ? CircleAvatar(
                               radius: 64,
@@ -122,7 +109,6 @@ class _editprofileState extends State<editprofile> {
                               radius: 64,
                               
                             ),
->>>>>>> Stashed changes
                     ),
                     Positioned(
                         bottom: 0,

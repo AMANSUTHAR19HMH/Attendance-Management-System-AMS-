@@ -21,11 +21,10 @@ dependencies:
   cloud_firestore: ^4.17.5
   firebase_analytics: ^10.10.7
   flutter_launcher_icons: ^0.13.1
-<<<<<<< Updated upstream
-=======
+  image_picker: ^1.1.2
   google_nav_bar: ^5.0.6
-  
->>>>>>> Stashed changes
+  firebase_storage: ^11.7.7
+
 
 dev_dependencies:
   flutter_test:
