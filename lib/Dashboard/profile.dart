@@ -1,8 +1,10 @@
 import 'dart:typed_data';
 
-import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart'; // Import Firebase Auth
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 void main() async {
@@ -57,27 +59,53 @@ class _EditProfileState extends State<EditProfile> {
 
   void saveProfile() async {
     try {
-      await FirebaseFirestore.instance.collection('profiles').add({
-        'fullName': fullNameController.text,
-        'email': emailController.text,
-        'phone': phoneController.text,
-        'password': passwordController.text,
-        'address': addressController.text,
-        'department': departmentController.text,
-        'fatherName': fatherNameController.text,
-        'motherName': motherNameController.text,
-        // Add other fields here
-      });
+      // Get the current user
+      User? user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        // Upload profile image to Firebase Storage
+        String imageUrl = await uploadProfileImage();
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Profile saved successfully')),
-      );
+        // Update user profile data in Firestore
+        await FirebaseFirestore.instance.collection('users').doc(user.uid).set({
+          'fullName': fullNameController.text,
+          'email': emailController.text,
+          'phone': phoneController.text,
+          'password': passwordController.text,
+          'address': addressController.text,
+          'department': departmentController.text,
+          'fatherName': fatherNameController.text,
+          'motherName': motherNameController.text,
+          'profilePictureUrl': imageUrl, // Add profile picture URL
+          // Add other fields here
+        });
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Profile saved successfully')),
+        );
+      }
     } catch (error) {
       print('Error saving profile: $error');
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Failed to save profile')),
       );
     }
+  }
+
+  Future<String> uploadProfileImage() async {
+    // Get a reference to the location where the profile image will be stored
+    Reference storageReference = FirebaseStorage.instance
+        .ref()
+        .child('profile_images')
+        .child('${DateTime.now().millisecondsSinceEpoch}.jpg');
+
+    // Upload the image to Firebase Storage
+    UploadTask uploadTask = storageReference.putData(profileImage!);
+
+    // Wait for the upload to complete and return the download URL
+    TaskSnapshot snapshot = await uploadTask.whenComplete(() {});
+    String downloadUrl = await snapshot.ref.getDownloadURL();
+
+    return downloadUrl;
   }
 
   bool showPassword = false;
@@ -125,16 +153,16 @@ class _EditProfileState extends State<EditProfile> {
                       ),
                       child: profileImage != null && profileImage!.isNotEmpty
                           ? ClipOval(
-                        child: Image.memory(
-                          profileImage!,
-                          fit: BoxFit.cover,
-                        ),
-                      )
+                              child: Image.memory(
+                                profileImage!,
+                                fit: BoxFit.cover,
+                              ),
+                            )
                           : Icon(
-                        Icons.person,
-                        size: 60,
-                        color: Colors.white,
-                      ),
+                              Icons.person,
+                              size: 60,
+                              color: Colors.white,
+                            ),
                     ),
                     Positioned(
                       bottom: 0,
@@ -226,16 +254,16 @@ class _EditProfileState extends State<EditProfile> {
         decoration: InputDecoration(
           suffixIcon: isPassword
               ? IconButton(
-            onPressed: () {
-              setState(() {
-                showPassword = !showPassword;
-              });
-            },
-            icon: Icon(
-              Icons.remove_red_eye,
-              color: Colors.deepPurple,
-            ),
-          )
+                  onPressed: () {
+                    setState(() {
+                      showPassword = !showPassword;
+                    });
+                  },
+                  icon: Icon(
+                    Icons.remove_red_eye,
+                    color: Colors.deepPurple,
+                  ),
+                )
               : null,
           labelText: labelText,
           floatingLabelBehavior: FloatingLabelBehavior.always,

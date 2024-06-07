@@ -1,16 +1,16 @@
-import 'package:attendance_management_system_ams/Dashboard/profile.dart';
 import 'package:community_material_icon/community_material_icon.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-
 import 'package:get/get.dart';
-
-import '../authntication/LoginScreen.dart';
-import '../screens/attendense_screen.dart';
-
 import 'package:google_nav_bar/google_nav_bar.dart';
 
+import '../Dashboard/profile.dart';
+import '../authntication/LoginScreen.dart';
+import '../controller/UserProfileQRCode.dart';
+import '../screens/ProfileScreen.dart';
+import '../screens/attendense_screen.dart';
+import 'QrScanner.dart';
 import 'navbar.dart';
 
 void main() {
@@ -25,32 +25,13 @@ class DashboardScreen extends StatefulWidget {
 class _DashboardScreenState extends State<DashboardScreen> {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Dashboard',
-      theme: ThemeData(primarySwatch: Colors.purple),
-      home: const dash_Screen(),
-    );
-  }
-}
-
-class dash_Screen extends StatefulWidget {
-  const dash_Screen({super.key});
-
-  @override
-  State<dash_Screen> createState() => _dash_ScreenState();
-}
-
-class _dash_ScreenState extends State<dash_Screen> {
-  @override
-  Widget build(BuildContext context) {
     return Scaffold(
       drawer: const navbar_top(),
       appBar: AppBar(
         foregroundColor: Colors.white,
         backgroundColor: Colors.purple,
         title: Text(
-          "DashBoard",
+          "Dashboard",
           style: TextStyle(
             color: Colors.white,
           ),
@@ -61,7 +42,6 @@ class _dash_ScreenState extends State<dash_Screen> {
         padding: EdgeInsets.zero,
         children: [
           // Main Dashboard Components for navigation ///
-
           Container(
             color: Theme.of(context).primaryColor,
             child: Container(
@@ -82,6 +62,8 @@ class _dash_ScreenState extends State<dash_Screen> {
                 children: [
                   itemDashboard('Attendance', FontAwesomeIcons.calendar,
                       Colors.blueAccent),
+                  itemDashboard('QR Attendance', Icons.qr_code_scanner_rounded,
+                      Colors.green), // QR Attendance icon
                   itemDashboard('Notifications', FontAwesomeIcons.bell,
                       Colors.yellowAccent.shade400),
                   itemDashboard(
@@ -98,7 +80,6 @@ class _dash_ScreenState extends State<dash_Screen> {
           ),
         ],
       ),
-
       // Bottom Navigation  //
       bottomNavigationBar: Container(
         color: Colors.purple,
@@ -115,52 +96,28 @@ class _dash_ScreenState extends State<dash_Screen> {
               GButton(icon: Icons.calendar_month_rounded),
               GButton(
                 icon: Icons.qr_code_scanner_rounded,
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => QrScanner()),
+                  );
+                },
               ),
               GButton(icon: Icons.notifications),
-              GButton(icon: Icons.person),
+              GButton(
+                icon: Icons.person,
+                onPressed: () {
+                  // Navigate to ProfileScreen
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => ProfileScreen()),
+                  );
+                },
+              ),
             ],
           ),
         ),
       ),
-    );
-  }
-
-  // DashBoard Icons Function to store details of icons
-
-  void _logoutAndNavigateToLogin(BuildContext context) {
-    // Perform logout action
-    // For example, you can use FirebaseAuth.instance.signOut() if you're using Firebase Authentication.
-
-    // Navigate to the login screen
-    Navigator.of(context).pushReplacement(
-      MaterialPageRoute(builder: (context) => LoginScreen()),
-    );
-  }
-
-  void _showLogoutConfirmation(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text("Logout"),
-          content: Text("Are you sure you want to logout?"),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text("No"),
-            ),
-            TextButton(
-              onPressed: () {
-                // Perform logout action and navigate to login screen
-                _logoutAndNavigateToLogin(context);
-              },
-              child: Text("Yes"),
-            ),
-          ],
-        );
-      },
     );
   }
 
@@ -170,6 +127,22 @@ class _dash_ScreenState extends State<dash_Screen> {
       onTap: () {
         if (title == 'Attendance') {
           Get.to(AttendanceScreen());
+        } else if (title == 'QR Attendance') {
+          // Get the current user ID from Firebase Authentication
+          String? userId = FirebaseAuth.instance.currentUser?.uid;
+          if (userId != null) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => UserProfileQRCode(
+                  userId: userId,
+                ),
+              ),
+            );
+          } else {
+            // Handle scenario when user is not logged in
+            print('User is not logged in.');
+          }
         } else if (title == 'Profile') {
           Get.to(Profile());
         } else if (title == 'Logout') {
@@ -210,6 +183,38 @@ class _dash_ScreenState extends State<dash_Screen> {
           ],
         ),
       ),
+    );
+  }
+
+  void _logoutAndNavigateToLogin(BuildContext context) {
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(builder: (context) => LoginScreen()),
+    );
+  }
+
+  void _showLogoutConfirmation(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Logout"),
+          content: Text("Are you sure you want to logout?"),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text("No"),
+            ),
+            TextButton(
+              onPressed: () {
+                _logoutAndNavigateToLogin(context);
+              },
+              child: Text("Yes"),
+            ),
+          ],
+        );
+      },
     );
   }
 }
