@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 
 import '../Dashboard/profile.dart';
+import '../authntication/AdminLoginScreen.dart';
 import '../authntication/LoginScreen.dart';
 import '../controller/UserProfileQRCode.dart';
 import '../screens/ProfileScreen.dart';
@@ -26,7 +27,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: const navbar_top(),
+      drawer: const NavbarTop(),
       appBar: AppBar(
         foregroundColor: Colors.white,
         backgroundColor: Colors.purple,
@@ -145,6 +146,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
           }
         } else if (title == 'Profile') {
           Get.to(Profile());
+        } else if (title == 'Admin') {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => AdminLoginScreen()),
+          );
         } else if (title == 'Logout') {
           _showLogoutConfirmation(context);
         } else {

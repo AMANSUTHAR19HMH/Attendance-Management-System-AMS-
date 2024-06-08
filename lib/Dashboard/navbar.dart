@@ -2,8 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-class navbar_top extends StatelessWidget {
-  const navbar_top({Key? key}) : super(key: key);
+class NavbarTop extends StatelessWidget {
+  const NavbarTop({Key? key}) : super(key: key);
 
   Future<Map<String, String>> fetchUserData() async {
     User? currentUser = FirebaseAuth.instance.currentUser;
@@ -20,14 +20,16 @@ class navbar_top extends StatelessWidget {
 
       if (userDoc.exists) {
         Map<String, dynamic> data = userDoc.data() as Map<String, dynamic>;
+        print("Fetched data: $data"); // Debug output
         return {
-          "name": data["name"] ?? "No Name",
+          "fullName": data["fullName"] ?? "No Name",
           "email": data["email"] ?? "No Email",
         };
       } else {
         throw Exception("User document does not exist");
       }
     } catch (e) {
+      print("Error fetching user data: $e"); // Debug output
       throw Exception("Error fetching user data: $e");
     }
   }
@@ -60,8 +62,8 @@ class navbar_top extends StatelessWidget {
 
               final userData = snapshot.data!;
               return UserAccountsDrawerHeader(
-                accountName: Text(userData["name"]!),
-                accountEmail: Text(userData["email"]!),
+                accountName: Text(userData["fullName"] ?? "No Name"),
+                accountEmail: Text(userData["email"] ?? "No Email"),
               );
             },
           ),
