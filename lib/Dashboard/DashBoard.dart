@@ -6,12 +6,11 @@ import 'package:get/get.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 
 import '../Dashboard/profile.dart';
-import '../authntication/AdminLoginScreen.dart';
 import '../authntication/LoginScreen.dart';
 import '../controller/UserProfileQRCode.dart';
+import '../screens/EventsScreen.dart';
 import '../screens/ProfileScreen.dart';
 import '../screens/attendense_screen.dart';
-import 'QrScanner.dart';
 import 'navbar.dart';
 
 void main() {
@@ -64,15 +63,16 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   itemDashboard('Attendance', FontAwesomeIcons.calendar,
                       Colors.blueAccent),
                   itemDashboard('QR Attendance', Icons.qr_code_scanner_rounded,
-                      Colors.green), // QR Attendance icon
+                      Colors.green),
+                  // QR Attendance icon
                   itemDashboard('Notifications', FontAwesomeIcons.bell,
                       Colors.yellowAccent.shade400),
                   itemDashboard(
                       'Events', FontAwesomeIcons.star, Colors.orangeAccent),
                   itemDashboard('Profile', FontAwesomeIcons.user,
                       Colors.greenAccent.shade700),
-                  itemDashboard(
-                      'Admin', FontAwesomeIcons.userLock, Colors.cyan.shade900),
+                  // itemDashboard(
+                  //     'Admin', FontAwesomeIcons.userLock, Colors.cyan.shade900),
                   itemDashboard('Logout', CommunityMaterialIcons.logout,
                       Colors.red.shade400),
                 ],
@@ -95,15 +95,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
             tabs: [
               GButton(icon: Icons.dashboard),
               GButton(icon: Icons.calendar_month_rounded),
-              GButton(
-                icon: Icons.qr_code_scanner_rounded,
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => QrScanner()),
-                  );
-                },
-              ),
               GButton(icon: Icons.notifications),
               GButton(
                 icon: Icons.person,
@@ -144,13 +135,16 @@ class _DashboardScreenState extends State<DashboardScreen> {
             // Handle scenario when user is not logged in
             print('User is not logged in.');
           }
+        } else if (title == 'Events') {
+          Get.to(EventsScreen());
         } else if (title == 'Profile') {
           Get.to(Profile());
-        } else if (title == 'Admin') {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => AdminLoginScreen()),
-          );
+          // }
+          // else if (title == 'Admin') {
+          //   Navigator.push(
+          //     context,
+          //     MaterialPageRoute(builder: (context) => AdminLoginScreen()),
+          //   );
         } else if (title == 'Logout') {
           _showLogoutConfirmation(context);
         } else {

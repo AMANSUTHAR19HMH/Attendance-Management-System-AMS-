@@ -2,7 +2,7 @@ import 'package:attendance_management_system_ams/Dashboard/DashBoard.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
+import 'AdminLoginScreen.dart';
 import 'SignupScreen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -19,29 +19,28 @@ class LoginScreenState extends State<LoginScreen> {
 
   Future<void> _login() async {
     try {
+      // Regular user login logic
       UserCredential userCredential = await _auth.signInWithEmailAndPassword(
         email: emailTextController.text,
         password: passwordTextController.text,
       );
 
-      // Check if user data exists in Firestore, if not add basic info
-      DocumentReference userDoc = FirebaseFirestore.instance
-          .collection('users')
-          .doc(userCredential.user!.uid);
+      // Check if the logged in user is an admin
+      DocumentSnapshot adminSnapshot = await FirebaseFirestore.instance
+          .collection('admins')
+          .doc(userCredential.user!.uid)
+          .get();
 
-      DocumentSnapshot docSnapshot = await userDoc.get();
-
-      if (!docSnapshot.exists) {
-        await userDoc.set({
-          'email': emailTextController.text,
-        });
+      if (adminSnapshot.exists) {
+        throw FirebaseAuthException(
+            code: 'admin-login-required', message: 'Admin login required.');
       }
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Login successful')),
       );
 
-      // Navigate to another screen after login
+      // Navigate to user dashboard after successful login
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => DashboardScreen()),
@@ -90,6 +89,7 @@ class LoginScreenState extends State<LoginScreen> {
                   onTap: _login,
                 ),
                 signUpOption(context),
+                adminLoginOption(context),
               ],
             ),
           ),
@@ -201,6 +201,20 @@ Row signUpOption(BuildContext context) {
             context, MaterialPageRoute(builder: (context) => SignupScreen()));
       },
       child: const Text(" Sign Up",
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+    )
+  ]);
+}
+
+Row adminLoginOption(BuildContext context) {
+  return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+    const Text("Admin?", style: TextStyle(color: Colors.white)),
+    GestureDetector(
+      onTap: () {
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => AdminLoginScreen()));
+      },
+      child: const Text(" Login as Admin",
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
     )
   ]);

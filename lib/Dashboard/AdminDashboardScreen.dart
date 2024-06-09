@@ -1,3 +1,4 @@
+import 'package:attendance_management_system_ams/Dashboard/QrScanner.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -6,7 +7,6 @@ import '../screens/ManageEventsScreen.dart';
 import '../screens/ManageStudentsScreen.dart';
 import '../screens/ManageSubjectsScreen.dart';
 import '../screens/ViewAttendanceScreen.dart';
-
 
 class AdminDashboardScreen extends StatefulWidget {
   @override
@@ -26,16 +26,22 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
           _buildDashboardItem('Manage Students', Icons.person, Colors.blue, () {
             Get.to(ManageStudentsScreen());
           }),
-          _buildDashboardItem('Manage Attendance', Icons.calendar_today, Colors.green, () {
+          _buildDashboardItem(
+              'Manage Attendance', Icons.calendar_today, Colors.green, () {
             Get.to(ManageAttendanceScreen());
           }),
           _buildDashboardItem('Manage Events', Icons.event, Colors.orange, () {
             Get.to(ManageEventsScreen());
           }),
-          _buildDashboardItem('Manage Subjects', Icons.subject, Colors.purple, () {
+          _buildDashboardItem('Manage Subjects', Icons.subject, Colors.purple,
+              () {
             Get.to(ManageSubjectsScreen());
           }),
-          _buildDashboardItem('View Attendance', Icons.view_list, Colors.red, () {
+          _buildDashboardItem('Qr Scanner', Icons.subject, Colors.purple, () {
+            Get.to(QrScanner());
+          }),
+          _buildDashboardItem('View Attendance', Icons.view_list, Colors.red,
+              () {
             Get.to(ViewAttendanceScreen());
           }),
         ],
@@ -43,7 +49,8 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
     );
   }
 
-  Widget _buildDashboardItem(String title, IconData icon, Color color, VoidCallback onTap) {
+  Widget _buildDashboardItem(
+      String title, IconData icon, Color color, VoidCallback onTap) {
     return GestureDetector(
       onTap: onTap,
       child: Card(

@@ -1,106 +1,190 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../Dashboard/AdminDashboardScreen.dart';
-// import 'AdminDashboardScreen.dart';
-import 'AdminSignupScreen.dart'; // Import the admin dashboard screen file
 
 class AdminLoginScreen extends StatefulWidget {
+  const AdminLoginScreen({Key? key}) : super(key: key);
+
   @override
-  _AdminLoginScreenState createState() => _AdminLoginScreenState();
+  AdminLoginScreenState createState() => AdminLoginScreenState();
 }
 
-class _AdminLoginScreenState extends State<AdminLoginScreen> {
-  final _formKey = GlobalKey<FormState>();
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
+class AdminLoginScreenState extends State<AdminLoginScreen> {
+  final TextEditingController passwordTextController = TextEditingController();
+  final TextEditingController emailTextController = TextEditingController();
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
-  void _login() async {
-    if (_formKey.currentState!.validate()) {
-      try {
-        UserCredential userCredential = await _auth.signInWithEmailAndPassword(
-          email: _emailController.text,
-          password: _passwordController.text,
-        );
-        // Navigate to the admin dashboard
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-              builder: (context) =>
-                  AdminDashboardScreen()), // Replace AdminDashboardScreen() with your actual admin dashboard screen
-        );
-      } on FirebaseAuthException catch (e) {
-        print("Login failed: $e");
-        // Show error message to the user
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text(e.message!),
-        ));
-      }
-    }
-  }
+  Future<void> _adminLogin() async {
+    try {
+      UserCredential userCredential = await _auth.signInWithEmailAndPassword(
+        email: emailTextController.text,
+        password: passwordTextController.text,
+      );
 
-  void _navigateToSignup() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => AdminSignupScreen()),
-    );
+      // Check if the logged-in user is an admin
+      DocumentReference adminDoc = FirebaseFirestore.instance
+          .collection('admins')
+          .doc(userCredential.user!.uid);
+
+      DocumentSnapshot docSnapshot = await adminDoc.get();
+
+      if (!docSnapshot.exists) {
+        throw FirebaseAuthException(
+            code: 'admin-not-found', message: 'No admin found for this email.');
+      }
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Admin login successful')),
+      );
+
+      // Navigate to another screen after login
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => AdminDashboardScreen()),
+      );
+    } on FirebaseAuthException catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Admin login failed: ${e.message}')),
+      );
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Admin Login'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              TextFormField(
-                controller: _emailController,
-                decoration: InputDecoration(labelText: 'Email'),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter your email';
-                  }
-                  return null;
-                },
-              ),
-              TextFormField(
-                controller: _passwordController,
-                decoration: InputDecoration(labelText: 'Password'),
-                obscureText: true,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter your password';
-                  }
-                  return null;
-                },
-              ),
-              SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: _login,
-                child: Text('Login'),
-              ),
-              TextButton(
-                onPressed: _navigateToSignup,
-                child: Text('Don\'t have an account? Sign up here'),
-              ),
+      body: Container(
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              hexStringToColor("CB2B93"),
+              hexStringToColor("9546C4"),
+              hexStringToColor("5E61F4"),
             ],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
+        ),
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsets.fromLTRB(
+                15, MediaQuery.of(context).size.height * 0.1, 20, 0),
+            child: Column(
+              children: <Widget>[
+                imageWidget("assets/applogo/amslogo.png"),
+                SizedBox(height: 30),
+                reusableTextField("Enter Admin Email", Icons.email_outlined,
+                    false, emailTextController),
+                SizedBox(height: 20),
+                reusableTextField("Enter Password", Icons.lock_outline, true,
+                    passwordTextController),
+                SizedBox(height: 20),
+                signInSignUpButton(
+                  context: context,
+                  text: 'LOG IN AS ADMIN',
+                  onTap: _adminLogin,
+                ),
+              ],
+            ),
           ),
         ),
       ),
     );
   }
+}
 
-  @override
-  void dispose() {
-    _emailController.dispose();
-    _passwordController.dispose();
-    super.dispose();
+// Function to convert hex color string to Color
+Color hexStringToColor(String hexColor) {
+  hexColor = hexColor.toUpperCase().replaceAll("#", "");
+  if (hexColor.length == 6) {
+    hexColor = "FF" + hexColor;
   }
+  if (hexColor.length == 8) {
+    return Color(int.parse("0x$hexColor"));
+  }
+  return Colors.black; // Default to black if there's an issue
+}
+
+// Reusable Widgets (imageWidget and reusableTextField)
+Widget imageWidget(String imageName) {
+  return Image.asset(
+    imageName,
+    fit: BoxFit.fitWidth,
+    width: 240,
+    height: 240,
+    color: Colors.white,
+  );
+}
+
+TextField reusableTextField(String text, IconData icon, bool isPasswordType,
+    TextEditingController controller) {
+  return TextField(
+    controller: controller,
+    obscureText: isPasswordType,
+    enableSuggestions: !isPasswordType,
+    autocorrect: !isPasswordType,
+    cursorColor: Colors.white,
+    style: TextStyle(color: Colors.white.withOpacity(0.9)),
+    decoration: InputDecoration(
+      prefixIcon: Icon(
+        icon,
+        color: Colors.white70,
+      ),
+      labelText: text,
+      labelStyle: TextStyle(color: Colors.white.withOpacity(0.9)),
+      filled: true,
+      floatingLabelBehavior: FloatingLabelBehavior.never,
+      fillColor: Colors.white.withOpacity(0.3),
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(30.0),
+        borderSide: const BorderSide(width: 0, style: BorderStyle.none),
+      ),
+    ),
+    keyboardType: isPasswordType
+        ? TextInputType.visiblePassword
+        : TextInputType.emailAddress,
+  );
+}
+
+// SignInSignUpButton widget as defined previously
+Container signInSignUpButton({
+  required BuildContext context,
+  required String text,
+  required VoidCallback onTap,
+}) {
+  return Container(
+    width: MediaQuery.of(context).size.width,
+    height: 50,
+    margin: const EdgeInsets.fromLTRB(0, 10, 0, 20),
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.circular(90),
+    ),
+    child: ElevatedButton(
+      onPressed: onTap,
+      style: ButtonStyle(
+        backgroundColor: MaterialStateProperty.resolveWith((states) {
+          if (states.contains(MaterialState.pressed)) {
+            return Colors.black26;
+          }
+          return Colors.white;
+        }),
+        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+          RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(30),
+          ),
+        ),
+      ),
+      child: Text(
+        text,
+        style: const TextStyle(
+          color: Colors.black87,
+          fontWeight: FontWeight.bold,
+          fontSize: 16,
+        ),
+      ),
+    ),
+  );
 }
