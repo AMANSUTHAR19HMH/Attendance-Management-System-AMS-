@@ -1,5 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+
+import '../authntication/LoginScreen.dart';
+import '../studetns/add Student Screen.dart';
+import '../studetns/students detail.dart';
+import '../studetns/studentseditscreen.dart';
 
 class ManageStudentsScreen extends StatefulWidget {
   @override
@@ -7,98 +13,126 @@ class ManageStudentsScreen extends StatefulWidget {
 }
 
 class _ManageStudentsScreenState extends State<ManageStudentsScreen> {
-  final CollectionReference studentsCollection = FirebaseFirestore.instance.collection('students');
+  final CollectionReference usersCollection =
+  FirebaseFirestore.instance.collection('users');
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  User? currentUser;
+  bool isAdmin = false;
+
+  @override
+  void initState() {
+    super.initState();
+    currentUser = _auth.currentUser;
+    _checkAdmin();
+  }
+
+  void _checkAdmin() async {
+    if (currentUser != null) {
+      try {
+        DocumentSnapshot userSnapshot =
+        await usersCollection.doc(currentUser!.uid).get();
+        if (userSnapshot.exists) {
+          setState(() {
+            isAdmin = true; // Assuming admin based on existence of user
+          });
+        }
+      } catch (e) {
+        print('Error checking admin role: $e');
+        setState(() {
+          isAdmin = false;
+        });
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Manage Students'),
+        title: Text('Manage Users'),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.logout),
+            onPressed: () async {
+              await _auth.signOut();
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => LoginScreen()),
+              );
+            },
+          ),
+        ],
       ),
       body: StreamBuilder<QuerySnapshot>(
-        stream: studentsCollection.snapshots(),
+        stream: usersCollection.snapshots(),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
             return Center(child: CircularProgressIndicator());
           }
 
-          final students = snapshot.data!.docs;
+          final users = snapshot.data!.docs;
 
           return ListView.builder(
-            itemCount: students.length,
+            itemCount: users.length,
             itemBuilder: (context, index) {
-              final student = students[index];
+              final user = users[index];
               return ListTile(
-                title: Text(student['name']),
-                subtitle: Text('ID: ${student['id']}'),
-                trailing: IconButton(
-                  icon: Icon(Icons.delete),
-                  onPressed: () {
-                    studentsCollection.doc(student.id).delete();
-                  },
-                ),
+                title: Text(user['email']),
+                trailing: isAdmin
+                    ? Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    IconButton(
+                      icon: Icon(Icons.edit),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => EditUserScreen(
+                              userId: user.id,
+                              user: user,
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                    IconButton(
+                      icon: Icon(Icons.delete),
+                      onPressed: () {
+                        usersCollection.doc(user.id).delete();
+                      },
+                    ),
+                    IconButton(
+                      icon: Icon(Icons.view_list),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                UserDetailsScreen(user: user),
+                          ),
+                        );
+                      },
+                    ),
+                  ],
+                )
+                    : null,
               );
             },
           );
         },
       ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: isAdmin
+          ? FloatingActionButton(
         onPressed: () {
-          _addStudentDialog(context);
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => AddUserScreen()),
+          );
         },
         child: Icon(Icons.add),
-      ),
-    );
-  }
-
-  void _addStudentDialog(BuildContext context) {
-    final TextEditingController nameController = TextEditingController();
-    final TextEditingController idController = TextEditingController();
-
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: Text('Add Student'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              TextField(
-                controller: nameController,
-                decoration: InputDecoration(labelText: 'Name'),
-              ),
-              TextField(
-                controller: idController,
-                decoration: InputDecoration(labelText: 'ID'),
-              ),
-            ],
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                final String name = nameController.text;
-                final String id = idController.text;
-
-                if (name.isNotEmpty && id.isNotEmpty) {
-                  studentsCollection.add({
-                    'name': name,
-                    'id': id,
-                  });
-
-                  Navigator.of(context).pop();
-                }
-              },
-              child: Text('Add'),
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text('Cancel'),
-            ),
-          ],
-        );
-      },
+      )
+          : null,
     );
   }
 }

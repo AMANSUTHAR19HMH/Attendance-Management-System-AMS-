@@ -21,6 +21,7 @@ dependencies:
   firebase_core: ^2.32.0
   qr_flutter: ^4.0.0
   qr: ^3.0.1
+  firebase_messaging: ^14.9.4
   firebase_auth: ^4.20.0
   cloud_firestore: ^4.17.5
   firebase_analytics: ^10.10.7

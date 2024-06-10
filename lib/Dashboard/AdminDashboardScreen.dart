@@ -28,7 +28,9 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
           }),
           _buildDashboardItem(
               'Manage Attendance', Icons.calendar_today, Colors.green, () {
-            Get.to(ManageAttendanceScreen());
+            Get.to(ManageAttendanceScreen(
+              userId: '',
+            ));
           }),
           _buildDashboardItem('Manage Events', Icons.event, Colors.orange, () {
             Get.to(ManageEventsScreen());
