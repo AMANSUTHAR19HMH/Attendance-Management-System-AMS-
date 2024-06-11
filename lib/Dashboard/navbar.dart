@@ -3,7 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class NavbarTop extends StatelessWidget {
-  const NavbarTop({Key? key}) : super(key: key);
+  const NavbarTop({super.key});
 
   Future<Map<String, String>> fetchUserData() async {
     User? currentUser = FirebaseAuth.instance.currentUser;
@@ -44,17 +44,17 @@ class NavbarTop extends StatelessWidget {
             future: fetchUserData(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return UserAccountsDrawerHeader(
+                return const UserAccountsDrawerHeader(
                   accountName: Text("Loading..."),
                   accountEmail: Text("Loading..."),
                 );
               } else if (snapshot.hasError) {
-                return UserAccountsDrawerHeader(
+                return const UserAccountsDrawerHeader(
                   accountName: Text("Error"),
                   accountEmail: Text("Error"),
                 );
               } else if (!snapshot.hasData || snapshot.data == null) {
-                return UserAccountsDrawerHeader(
+                return const UserAccountsDrawerHeader(
                   accountName: Text("No User"),
                   accountEmail: Text("No User"),
                 );
@@ -93,7 +93,7 @@ class NavbarTop extends StatelessWidget {
             title: const Text("Notifications"),
             onTap: () {},
           ),
-          Divider(),
+          const Divider(),
           ListTile(
             leading: const Icon(Icons.logout_sharp),
             title: const Text("Logout"),

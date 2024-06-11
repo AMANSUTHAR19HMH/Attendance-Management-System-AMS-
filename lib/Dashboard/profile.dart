@@ -10,7 +10,7 @@ import 'package:image_picker/image_picker.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(Profile());
+  runApp(const Profile());
 }
 
 class Profile extends StatelessWidget {
@@ -22,7 +22,7 @@ class Profile extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Profile',
       theme: ThemeData(primarySwatch: Colors.deepPurple),
-      home: EditProfile(),
+      home: const EditProfile(),
     );
   }
 }
@@ -80,13 +80,13 @@ class _EditProfileState extends State<EditProfile> {
         });
 
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Profile saved successfully')),
+          const SnackBar(content: Text('Profile saved successfully')),
         );
       }
     } catch (error) {
       print('Error saving profile: $error');
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Failed to save profile')),
+        const SnackBar(content: Text('Failed to save profile')),
       );
     }
   }
@@ -117,7 +117,7 @@ class _EditProfileState extends State<EditProfile> {
         backgroundColor: Colors.white,
         elevation: 1,
         leading: IconButton(
-          icon: Icon(
+          icon: const Icon(
             Icons.arrow_back,
             color: Colors.deepPurple,
           ),
@@ -127,16 +127,16 @@ class _EditProfileState extends State<EditProfile> {
         ),
       ),
       body: SingleChildScrollView(
-        padding: EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Text(
+            const Text(
               "Edit Profile",
               style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
               textAlign: TextAlign.center,
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             GestureDetector(
               onTap: () {
                 pickImage(ImageSource.gallery);
@@ -147,7 +147,7 @@ class _EditProfileState extends State<EditProfile> {
                     Container(
                       width: 130,
                       height: 130,
-                      decoration: BoxDecoration(
+                      decoration: const BoxDecoration(
                         shape: BoxShape.circle,
                         color: Colors.deepPurple,
                       ),
@@ -158,7 +158,7 @@ class _EditProfileState extends State<EditProfile> {
                                 fit: BoxFit.cover,
                               ),
                             )
-                          : Icon(
+                          : const Icon(
                               Icons.person,
                               size: 60,
                               color: Colors.white,
@@ -179,7 +179,7 @@ class _EditProfileState extends State<EditProfile> {
                           ),
                           color: Colors.deepPurple,
                         ),
-                        child: Icon(
+                        child: const Icon(
                           Icons.camera_alt,
                           color: Colors.white,
                         ),
@@ -189,7 +189,7 @@ class _EditProfileState extends State<EditProfile> {
                 ),
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             _buildTextField(
                 fullNameController, "Full Name", "Enter your Full Name"),
             _buildTextField(emailController, "Email", "Enter your Email"),
@@ -204,7 +204,7 @@ class _EditProfileState extends State<EditProfile> {
                 departmentController, "Department", "Working Department"),
             _buildTextField(fatherNameController, "Father's Name", ""),
             _buildTextField(motherNameController, "Mother's Name", ""),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -212,7 +212,7 @@ class _EditProfileState extends State<EditProfile> {
                   onPressed: () {
                     // Cancel action
                   },
-                  child: Text(
+                  child: const Text(
                     "Cancel",
                     style: TextStyle(
                         fontSize: 14,
@@ -227,9 +227,9 @@ class _EditProfileState extends State<EditProfile> {
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.deepPurple,
                     shadowColor: Colors.grey,
-                    padding: EdgeInsets.symmetric(horizontal: 50),
+                    padding: const EdgeInsets.symmetric(horizontal: 50),
                   ),
-                  child: Text(
+                  child: const Text(
                     "SAVE",
                     style: TextStyle(
                         fontSize: 14, letterSpacing: 2.2, color: Colors.white),
@@ -259,7 +259,7 @@ class _EditProfileState extends State<EditProfile> {
                       showPassword = !showPassword;
                     });
                   },
-                  icon: Icon(
+                  icon: const Icon(
                     Icons.remove_red_eye,
                     color: Colors.deepPurple,
                   ),
@@ -268,11 +268,11 @@ class _EditProfileState extends State<EditProfile> {
           labelText: labelText,
           floatingLabelBehavior: FloatingLabelBehavior.always,
           hintText: placeholder,
-          hintStyle: TextStyle(
+          hintStyle: const TextStyle(
               fontSize: 14, fontWeight: FontWeight.bold, color: Colors.grey),
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(10)),
           focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: Colors.deepPurple, width: 2.0),
+            borderSide: const BorderSide(color: Colors.deepPurple, width: 2.0),
             borderRadius: BorderRadius.circular(10),
           ),
         ),

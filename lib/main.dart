@@ -11,22 +11,24 @@ import 'screens/splash.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       initialRoute: '/',
       routes: {
-        '/': (context) => splash(),
-        '/Welcome': (context) => Welcome(),
-        '/LoginScreen': (context) => LoginScreen(),
-        '/SignupScreen': (context) => SignupScreen(),
-        '/Dashboard': (context) => DashboardScreen(),
-        '/profile': (context) => Profile(),
+        '/': (context) => const splash(),
+        '/Welcome': (context) => const Welcome(),
+        '/LoginScreen': (context) => const LoginScreen(),
+        '/SignupScreen': (context) => const SignupScreen(),
+        '/Dashboard': (context) => const DashboardScreen(),
+        '/profile': (context) => const Profile(),
         '/AttendanceScreen': (context) => AttendanceScreen(),
       },
       // home:splash()
@@ -35,14 +37,16 @@ class MyApp extends StatelessWidget {
 }
 
 class Welcome extends StatelessWidget {
+  const Welcome({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Attandance Management System'),
+        title: const Text('Attandance Management System'),
         backgroundColor: Colors.blue,
       ),
-      body: Center(
+      body: const Center(
         child: Text('Welcome to the app'),
       ),
     );

@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import '../Dashboard/AdminDashboardScreen.dart';
 
 class AdminLoginScreen extends StatefulWidget {
-  const AdminLoginScreen({Key? key}) : super(key: key);
+  const AdminLoginScreen({super.key});
 
   @override
   AdminLoginScreenState createState() => AdminLoginScreenState();
@@ -36,13 +36,13 @@ class AdminLoginScreenState extends State<AdminLoginScreen> {
       }
 
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Admin login successful')),
+        const SnackBar(content: Text('Admin login successful')),
       );
 
       // Navigate to another screen after login
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => AdminDashboardScreen()),
+        MaterialPageRoute(builder: (context) => const AdminDashboardScreen()),
       );
     } on FirebaseAuthException catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -75,13 +75,13 @@ class AdminLoginScreenState extends State<AdminLoginScreen> {
             child: Column(
               children: <Widget>[
                 imageWidget("assets/applogo/amslogo.png"),
-                SizedBox(height: 30),
+                const SizedBox(height: 30),
                 reusableTextField("Enter Admin Email", Icons.email_outlined,
                     false, emailTextController),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 reusableTextField("Enter Password", Icons.lock_outline, true,
                     passwordTextController),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 signInSignUpButton(
                   context: context,
                   text: 'LOG IN AS ADMIN',
@@ -100,7 +100,7 @@ class AdminLoginScreenState extends State<AdminLoginScreen> {
 Color hexStringToColor(String hexColor) {
   hexColor = hexColor.toUpperCase().replaceAll("#", "");
   if (hexColor.length == 6) {
-    hexColor = "FF" + hexColor;
+    hexColor = "FF$hexColor";
   }
   if (hexColor.length == 8) {
     return Color(int.parse("0x$hexColor"));
@@ -165,13 +165,13 @@ Container signInSignUpButton({
     child: ElevatedButton(
       onPressed: onTap,
       style: ButtonStyle(
-        backgroundColor: MaterialStateProperty.resolveWith((states) {
-          if (states.contains(MaterialState.pressed)) {
+        backgroundColor: WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.pressed)) {
             return Colors.black26;
           }
           return Colors.white;
         }),
-        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+        shape: WidgetStateProperty.all<RoundedRectangleBorder>(
           RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(30),
           ),

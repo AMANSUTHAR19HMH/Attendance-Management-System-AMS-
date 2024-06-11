@@ -7,7 +7,7 @@ import 'alot Subjects.dart';
 class UserDetailsScreen extends StatelessWidget {
   final DocumentSnapshot user;
 
-  UserDetailsScreen({required this.user});
+  const UserDetailsScreen({super.key, required this.user});
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +17,7 @@ class UserDetailsScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('User Details'),
+        title: const Text('User Details'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -26,18 +26,18 @@ class UserDetailsScreen extends StatelessWidget {
             Text('Email: ${user['email']}'),
             Text('Role: ${user['role']}'),
             Text('Section: ${user['section']}'),
-            SizedBox(height: 10),
-            Text('Details:'),
+            const SizedBox(height: 10),
+            const Text('Details:'),
             Text('Name: ${details['name'] ?? 'N/A'}'),
             Text('Age: ${details['age'] ?? 'N/A'}'),
             Text('Address: ${details['address'] ?? 'N/A'}'),
-            SizedBox(height: 10),
-            Text('Subjects:'),
+            const SizedBox(height: 10),
+            const Text('Subjects:'),
             for (var subject in subjects) Text(subject),
-            SizedBox(height: 10),
-            Text('Attendance:'),
+            const SizedBox(height: 10),
+            const Text('Attendance:'),
             for (var date in attendance.keys) Text('$date: ${attendance[date]}'),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             ElevatedButton(
               onPressed: () {
                 Navigator.push(
@@ -45,7 +45,7 @@ class UserDetailsScreen extends StatelessWidget {
                   MaterialPageRoute(builder: (context) => AllotSubjectsScreen(userId: user.id)),
                 );
               },
-              child: Text('Allot Subjects'),
+              child: const Text('Allot Subjects'),
             ),
             ElevatedButton(
               onPressed: () {
@@ -54,7 +54,7 @@ class UserDetailsScreen extends StatelessWidget {
                   MaterialPageRoute(builder: (context) => ManageAttendanceScreen(userId: user.id)),
                 );
               },
-              child: Text('Manage Attendance'),
+              child: const Text('Manage Attendance'),
             ),
           ],
         ),

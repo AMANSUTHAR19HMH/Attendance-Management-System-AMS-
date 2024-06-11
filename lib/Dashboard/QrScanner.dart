@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 
 class QrScanner extends StatefulWidget {
+  const QrScanner({super.key});
+
   @override
   _QrScannerState createState() => _QrScannerState();
 }
@@ -13,7 +15,7 @@ class _QrScannerState extends State<QrScanner> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('QR Scanner'),
+        title: const Text('QR Scanner'),
       ),
       body: MobileScanner(
         allowDuplicates: false,
@@ -33,7 +35,7 @@ class _QrScannerState extends State<QrScanner> {
           padding: const EdgeInsets.all(16.0),
           child: Text(
             'Scanned URL: $scannedUrl',
-            style: TextStyle(fontSize: 18.0),
+            style: const TextStyle(fontSize: 18.0),
           ),
         ),
       )

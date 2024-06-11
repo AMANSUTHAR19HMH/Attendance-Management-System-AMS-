@@ -7,7 +7,7 @@ import 'package:qr_flutter/qr_flutter.dart';
 class UserProfileQRCode extends StatefulWidget {
   final String userId;
 
-  const UserProfileQRCode({Key? key, required this.userId}) : super(key: key);
+  const UserProfileQRCode({super.key, required this.userId});
 
   @override
   _UserProfileQRCodeState createState() => _UserProfileQRCodeState();
@@ -45,14 +45,14 @@ class _UserProfileQRCodeState extends State<UserProfileQRCode> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('User Profile QR Code'),
+        title: const Text('User Profile QR Code'),
       ),
       body: Center(
         child: FutureBuilder<Uint8List?>(
           future: generateQRCode(profileString),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return CircularProgressIndicator();
+              return const CircularProgressIndicator();
             } else if (snapshot.hasError) {
               return Text('Error: ${snapshot.error}');
             } else if (snapshot.hasData && snapshot.data != null) {
@@ -64,8 +64,8 @@ class _UserProfileQRCodeState extends State<UserProfileQRCode> {
                     width: 200, // Adjust the width as needed
                     height: 200, // Adjust the height as needed
                   ),
-                  SizedBox(height: 20.0),
-                  Text(
+                  const SizedBox(height: 20.0),
+                  const Text(
                     'Scan this QR code to view user profile details.',
                     textAlign: TextAlign.center,
                     style: TextStyle(fontSize: 16.0),
@@ -73,7 +73,7 @@ class _UserProfileQRCodeState extends State<UserProfileQRCode> {
                 ],
               );
             } else {
-              return Text('No QR code data available');
+              return const Text('No QR code data available');
             }
           },
         ),

@@ -4,18 +4,21 @@ import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
 class splash extends StatefulWidget {
+  const splash({super.key});
+
   @override
   State<splash> createState() => _SplashState();
 }
 
 class _SplashState extends State<splash> {
+  @override
   void initState() {
     super.initState();
     startTimer();
   }
 
   startTimer() {
-    var duration = Duration(milliseconds: 2300);
+    var duration = const Duration(milliseconds: 2300);
     return Timer(duration, route);
   }
 

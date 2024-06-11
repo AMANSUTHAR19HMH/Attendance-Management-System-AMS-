@@ -4,17 +4,19 @@ import 'package:flutter/material.dart';
 class ViewAttendanceScreen extends StatelessWidget {
   final CollectionReference attendanceCollection = FirebaseFirestore.instance.collection('attendance');
 
+   ViewAttendanceScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('View Attendance'),
+        title: const Text('View Attendance'),
       ),
       body: StreamBuilder<QuerySnapshot>(
         stream: attendanceCollection.snapshots(),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           }
 
           final attendanceRecords = snapshot.data!.docs;

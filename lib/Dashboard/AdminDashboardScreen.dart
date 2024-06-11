@@ -9,6 +9,8 @@ import '../screens/ManageSubjectsScreen.dart';
 import '../screens/ViewAttendanceScreen.dart';
 
 class AdminDashboardScreen extends StatefulWidget {
+  const AdminDashboardScreen({super.key});
+
   @override
   _AdminDashboardScreenState createState() => _AdminDashboardScreenState();
 }
@@ -18,13 +20,13 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Admin Dashboard'),
+        title: const Text('Admin Dashboard'),
       ),
       body: GridView.count(
         crossAxisCount: 2,
         children: [
           _buildDashboardItem('Manage Students', Icons.person, Colors.blue, () {
-            Get.to(ManageStudentsScreen());
+            Get.to(const ManageStudentsScreen());
           }),
           _buildDashboardItem(
               'Manage Attendance', Icons.calendar_today, Colors.green, () {
@@ -33,14 +35,14 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
             ));
           }),
           _buildDashboardItem('Manage Events', Icons.event, Colors.orange, () {
-            Get.to(ManageEventsScreen());
+            Get.to(const ManageEventsScreen());
           }),
           _buildDashboardItem('Manage Subjects', Icons.subject, Colors.purple,
               () {
-            Get.to(ManageSubjectsScreen());
+            Get.to(const ManageSubjectsScreen());
           }),
           _buildDashboardItem('Qr Scanner', Icons.subject, Colors.purple, () {
-            Get.to(QrScanner());
+            Get.to(const QrScanner());
           }),
           _buildDashboardItem('View Attendance', Icons.view_list, Colors.red,
               () {
@@ -57,16 +59,16 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
       onTap: onTap,
       child: Card(
         color: color,
-        margin: EdgeInsets.all(16.0),
+        margin: const EdgeInsets.all(16.0),
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Icon(icon, size: 50, color: Colors.white),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               Text(
                 title,
-                style: TextStyle(fontSize: 18, color: Colors.white),
+                style: const TextStyle(fontSize: 18, color: Colors.white),
               ),
             ],
           ),

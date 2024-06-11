@@ -12,12 +12,15 @@ import '../screens/EventsScreen.dart';
 import '../screens/ProfileScreen.dart';
 import '../screens/attendense_screen.dart';
 import 'navbar.dart';
+import '../main.dart';
 
 void main() {
-  runApp(DashboardScreen());
+  runApp(const DashboardScreen());
 }
 
 class DashboardScreen extends StatefulWidget {
+  const DashboardScreen({super.key});
+
   @override
   _DashboardScreenState createState() => _DashboardScreenState();
 }
@@ -30,7 +33,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       appBar: AppBar(
         foregroundColor: Colors.white,
         backgroundColor: Colors.purple,
-        title: Text(
+        title: const Text(
           "Dashboard",
           style: TextStyle(
             color: Colors.white,
@@ -46,14 +49,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
             color: Theme.of(context).primaryColor,
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 30),
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: Colors.white,
               ),
               child: GridView.count(
                 crossAxisCount: 2,
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
-                padding: EdgeInsets.only(
+                padding: const EdgeInsets.only(
                   top: 50,
                 ),
                 crossAxisSpacing: 50,
@@ -90,19 +93,26 @@ class _DashboardScreenState extends State<DashboardScreen> {
             backgroundColor: Colors.purple,
             color: Colors.white,
             activeColor: Colors.grey,
-            padding: EdgeInsets.all(8),
+            padding: const EdgeInsets.all(8),
             gap: 8,
             tabs: [
-              GButton(icon: Icons.dashboard),
-              GButton(icon: Icons.calendar_month_rounded),
-              GButton(icon: Icons.notifications),
+              const GButton(
+                icon: Icons.dashboard,
+              ),
+              const GButton(
+                icon: Icons.calendar_month_rounded,
+              ),
+              const GButton(
+                icon: Icons.notifications,
+              ),
               GButton(
                 icon: Icons.person,
                 onPressed: () {
                   // Navigate to ProfileScreen
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => ProfileScreen()),
+                    MaterialPageRoute(
+                        builder: (context) => const ProfileScreen()),
                   );
                 },
               ),
@@ -188,7 +198,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   void _logoutAndNavigateToLogin(BuildContext context) {
     Navigator.of(context).pushReplacement(
-      MaterialPageRoute(builder: (context) => LoginScreen()),
+      MaterialPageRoute(builder: (context) => const LoginScreen()),
     );
   }
 
@@ -197,20 +207,20 @@ class _DashboardScreenState extends State<DashboardScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("Logout"),
-          content: Text("Are you sure you want to logout?"),
+          title: const Text("Logout"),
+          content: const Text("Are you sure you want to logout?"),
           actions: [
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text("No"),
+              child: const Text("No"),
             ),
             TextButton(
               onPressed: () {
                 _logoutAndNavigateToLogin(context);
               },
-              child: Text("Yes"),
+              child: const Text("Yes"),
             ),
           ],
         );

@@ -4,7 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class EditUserScreen extends StatelessWidget {
   final DocumentSnapshot user;
 
-  EditUserScreen({required this.user, required String userId});
+  const EditUserScreen({super.key, required this.user, required String userId});
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +14,7 @@ class EditUserScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Edit User'),
+        title: const Text('Edit User'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -22,17 +22,17 @@ class EditUserScreen extends StatelessWidget {
           children: [
             TextField(
               controller: emailController,
-              decoration: InputDecoration(labelText: 'Email'),
+              decoration: const InputDecoration(labelText: 'Email'),
             ),
             TextField(
               controller: roleController,
-              decoration: InputDecoration(labelText: 'Role'),
+              decoration: const InputDecoration(labelText: 'Role'),
             ),
             TextField(
               controller: sectionController,
-              decoration: InputDecoration(labelText: 'Section'),
+              decoration: const InputDecoration(labelText: 'Section'),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () async {
                 final String email = emailController.text;
@@ -53,7 +53,7 @@ class EditUserScreen extends StatelessWidget {
                   }
                 }
               },
-              child: Text('Save'),
+              child: const Text('Save'),
             ),
           ],
         ),

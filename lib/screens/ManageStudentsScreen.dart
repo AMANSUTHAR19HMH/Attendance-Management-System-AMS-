@@ -8,6 +8,8 @@ import '../studetns/students detail.dart';
 import '../studetns/studentseditscreen.dart';
 
 class ManageStudentsScreen extends StatefulWidget {
+  const ManageStudentsScreen({super.key});
+
   @override
   _ManageStudentsScreenState createState() => _ManageStudentsScreenState();
 }
@@ -49,15 +51,15 @@ class _ManageStudentsScreenState extends State<ManageStudentsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Manage Users'),
+        title: const Text('Manage Users'),
         actions: [
           IconButton(
-            icon: Icon(Icons.logout),
+            icon: const Icon(Icons.logout),
             onPressed: () async {
               await _auth.signOut();
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(builder: (context) => LoginScreen()),
+                MaterialPageRoute(builder: (context) => const LoginScreen()),
               );
             },
           ),
@@ -67,7 +69,7 @@ class _ManageStudentsScreenState extends State<ManageStudentsScreen> {
         stream: usersCollection.snapshots(),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           }
 
           final users = snapshot.data!.docs;
@@ -83,7 +85,7 @@ class _ManageStudentsScreenState extends State<ManageStudentsScreen> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     IconButton(
-                      icon: Icon(Icons.edit),
+                      icon: const Icon(Icons.edit),
                       onPressed: () {
                         Navigator.push(
                           context,
@@ -97,13 +99,13 @@ class _ManageStudentsScreenState extends State<ManageStudentsScreen> {
                       },
                     ),
                     IconButton(
-                      icon: Icon(Icons.delete),
+                      icon: const Icon(Icons.delete),
                       onPressed: () {
                         usersCollection.doc(user.id).delete();
                       },
                     ),
                     IconButton(
-                      icon: Icon(Icons.view_list),
+                      icon: const Icon(Icons.view_list),
                       onPressed: () {
                         Navigator.push(
                           context,
@@ -130,7 +132,7 @@ class _ManageStudentsScreenState extends State<ManageStudentsScreen> {
             MaterialPageRoute(builder: (context) => AddUserScreen()),
           );
         },
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
       )
           : null,
     );

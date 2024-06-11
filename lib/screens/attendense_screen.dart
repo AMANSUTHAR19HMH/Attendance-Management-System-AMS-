@@ -7,6 +7,8 @@ class AttendanceScreen extends StatelessWidget {
   final AttendanceController attendanceController =
       Get.put(AttendanceController());
 
+  AttendanceScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,7 +19,7 @@ class AttendanceScreen extends StatelessWidget {
             onPressed: () {
               attendanceController.refreshAttendance();
             },
-            child: Text(
+            child: const Text(
               'Refresh',
               style: TextStyle(color: Colors.blue),
             ),
@@ -43,7 +45,7 @@ class AttendanceScreen extends StatelessWidget {
             child: Obx(() {
               return GridView.builder(
                 padding: const EdgeInsets.all(4.0),
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 1,
                   mainAxisExtent: 60,
                   crossAxisSpacing: 4,
@@ -82,7 +84,7 @@ class AttendanceScreen extends StatelessWidget {
                                   overflow: TextOverflow.ellipsis,
                                 ),
                                 Transform.scale(
-                                  scale: 0.8, 
+                                  scale: 0.8,
                                   child: Checkbox(
                                     value: student.isPresent.value,
                                     onChanged: (value) {

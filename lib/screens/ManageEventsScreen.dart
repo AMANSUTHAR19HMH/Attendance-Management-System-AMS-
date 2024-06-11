@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class ManageEventsScreen extends StatefulWidget {
+  const ManageEventsScreen({super.key});
+
   @override
   _ManageEventsScreenState createState() => _ManageEventsScreenState();
 }
@@ -13,13 +15,13 @@ class _ManageEventsScreenState extends State<ManageEventsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Manage Events'),
+        title: const Text('Manage Events'),
       ),
       body: StreamBuilder<QuerySnapshot>(
         stream: eventsCollection.snapshots(),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           }
 
           final events = snapshot.data!.docs;
@@ -32,7 +34,7 @@ class _ManageEventsScreenState extends State<ManageEventsScreen> {
                 title: Text(event['name']),
                 subtitle: Text('Date: ${event['start_date']} - ${event['end_date']}'),
                 trailing: IconButton(
-                  icon: Icon(Icons.delete),
+                  icon: const Icon(Icons.delete),
                   onPressed: () {
                     eventsCollection.doc(event.id).delete();
                   },
@@ -49,7 +51,7 @@ class _ManageEventsScreenState extends State<ManageEventsScreen> {
         onPressed: () {
           _addEventDialog(context);
         },
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
       ),
     );
   }
@@ -66,33 +68,33 @@ class _ManageEventsScreenState extends State<ManageEventsScreen> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text('Add Event'),
+          title: const Text('Add Event'),
           content: SingleChildScrollView(
             child: Column(
               children: [
                 TextField(
                   controller: nameController,
-                  decoration: InputDecoration(labelText: 'Name'),
+                  decoration: const InputDecoration(labelText: 'Name'),
                 ),
                 TextField(
                   controller: locationController,
-                  decoration: InputDecoration(labelText: 'Location'),
+                  decoration: const InputDecoration(labelText: 'Location'),
                 ),
                 TextField(
                   controller: organizationController,
-                  decoration: InputDecoration(labelText: 'Organization'),
+                  decoration: const InputDecoration(labelText: 'Organization'),
                 ),
                 TextField(
                   controller: startDateController,
-                  decoration: InputDecoration(labelText: 'Start Date'),
+                  decoration: const InputDecoration(labelText: 'Start Date'),
                 ),
                 TextField(
                   controller: endDateController,
-                  decoration: InputDecoration(labelText: 'End Date'),
+                  decoration: const InputDecoration(labelText: 'End Date'),
                 ),
                 TextField(
                   controller: descriptionController,
-                  decoration: InputDecoration(labelText: 'Description'),
+                  decoration: const InputDecoration(labelText: 'Description'),
                 ),
               ],
             ),
@@ -125,13 +127,13 @@ class _ManageEventsScreenState extends State<ManageEventsScreen> {
                   Navigator.of(context).pop();
                 }
               },
-              child: Text('Add'),
+              child: const Text('Add'),
             ),
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text('Cancel'),
+              child: const Text('Cancel'),
             ),
           ],
         );
@@ -151,33 +153,33 @@ class _ManageEventsScreenState extends State<ManageEventsScreen> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text('Edit Event'),
+          title: const Text('Edit Event'),
           content: SingleChildScrollView(
             child: Column(
               children: [
                 TextField(
                   controller: nameController,
-                  decoration: InputDecoration(labelText: 'Name'),
+                  decoration: const InputDecoration(labelText: 'Name'),
                 ),
                 TextField(
                   controller: locationController,
-                  decoration: InputDecoration(labelText: 'Location'),
+                  decoration: const InputDecoration(labelText: 'Location'),
                 ),
                 TextField(
                   controller: organizationController,
-                  decoration: InputDecoration(labelText: 'Organization'),
+                  decoration: const InputDecoration(labelText: 'Organization'),
                 ),
                 TextField(
                   controller: startDateController,
-                  decoration: InputDecoration(labelText: 'Start Date'),
+                  decoration: const InputDecoration(labelText: 'Start Date'),
                 ),
                 TextField(
                   controller: endDateController,
-                  decoration: InputDecoration(labelText: 'End Date'),
+                  decoration: const InputDecoration(labelText: 'End Date'),
                 ),
                 TextField(
                   controller: descriptionController,
-                  decoration: InputDecoration(labelText: 'Description'),
+                  decoration: const InputDecoration(labelText: 'Description'),
                 ),
               ],
             ),
@@ -210,13 +212,13 @@ class _ManageEventsScreenState extends State<ManageEventsScreen> {
                   Navigator.of(context).pop();
                 }
               },
-              child: Text('Update'),
+              child: const Text('Update'),
             ),
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text('Cancel'),
+              child: const Text('Cancel'),
             ),
           ],
         );

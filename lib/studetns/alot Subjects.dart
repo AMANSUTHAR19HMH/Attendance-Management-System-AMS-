@@ -4,7 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class AllotSubjectsScreen extends StatelessWidget {
   final String userId;
 
-  AllotSubjectsScreen({required this.userId});
+  const AllotSubjectsScreen({super.key, required this.userId});
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +12,7 @@ class AllotSubjectsScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Allot Subjects'),
+        title: const Text('Allot Subjects'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -20,9 +20,9 @@ class AllotSubjectsScreen extends StatelessWidget {
           children: [
             TextField(
               controller: subjectsController,
-              decoration: InputDecoration(labelText: 'Subjects (comma separated)'),
+              decoration: const InputDecoration(labelText: 'Subjects (comma separated)'),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () async {
                 final subjects = subjectsController.text.split(',').map((s) => s.trim()).toList();
@@ -39,7 +39,7 @@ class AllotSubjectsScreen extends StatelessWidget {
                   }
                 }
               },
-              child: Text('Allot'),
+              child: const Text('Allot'),
             ),
           ],
         ),

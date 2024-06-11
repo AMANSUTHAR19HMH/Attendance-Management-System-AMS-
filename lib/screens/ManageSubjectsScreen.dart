@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class ManageSubjectsScreen extends StatefulWidget {
+  const ManageSubjectsScreen({super.key});
+
   @override
   _ManageSubjectsScreenState createState() => _ManageSubjectsScreenState();
 }
@@ -13,13 +15,13 @@ class _ManageSubjectsScreenState extends State<ManageSubjectsScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Manage Subjects'),
+        title: const Text('Manage Subjects'),
       ),
       body: StreamBuilder<QuerySnapshot>(
         stream: subjectsCollection.snapshots(),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           }
 
           final subjects = snapshot.data!.docs;
@@ -32,7 +34,7 @@ class _ManageSubjectsScreenState extends State<ManageSubjectsScreen> {
                 title: Text(subject['name']),
                 subtitle: Text('ID: ${subject['id']}'),
                 trailing: IconButton(
-                  icon: Icon(Icons.delete),
+                  icon: const Icon(Icons.delete),
                   onPressed: () {
                     subjectsCollection.doc(subject.id).delete();
                   },
@@ -46,7 +48,7 @@ class _ManageSubjectsScreenState extends State<ManageSubjectsScreen> {
         onPressed: () {
           _addSubjectDialog(context);
         },
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
       ),
     );
   }
@@ -59,17 +61,17 @@ class _ManageSubjectsScreenState extends State<ManageSubjectsScreen> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text('Add Subject'),
+          title: const Text('Add Subject'),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               TextField(
                 controller: nameController,
-                decoration: InputDecoration(labelText: 'Name'),
+                decoration: const InputDecoration(labelText: 'Name'),
               ),
               TextField(
                 controller: idController,
-                decoration: InputDecoration(labelText: 'ID'),
+                decoration: const InputDecoration(labelText: 'ID'),
               ),
             ],
           ),
@@ -88,13 +90,13 @@ class _ManageSubjectsScreenState extends State<ManageSubjectsScreen> {
                   Navigator.of(context).pop();
                 }
               },
-              child: Text('Add'),
+              child: const Text('Add'),
             ),
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text('Cancel'),
+              child: const Text('Cancel'),
             ),
           ],
         );

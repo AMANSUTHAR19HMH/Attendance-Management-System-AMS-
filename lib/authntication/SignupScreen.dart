@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 // Import your DashboardScreen
 
 class SignupScreen extends StatefulWidget {
-  const SignupScreen({Key? key}) : super(key: key);
+  const SignupScreen({super.key});
 
   @override
   SignupScreenState createState() => SignupScreenState();
@@ -29,7 +29,7 @@ class SignupScreenState extends State<SignupScreen> {
       await userCredential.user?.updateDisplayName(userNameTextController.text);
 
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Signup successful')),
+        const SnackBar(content: Text('Signup successful')),
       );
 
       // Navigate to the DashboardScreen after successful signup
@@ -37,7 +37,7 @@ class SignupScreenState extends State<SignupScreen> {
         context,
         MaterialPageRoute(
             builder: (context) =>
-                DashboardScreen()), // Replace with your actual dashboard screen
+                const DashboardScreen()), // Replace with your actual dashboard screen
       );
     } on FirebaseAuthException catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -70,16 +70,16 @@ class SignupScreenState extends State<SignupScreen> {
             child: Column(
               children: <Widget>[
                 imageWidget("assets/applogo/amslogo.png"),
-                SizedBox(height: 30),
+                const SizedBox(height: 30),
                 reusableTextField("Enter UserName", Icons.person_outline, false,
                     userNameTextController),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 reusableTextField("Enter Email", Icons.email_outlined, false,
                     emailTextController),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 reusableTextField("Enter Password", Icons.lock_outline, true,
                     passwordTextController),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
                 signInSignUpButton(
                   context: context,
                   text: 'SIGN UP',
@@ -98,7 +98,7 @@ class SignupScreenState extends State<SignupScreen> {
 Color hexStringToColor(String hexColor) {
   hexColor = hexColor.toUpperCase().replaceAll("#", "");
   if (hexColor.length == 6) {
-    hexColor = "FF" + hexColor;
+    hexColor = "FF$hexColor";
   }
   if (hexColor.length == 8) {
     return Color(int.parse("0x$hexColor"));
@@ -163,13 +163,13 @@ Container signInSignUpButton({
     child: ElevatedButton(
       onPressed: onTap,
       style: ButtonStyle(
-        backgroundColor: MaterialStateProperty.resolveWith((states) {
-          if (states.contains(MaterialState.pressed)) {
+        backgroundColor: WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.pressed)) {
             return Colors.black26;
           }
           return Colors.white;
         }),
-        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+        shape: WidgetStateProperty.all<RoundedRectangleBorder>(
           RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(30),
           ),

@@ -5,21 +5,23 @@ class EventsScreen extends StatelessWidget {
   final CollectionReference publicEventsCollection =
       FirebaseFirestore.instance.collection('public_events');
 
+  EventsScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Events'),
+        title: const Text('Events'),
       ),
       body: StreamBuilder<QuerySnapshot>(
         stream: publicEventsCollection.snapshots(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
           } else if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-            return Center(child: Text('No events found.'));
+            return const Center(child: Text('No events found.'));
           }
 
           final events = snapshot.data!.docs;

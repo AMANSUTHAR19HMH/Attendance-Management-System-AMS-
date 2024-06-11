@@ -3,6 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import '../firstoreprofile/ProfileService.dart';
 
 class ProfileScreen extends StatefulWidget {
+  const ProfileScreen({super.key});
+
   @override
   _ProfileScreenState createState() => _ProfileScreenState();
 }
@@ -36,24 +38,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Profile'),
+        title: const Text('Profile'),
       ),
       body: SingleChildScrollView(
-        padding: EdgeInsets.all(20.0),
+        padding: const EdgeInsets.all(20.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
+            const Text(
               'Profile Information',
               style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 20.0),
+            const SizedBox(height: 20.0),
             if (_profileData.isNotEmpty)
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   _buildProfilePicture(), // Display profile picture
-                  SizedBox(height: 20.0),
+                  const SizedBox(height: 20.0),
                   Text('Name: ${_profileData['fullName']}'),
                   Text('Email: ${_profileData['email']}'),
                   Text('Phone: ${_profileData['phone']}'),
@@ -65,7 +67,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ],
               )
             else
-              Text('Loading profile...'),
+              const Text('Loading profile...'),
           ],
         ),
       ),
@@ -82,7 +84,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       );
     } else {
       // If no profile picture URL is available, display a default icon
-      return CircleAvatar(
+      return const CircleAvatar(
         radius: 50.0,
         child: Icon(Icons.person, size: 50.0),
       );

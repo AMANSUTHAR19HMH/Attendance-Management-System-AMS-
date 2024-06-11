@@ -8,15 +8,17 @@ class AddUserScreen extends StatelessWidget {
   final TextEditingController roleController = TextEditingController();
   final TextEditingController sectionController = TextEditingController();
 
+  AddUserScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
-    final FirebaseAuth _auth = FirebaseAuth.instance;
+    final FirebaseAuth auth = FirebaseAuth.instance;
     final CollectionReference usersCollection =
         FirebaseFirestore.instance.collection('users');
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add User'),
+        title: const Text('Add User'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -24,22 +26,22 @@ class AddUserScreen extends StatelessWidget {
           children: [
             TextField(
               controller: emailController,
-              decoration: InputDecoration(labelText: 'Email'),
+              decoration: const InputDecoration(labelText: 'Email'),
             ),
             TextField(
               controller: passwordController,
-              decoration: InputDecoration(labelText: 'Password'),
+              decoration: const InputDecoration(labelText: 'Password'),
               obscureText: true,
             ),
             TextField(
               controller: roleController,
-              decoration: InputDecoration(labelText: 'Role'),
+              decoration: const InputDecoration(labelText: 'Role'),
             ),
             TextField(
               controller: sectionController,
-              decoration: InputDecoration(labelText: 'Section'),
+              decoration: const InputDecoration(labelText: 'Section'),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () async {
                 final String email = emailController.text;
@@ -56,7 +58,7 @@ class AddUserScreen extends StatelessWidget {
                     section.isNotEmpty) {
                   try {
                     UserCredential userCredential =
-                        await _auth.createUserWithEmailAndPassword(
+                        await auth.createUserWithEmailAndPassword(
                       email: email,
                       password: password,
                     );
@@ -76,7 +78,7 @@ class AddUserScreen extends StatelessWidget {
                   }
                 }
               },
-              child: Text('Add User'),
+              child: const Text('Add User'),
             ),
           ],
         ),
