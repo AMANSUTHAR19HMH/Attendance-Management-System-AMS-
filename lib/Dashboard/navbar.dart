@@ -71,7 +71,7 @@ class NavbarTop extends StatelessWidget {
             leading: const Icon(Icons.dashboard),
             title: const Text("Dashboard"),
             onTap: () {
-              Navigator.pushNamed(context, '/dashboard');
+              Navigator.pushNamed(context, '/Dashboard');
             },
           ),
           ListTile(
@@ -85,7 +85,7 @@ class NavbarTop extends StatelessWidget {
             leading: const Icon(Icons.calendar_today_outlined),
             title: const Text("Attendance"),
             onTap: () {
-              Navigator.pushNamed(context, '/attendance');
+              Navigator.pushNamed(context, '/AttendanceScreen');
             },
           ),
           ListTile(
@@ -99,7 +99,7 @@ class NavbarTop extends StatelessWidget {
             title: const Text("Logout"),
             onTap: () {
               FirebaseAuth.instance.signOut();
-              Navigator.pushReplacementNamed(context, '/login');
+              Navigator.pushReplacementNamed(context, '/LoginScreen');
             },
           ),
         ],

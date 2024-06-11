@@ -12,11 +12,6 @@ import '../screens/EventsScreen.dart';
 import '../screens/ProfileScreen.dart';
 import '../screens/attendense_screen.dart';
 import 'navbar.dart';
-import '../main.dart';
-
-void main() {
-  runApp(const DashboardScreen());
-}
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -96,13 +91,16 @@ class _DashboardScreenState extends State<DashboardScreen> {
             padding: const EdgeInsets.all(8),
             gap: 8,
             tabs: [
-              const GButton(
+              GButton(
                 icon: Icons.dashboard,
               ),
-              const GButton(
+              GButton(
                 icon: Icons.calendar_month_rounded,
+                onPressed: () {
+                  Navigator.pushNamed(context, '/AttendanceScreen');
+                },
               ),
-              const GButton(
+              GButton(
                 icon: Icons.notifications,
               ),
               GButton(
