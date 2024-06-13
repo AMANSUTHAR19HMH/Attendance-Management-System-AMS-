@@ -21,40 +21,36 @@ class _LoginDashState extends State<LoginDash> {
       body: Container(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
-        color: Color.fromRGBO(48, 143, 245, 1),
+        color: Color.fromARGB(255, 155, 8, 247),
         child: Center(
           child: ListView(
             padding: EdgeInsets.zero,
             children: [
               Container(
-                width: 100,
+                width: MediaQuery.of(context).size.width,
                 height: 300,
-                child: Center(
-                    child: Text(
+                decoration: BoxDecoration(
+                    image: DecorationImage(
+                        fit: BoxFit.cover,
+                        colorFilter: new ColorFilter.mode(
+                            Colors.purple.withOpacity(1.0),
+                            BlendMode.softLight),
+                        image: AssetImage(
+                          "assets/CustomIcons/Dashboard.jpg",
+                        ))),
+              ),
+              Center(
+                child: Text(
                   "Welcome To AMS",
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 30,
                   ),
-                )),
-                margin: EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  color: Color.fromARGB(255, 229, 23, 157),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.5),
-                      spreadRadius: 10,
-                      blurRadius: 7,
-                      offset: Offset(0, 3), // changes position of shadow
-                    ),
-                  ],
-                  shape: BoxShape.circle,
                 ),
               ),
               // Main Dashboard Components for navigation ///
               Container(
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.all(Radius.circular(50)),
                   color: Theme.of(context).scaffoldBackgroundColor,
                 ),
                 child: Container(
@@ -62,9 +58,15 @@ class _LoginDashState extends State<LoginDash> {
                     horizontal: 20,
                     vertical: 20,
                   ),
+                  width: MediaQuery.of(context).size.width * 0.5,
+                  height: 500,
                   decoration: const BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.all(Radius.circular(10))),
+                    color: Colors.white,
+                    borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(50),
+                      topLeft: Radius.circular(50),
+                    ),
+                  ),
                   child: GridView.count(
                     crossAxisCount: 2,
 
