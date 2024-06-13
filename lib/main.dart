@@ -1,12 +1,12 @@
 import 'package:attendance_management_system_ams/Dashboard/DashBoard.dart';
 import 'package:attendance_management_system_ams/Dashboard/profile.dart';
+import 'package:attendance_management_system_ams/StartupDash.dart';
 import 'package:attendance_management_system_ams/authntication/SignupScreen.dart';
 import 'package:attendance_management_system_ams/screens/attendense_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'authntication/LoginScreen.dart';
-import 'screens/splash.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,8 +23,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       initialRoute: '/',
       routes: {
-        '/': (context) => const splash(),
-        '/Welcome': (context) => const Welcome(),
+        '/': (context) => const LoginDash(),
         '/LoginScreen': (context) => const LoginScreen(),
         '/SignupScreen': (context) => const SignupScreen(),
         '/Dashboard': (context) => const DashboardScreen(),
@@ -32,23 +31,6 @@ class MyApp extends StatelessWidget {
         '/AttendanceScreen': (context) => AttendanceScreen(),
       },
       // home:splash()
-    );
-  }
-}
-
-class Welcome extends StatelessWidget {
-  const Welcome({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Attandance Management System'),
-        backgroundColor: Colors.blue,
-      ),
-      body: const Center(
-        child: Text('Welcome to the app'),
-      ),
     );
   }
 }
