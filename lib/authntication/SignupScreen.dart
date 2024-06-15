@@ -1,5 +1,6 @@
 import 'package:attendance_management_system_ams/Dashboard/DashBoard.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 // Import your DashboardScreen
@@ -47,52 +48,88 @@ class SignupScreenState extends State<SignupScreen> {
   }
 
   @override
+  @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery
+        .of(context)
+        .size;
     return Scaffold(
       body: Container(
-        width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.height,
-        decoration: BoxDecoration(
+        margin: EdgeInsets.only(top: 40),
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
-            colors: [
-              hexStringToColor("CB2B93"),
-              hexStringToColor("9546C4"),
-              hexStringToColor("5E61F4"),
-            ],
             begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
+            colors: [
+              Color(0xffF4EEF2),
+              Color(0xffF4EEF2),
+              Color(0xffE3EDF5),
+            ],
           ),
         ),
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.fromLTRB(
-                15, MediaQuery.of(context).size.height * 0.1, 20, 0),
-            child: Column(
-              children: <Widget>[
-                imageWidget("assets/applogo/amslogo.png"),
+        child: SafeArea(
+            child: ListView(
+              children: [
+                SizedBox(height: size.height * 0.03),
+                const Text(
+                  "Hello User!",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 37,
+                    color: Color(0xff353047),
+                  ),
+                ),
+                const SizedBox(height: 15),
+                const Text(
+                  "Wellcome to Zidio Development \n Attendance App",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      fontSize: 27, color: Color(0xff6F6B7A), height: 1.2),
+                ),
+                SizedBox(height: size.height * 0.04),
+                // for username and password
                 const SizedBox(height: 30),
                 reusableTextField("Enter UserName", Icons.person_outline, false,
                     userNameTextController),
-                const SizedBox(height: 20),
                 reusableTextField("Enter Email", Icons.email_outlined, false,
                     emailTextController),
-                const SizedBox(height: 20),
                 reusableTextField("Enter Password", Icons.lock_outline, true,
                     passwordTextController),
-                const SizedBox(height: 20),
-                signInSignUpButton(
-                  context: context,
-                  text: 'SIGN UP',
-                  onTap: _signup,
+                SizedBox(height: size.height * 0.04),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 25),
+                  child: Column(
+                    children: [
+                      // for sign in button
+                      InkWell(
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(vertical: 20),
+                          margin: EdgeInsets.only(top: 40),
+                          decoration: BoxDecoration(
+                            color: const Color(0xffFD6B68),
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                          child: const Center(
+                            child: Text(
+                              "Sign Up",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                                fontSize: 22,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ],
-            ),
-          ),
-        ),
+            )),
       ),
     );
   }
-}
+
 
 // Function to convert hex color string to Color
 Color hexStringToColor(String hexColor) {
@@ -106,83 +143,40 @@ Color hexStringToColor(String hexColor) {
   return Colors.black; // Default to black if there's an issue
 }
 
-// Reusable Widgets (imageWidget and reusableTextField)
-Widget imageWidget(String imageName) {
-  return Image.asset(
-    imageName,
-    fit: BoxFit.fitWidth,
-    width: 240,
-    height: 240,
-    color: Colors.white,
-  );
-}
-
-TextField reusableTextField(String text, IconData icon, bool isPasswordType,
+Padding reusableTextField(String text, IconData icon, bool isPasswordType,
     TextEditingController controller) {
-  return TextField(
-    controller: controller,
-    obscureText: isPasswordType,
-    enableSuggestions: !isPasswordType,
-    autocorrect: !isPasswordType,
-    cursorColor: Colors.white,
-    style: TextStyle(color: Colors.white.withOpacity(0.9)),
-    decoration: InputDecoration(
-      prefixIcon: Icon(
-        icon,
-        color: Colors.white70,
-      ),
-      labelText: text,
-      labelStyle: TextStyle(color: Colors.white.withOpacity(0.9)),
-      filled: true,
-      floatingLabelBehavior: FloatingLabelBehavior.never,
-      fillColor: Colors.white.withOpacity(0.3),
-      border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(30.0),
-        borderSide: const BorderSide(width: 0, style: BorderStyle.none),
-      ),
+  return Padding(
+    padding: const EdgeInsets.symmetric(
+      horizontal: 25,
+      vertical: 10,
     ),
-    keyboardType: isPasswordType
-        ? TextInputType.visiblePassword
-        : TextInputType.emailAddress,
+    child: TextField(
+      controller: controller,
+      obscureText: isPasswordType,
+      enableSuggestions: !isPasswordType,
+      autocorrect: !isPasswordType,
+      cursorColor: Colors.black,
+      style: TextStyle(color: Colors.black.withOpacity(0.9)),
+      decoration: InputDecoration(
+        prefixIcon: Icon(
+          icon,
+          color: Colors.black26,
+        ),
+        labelText: text,
+        labelStyle: TextStyle(color: Colors.black.withOpacity(0.9)),
+        filled: true,
+        floatingLabelBehavior: FloatingLabelBehavior.never,
+        fillColor: Colors.white.withOpacity(0.3),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(30.0),
+          borderSide: const BorderSide(width: 0, style: BorderStyle.none),
+        ),
+      ),
+      keyboardType: isPasswordType
+          ? TextInputType.visiblePassword
+          : TextInputType.emailAddress,
+    ),
   );
+}
 }
 
-// SignInSignUpButton widget as defined previously
-Container signInSignUpButton({
-  required BuildContext context,
-  required String text,
-  required VoidCallback onTap,
-}) {
-  return Container(
-    width: MediaQuery.of(context).size.width,
-    height: 50,
-    margin: const EdgeInsets.fromLTRB(0, 10, 0, 20),
-    decoration: BoxDecoration(
-      borderRadius: BorderRadius.circular(90),
-    ),
-    child: ElevatedButton(
-      onPressed: onTap,
-      style: ButtonStyle(
-        backgroundColor: WidgetStateProperty.resolveWith((states) {
-          if (states.contains(WidgetState.pressed)) {
-            return Colors.black26;
-          }
-          return Colors.white;
-        }),
-        shape: WidgetStateProperty.all<RoundedRectangleBorder>(
-          RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(30),
-          ),
-        ),
-      ),
-      child: Text(
-        text,
-        style: const TextStyle(
-          color: Colors.black87,
-          fontWeight: FontWeight.bold,
-          fontSize: 16,
-        ),
-      ),
-    ),
-  );
-}
