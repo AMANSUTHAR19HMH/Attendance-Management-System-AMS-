@@ -2,6 +2,7 @@ import 'package:attendance_management_system_ams/Dashboard/DashBoard.dart';
 import 'package:attendance_management_system_ams/Dashboard/profile.dart';
 import 'package:attendance_management_system_ams/StartupDash.dart';
 import 'package:attendance_management_system_ams/authntication/SignupScreen.dart';
+import 'package:attendance_management_system_ams/authntication/TeacherLogin.dart';
 import 'package:attendance_management_system_ams/screens/attendense_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -29,6 +30,7 @@ class MyApp extends StatelessWidget {
         '/Dashboard': (context) => const DashboardScreen(),
         '/profile': (context) => const Profile(),
         '/AttendanceScreen': (context) => AttendanceScreen(),
+        '/Teacherlogin': (context) => TeacherLoginScreen(),
       },
       // home:splash()
     );

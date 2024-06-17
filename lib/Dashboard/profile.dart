@@ -122,7 +122,7 @@ class _EditProfileState extends State<EditProfile> {
             color: Colors.deepPurple,
           ),
           onPressed: () {
-            Navigator.pop(context);
+            Navigator.popAndPushNamed(context, '/Dashboard');
           },
         ),
       ),

@@ -1,3 +1,4 @@
+import 'package:attendance_management_system_ams/StartupDash.dart';
 import 'package:community_material_icon/community_material_icon.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -154,7 +155,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           //     MaterialPageRoute(builder: (context) => AdminLoginScreen()),
           //   );
         } else if (title == 'Logout') {
-          _showLogoutConfirmation(context);
+          Get.to(LoginDash());
         } else {
           // Handle navigation for other items
         }

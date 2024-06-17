@@ -99,7 +99,7 @@ class NavbarTop extends StatelessWidget {
             title: const Text("Logout"),
             onTap: () {
               FirebaseAuth.instance.signOut();
-              Navigator.pushReplacementNamed(context, '/LoginScreen');
+              Navigator.pushReplacementNamed(context, '/');
             },
           ),
         ],

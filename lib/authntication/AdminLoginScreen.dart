@@ -53,10 +53,9 @@ class AdminLoginScreenState extends State<AdminLoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery
-        .of(context)
-        .size;
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
+      appBar: null,
       body: Container(
         margin: EdgeInsets.only(top: 40),
         decoration: BoxDecoration(
@@ -71,63 +70,63 @@ class AdminLoginScreenState extends State<AdminLoginScreen> {
         ),
         child: SafeArea(
             child: ListView(
-              children: [
-                SizedBox(height: size.height * 0.03),
-                Text(
-                  "Hello Admin!",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 37,
-                    color: Color(0xff353047),
-                  ),
-                ),
-                const SizedBox(height: 15),
-                Text(
-                  "Wellcome to Zidio Development \n Attendance App",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      fontSize: 27, color: Color(0xff6F6B7A), height: 1.2),
-                ),
-                SizedBox(height: size.height * 0.04),
-                // for username and password
-                reusableTextField("Enter Email", Icons.email_outlined, false,
-                    emailTextController),
-                reusableTextField("Enter Password", Icons.lock_outline, true,
-                    passwordTextController),
-                SizedBox(height: size.height * 0.04),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 25),
-                  child: Column(
-                    children: [
-                      // for sign in buttonon
-                      InkWell(
-                        child: Container(
-                          width: size.width,
-                          padding: const EdgeInsets.symmetric(vertical: 20),
-                          margin: EdgeInsets.only(top: 40),
-                          decoration: BoxDecoration(
-                            color: Color(0xffFD6B68),
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                          child: const Center(
-                            child: Text(
-                              "Sign In",
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
-                                fontSize: 22,
-                              ),
-                            ),
+          children: [
+            SizedBox(height: size.height * 0.03),
+            Text(
+              "Hello Admin!",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 37,
+                color: Color(0xff353047),
+              ),
+            ),
+            const SizedBox(height: 15),
+            Text(
+              "Wellcome to Zidio Development \n Attendance App",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  fontSize: 27, color: Color(0xff6F6B7A), height: 1.2),
+            ),
+            SizedBox(height: size.height * 0.04),
+            // for username and password
+            reusableTextField("Enter Email", Icons.email_outlined, false,
+                emailTextController),
+            reusableTextField("Enter Password", Icons.lock_outline, true,
+                passwordTextController),
+            SizedBox(height: size.height * 0.04),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 25),
+              child: Column(
+                children: [
+                  // for sign in buttonon
+                  InkWell(
+                    child: Container(
+                      width: size.width,
+                      padding: const EdgeInsets.symmetric(vertical: 20),
+                      margin: EdgeInsets.only(top: 40),
+                      decoration: BoxDecoration(
+                        color: Color(0xffFD6B68),
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      child: const Center(
+                        child: Text(
+                          "Sign In",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                            fontSize: 22,
                           ),
                         ),
-                        onTap: _adminLogin,
                       ),
-                    ],
+                    ),
+                    onTap: _adminLogin,
                   ),
-                ),
-              ],
-            )),
+                ],
+              ),
+            ),
+          ],
+        )),
       ),
     );
   }
@@ -198,10 +197,7 @@ class AdminLoginScreenState extends State<AdminLoginScreen> {
     required VoidCallback onTap,
   }) {
     return Container(
-      width: MediaQuery
-          .of(context)
-          .size
-          .width,
+      width: MediaQuery.of(context).size.width,
       height: 50,
       margin: const EdgeInsets.fromLTRB(0, 10, 0, 20),
       decoration: BoxDecoration(

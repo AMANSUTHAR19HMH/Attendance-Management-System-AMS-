@@ -55,10 +55,9 @@ class LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery
-        .of(context)
-        .size;
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
+      appBar: null,
       body: Container(
         margin: EdgeInsets.only(top: 40),
         decoration: const BoxDecoration(
@@ -73,91 +72,92 @@ class LoginScreenState extends State<LoginScreen> {
         ),
         child: SafeArea(
             child: ListView(
-              children: [
-                SizedBox(height: size.height * 0.03),
-                const Text(
-                  "Hello User!",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 37,
-                    color: Color(0xff353047),
-                  ),
-                ),
-                const SizedBox(height: 15),
-                const Text(
-                  "Wellcome to Zidio Development \n Attendance App",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                      fontSize: 27, color: Color(0xff6F6B7A), height: 1.2),
-                ),
-                SizedBox(height: size.height * 0.04),
-                // for username and password
-                reusableTextField("Enter Email", Icons.email_outlined, false,
-                    emailTextController),
-                reusableTextField("Enter Password", Icons.lock_outline, true,
-                    passwordTextController),
-                SizedBox(height: size.height * 0.04),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 25),
-                  child: Column(
-                    children: [
-                      // for sign in button
-                      InkWell(
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(vertical: 20),
-                          margin: EdgeInsets.only(top: 40),
-                          decoration: BoxDecoration(
-                            color: const Color(0xffFD6B68),
-                            borderRadius: BorderRadius.circular(15),
+          children: [
+            SizedBox(height: size.height * 0.03),
+            const Text(
+              "Hello User!",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 37,
+                color: Color(0xff353047),
+              ),
+            ),
+            const SizedBox(height: 15),
+            const Text(
+              "Wellcome to Zidio Development \n Attendance App",
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                  fontSize: 27, color: Color(0xff6F6B7A), height: 1.2),
+            ),
+            SizedBox(height: size.height * 0.04),
+            // for username and password
+            reusableTextField("Enter Email", Icons.email_outlined, false,
+                emailTextController),
+            reusableTextField("Enter Password", Icons.lock_outline, true,
+                passwordTextController),
+            SizedBox(height: size.height * 0.04),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 25),
+              child: Column(
+                children: [
+                  // for sign in button
+                  InkWell(
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(vertical: 20),
+                      margin: EdgeInsets.only(top: 40),
+                      decoration: BoxDecoration(
+                        color: const Color(0xffFD6B68),
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      child: const Center(
+                        child: Text(
+                          "Sign In",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                            fontSize: 22,
                           ),
-                          child: const Center(
-                            child: Text(
-                              "Sign In",
+                        ),
+                      ),
+                    ),
+                    onTap: _login,
+                  ),
+                  SizedBox(height: size.height * 0.07),
+                  InkWell(
+                    child: const Text.rich(
+                      TextSpan(
+                          text: "New User? ",
+                          style: TextStyle(
+                            color: Color(0xff6F6B7A),
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15,
+                          ),
+                          children: [
+                            TextSpan(
+                              text: "Register now",
                               style: TextStyle(
+                                color: Colors.blue,
                                 fontWeight: FontWeight.bold,
-                                color: Colors.white,
-                                fontSize: 22,
                               ),
                             ),
-                          ),
-                        ),
-                        onTap: _login,
-                      ),
-                      SizedBox(height: size.height * 0.07),
-                      InkWell(
-                        child: const Text.rich(
-                          TextSpan(
-                              text: "New User? ",
-                              style: TextStyle(
-                                color: Color(0xff6F6B7A),
-                                fontWeight: FontWeight.bold,
-                                fontSize: 15,
-                              ),
-                              children: [ TextSpan(
-                                text: "Register now",
-                                style: TextStyle(
-                                  color: Colors.blue,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              ]
-                          ),
-                        ),
-                        onTap: (){
-                          Navigator.push(
-                              context, MaterialPageRoute(builder: (context) => const SignupScreen()));
-                        },
-                      ),
-                    ],
+                          ]),
+                    ),
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const SignupScreen()));
+                    },
                   ),
-                ),
-              ],
-            )),
+                ],
+              ),
+            ),
+          ],
+        )),
       ),
     );
   }
-
 
 // Function to convert hex color string to Color
   Color hexStringToColor(String hexColor) {
@@ -214,10 +214,7 @@ class LoginScreenState extends State<LoginScreen> {
     required VoidCallback onTap,
   }) {
     return Container(
-      width: MediaQuery
-          .of(context)
-          .size
-          .width,
+      width: MediaQuery.of(context).size.width,
       height: 50,
       margin: const EdgeInsets.fromLTRB(0, 10, 0, 20),
       decoration: BoxDecoration(
@@ -252,12 +249,11 @@ class LoginScreenState extends State<LoginScreen> {
 
   Row signUpOption(BuildContext context) {
     return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-      const Text(
-          "Don't have an account?", style: TextStyle(color: Colors.white)),
+      const Text("Don't have an account?",
+          style: TextStyle(color: Colors.white)),
       GestureDetector(
         onTap: () {
-          Navigator.push(
-              context,
+          Navigator.push(context,
               MaterialPageRoute(builder: (context) => const SignupScreen()));
         },
         child: const Text(" Sign Up",
@@ -272,8 +268,9 @@ class LoginScreenState extends State<LoginScreen> {
       GestureDetector(
         onTap: () {
           Navigator.push(
-              context, MaterialPageRoute(
-              builder: (context) => const AdminLoginScreen()));
+              context,
+              MaterialPageRoute(
+                  builder: (context) => const AdminLoginScreen()));
         },
         child: const Text(" Login as Admin",
             style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
