@@ -51,7 +51,7 @@ class UserDetailsScreen extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => ManageAttendanceScreen(userId: user.id)),
+                  MaterialPageRoute(builder: (context) => ManageAttendanceScreen()),
                 );
               },
               child: const Text('Manage Attendance'),

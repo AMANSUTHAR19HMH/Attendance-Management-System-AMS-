@@ -1,7 +1,8 @@
-import 'package:attendance_management_system_ams/controller/attendense_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+
+import '../controller/attendense_controller.dart';
 
 class AttendanceScreen extends StatelessWidget {
   final AttendanceController attendanceController =
@@ -11,10 +12,21 @@ class AttendanceScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    attendanceController.fetchUsers();
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Attendance List', style: GoogleFonts.montserrat()),
         actions: [
+          TextButton(
+            onPressed: () {
+              showSessionNameDialog(context);
+            },
+            child: const Text(
+              'Save Attendance',
+              style: TextStyle(color: Colors.blue),
+            ),
+          ),
           TextButton(
             onPressed: () {
               attendanceController.refreshAttendance();
@@ -26,86 +38,65 @@ class AttendanceScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: DropdownButton<String>(
-              value: 'Section',
-              items: <String>['Section'].map((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(value),
-                );
-              }).toList(),
-              onChanged: (_) {},
-            ),
-          ),
-          Expanded(
-            child: Obx(() {
-              return GridView.builder(
-                padding: const EdgeInsets.all(4.0),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 1,
-                  mainAxisExtent: 60,
-                  crossAxisSpacing: 4,
-                  mainAxisSpacing: 10,
-                ),
-                itemCount: attendanceController.students.length,
-                itemBuilder: (context, index) {
-                  final student = attendanceController.students[index];
-                  return GestureDetector(
-                    onTap: () {
-                      attendanceController.toggleAttendance(index);
-                    },
-                    child: Obx(() {
-                      return Container(
-                        decoration: BoxDecoration(
-                          color: student.isPresent.value
-                              ? Colors.black54
-                              : Colors.grey[300],
-                          borderRadius: BorderRadius.circular(8.0),
-                        ),
-                        child: Center(
-                          child: Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 8.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  '${student.id}. ${student.name}',
-                                  style: GoogleFonts.montserrat(
-                                    fontSize: 18.0, // Increase font size
-                                    color: student.isPresent.value
-                                        ? Colors.white
-                                        : Colors.black,
-                                  ),
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                                Transform.scale(
-                                  scale: 0.8,
-                                  child: Checkbox(
-                                    value: student.isPresent.value,
-                                    onChanged: (value) {
-                                      attendanceController
-                                          .toggleAttendance(index);
-                                    },
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      );
-                    }),
-                  );
-                },
+      body: Obx(() {
+        if (attendanceController.users.isEmpty) {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        } else {
+          return ListView.builder(
+            itemCount: attendanceController.users.length,
+            itemBuilder: (context, index) {
+              final user = attendanceController.users[index];
+              return ListTile(
+                title: Text('${user.fullName}'),
+                subtitle: Text('${user.email} - ${user.phone}'),
+                trailing: Obx(() => Checkbox(
+                      value: user.isPresent.value,
+                      onChanged: (value) {
+                        attendanceController.toggleAttendance(index);
+                      },
+                    )),
               );
-            }),
+            },
+          );
+        }
+      }),
+    );
+  }
+
+  // Method to show dialog for entering session name
+  void showSessionNameDialog(BuildContext context) {
+    String sessionName = '';
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Enter Session Name'),
+          content: TextField(
+            onChanged: (value) {
+              sessionName = value;
+            },
+            decoration: InputDecoration(hintText: 'Session Name'),
           ),
-        ],
-      ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Save'),
+              onPressed: () {
+                attendanceController.saveAttendance(sessionName);
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 }

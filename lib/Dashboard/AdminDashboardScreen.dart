@@ -1,9 +1,9 @@
 import 'package:attendance_management_system_ams/Dashboard/QrScanner.dart';
+import 'package:attendance_management_system_ams/screens/ManageAttendanceScreen.dart';
 import 'package:attendance_management_system_ams/screens/ManageTeachers.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../screens/ManageAttendanceScreen.dart';
 import '../screens/ManageEventsScreen.dart';
 import '../screens/ManageStudentsScreen.dart';
 import '../screens/ManageSubjectsScreen.dart';
@@ -37,9 +37,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
           }),
           _buildDashboardItem('Manage Attendance',
               'assets/CustomIcons/Attendance.png', Colors.green, () {
-            Get.to(ManageAttendanceScreen(
-              userId: '',
-            ));
+            Get.to(ManageAttendanceScreen());
           }),
           _buildDashboardItem('Manage Events', 'assets/CustomIcons/Event.png',
               const Color.fromARGB(212, 255, 153, 0), () {

@@ -1,30 +1,77 @@
 import 'package:get/get.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-class Student {
-  final int id;
-  final String name;
-  var isPresent = false.obs;
+class User {
+  final String id;
+  final String fullName;
+  final String email;
+  final String phone;
+  var isPresent = false.obs; // Adding attendance tracking
 
-  Student({required this.id, required this.name});
+  User({
+    required this.id,
+    required this.fullName,
+    required this.email,
+    required this.phone,
+  });
 }
 
 class AttendanceController extends GetxController {
-  var students = <Student>[
-    Student(id: 1, name: 'Sam Smith'),
-    Student(id: 2, name: 'Sam Smith'),
-    Student(id: 3, name: 'Sam Smith'),
-    Student(id: 4, name: 'Sam Smith'),
-    Student(id: 5, name: 'Sam Smith'),
-    Student(id: 6, name: 'Sam Smith'),
-  ].obs;
+  var users = <User>[].obs;
 
-  void toggleAttendance(int index) {
-    students[index].isPresent.value = !students[index].isPresent.value;
+  // Method to fetch users from Firestore
+  void fetchUsers() {
+    FirebaseFirestore.instance
+        .collection('users')
+        .get()
+        .then((QuerySnapshot querySnapshot) {
+      users.clear();
+      querySnapshot.docs.forEach((doc) {
+        users.add(User(
+          id: doc.id,
+          fullName: doc['fullName'],
+          email: doc['email'],
+          phone: doc['phone'],
+        ));
+      });
+    }).catchError((error) {
+      print("Error fetching users: $error");
+    });
   }
 
+  // Method to toggle attendance for a user
+  void toggleAttendance(int index) {
+    users[index].isPresent.value = !users[index].isPresent.value;
+  }
+
+  // Method to save attendance data to Firestore
+  void saveAttendance(String sessionName) {
+    List<Map<String, dynamic>> attendanceData = [];
+    users.forEach((user) {
+      attendanceData.add({
+        'userId': user.id,
+        'fullName': user.fullName,
+        'email': user.email,
+        'phone': user.phone,
+        'isPresent': user.isPresent.value,
+      });
+    });
+
+    FirebaseFirestore.instance
+        .collection('attendance')
+        .doc(sessionName) // Use sessionName as the document ID
+        .set({'attendanceData': attendanceData})
+        .then((_) {
+      print('Attendance saved successfully!');
+    }).catchError((error) {
+      print('Failed to save attendance: $error');
+    });
+  }
+
+  // Method to refresh attendance status
   void refreshAttendance() {
-    for (var student in students) {
-      student.isPresent.value = false;
+    for (var user in users) {
+      user.isPresent.value = false;
     }
   }
 }
