@@ -75,7 +75,7 @@ class LoginScreenState extends State<LoginScreen> {
           children: [
             SizedBox(height: size.height * 0.03),
             const Text(
-              "Hello User!",
+              "User",
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontWeight: FontWeight.bold,
@@ -85,7 +85,7 @@ class LoginScreenState extends State<LoginScreen> {
             ),
             const SizedBox(height: 15),
             const Text(
-              "Wellcome to Zidio Development \n Attendance App",
+              "Welcome to Zidio Development \n Attendance App",
               textAlign: TextAlign.center,
               style: TextStyle(
                   fontSize: 27, color: Color(0xff6F6B7A), height: 1.2),

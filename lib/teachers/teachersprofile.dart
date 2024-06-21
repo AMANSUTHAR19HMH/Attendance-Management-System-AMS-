@@ -1,117 +1,25 @@
-import 'dart:typed_data';
-
-import 'package:attendance_management_system_ams/Dashboard/DashBoard.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart'; // Import Firebase Auth
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_storage/firebase_storage.dart';
+import 'package:attendance_management_system_ams/StartupDash.dart';
+import 'package:attendance_management_system_ams/teachers/TeacherDashboard.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
-  runApp(const Profile());
-}
-
-class Profile extends StatelessWidget {
-  const Profile({Key? key});
+class teachersprofile extends StatefulWidget {
+  const teachersprofile({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Profile',
-      theme: ThemeData(primarySwatch: Colors.deepPurple),
-      home: const EditProfile(),
-    );
-  }
+  State<teachersprofile> createState() => _teachersprofileState();
 }
 
-class EditProfile extends StatefulWidget {
-  const EditProfile({Key? key});
-
-  @override
-  State<EditProfile> createState() => _EditProfileState();
-}
-
-class _EditProfileState extends State<EditProfile> {
+class _teachersprofileState extends State<teachersprofile> {
   final TextEditingController fullNameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController addressController = TextEditingController();
   final TextEditingController departmentController = TextEditingController();
-  final TextEditingController fatherNameController = TextEditingController();
-  final TextEditingController motherNameController = TextEditingController();
-
-  Uint8List? profileImage;
-
-  Future<void> pickImage(ImageSource source) async {
-    final ImagePicker imagePicker = ImagePicker();
-    XFile? pickedImage = await imagePicker.pickImage(source: source);
-    if (pickedImage != null) {
-      Uint8List bytes = await pickedImage.readAsBytes();
-      setState(() {
-        profileImage = bytes;
-      });
-    }
-  }
-
-  void saveProfile() async {
-    try {
-      // Get the current user
-      User? user = FirebaseAuth.instance.currentUser;
-      if (user != null) {
-        // Upload profile image to Firebase Storage
-        String imageUrl = await uploadProfileImage();
-
-        // Update user profile data in Firestore
-        await FirebaseFirestore.instance.collection('users').doc(user.uid).set({
-          'fullName': fullNameController.text,
-          'email': emailController.text,
-          'phone': phoneController.text,
-          'password': passwordController.text,
-          'address': addressController.text,
-          'department': departmentController.text,
-          'fatherName': fatherNameController.text,
-          'motherName': motherNameController.text,
-          'profilePictureUrl': imageUrl, // Add profile picture URL
-          // Add other fields here
-        });
-
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Profile saved successfully')),
-        );
-      }
-    } catch (error) {
-      print('Error saving profile: $error');
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Failed to save profile')),
-      );
-    }
-  }
-
-  Future<String> uploadProfileImage() async {
-    // Get a reference to the location where the profile image will be stored
-    Reference storageReference = FirebaseStorage.instance
-        .ref()
-        .child('profile_images')
-        .child('${DateTime.now().millisecondsSinceEpoch}.jpg');
-
-    // Upload the image to Firebase Storage
-    UploadTask uploadTask = storageReference.putData(profileImage!);
-
-    // Wait for the upload to complete and return the download URL
-    TaskSnapshot snapshot = await uploadTask.whenComplete(() {});
-    String downloadUrl = await snapshot.ref.getDownloadURL();
-
-    return downloadUrl;
-  }
 
   bool showPassword = false;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -124,7 +32,7 @@ class _EditProfileState extends State<EditProfile> {
             color: Colors.deepPurple,
           ),
           onPressed: () {
-            Get.to(DashboardScreen());
+            Get.to(TeacherDashboard());
           },
         ),
       ),
@@ -140,9 +48,9 @@ class _EditProfileState extends State<EditProfile> {
             ),
             const SizedBox(height: 20),
             GestureDetector(
-              onTap: () {
-                pickImage(ImageSource.gallery);
-              },
+              // onTap: () {
+              //   pickImage(ImageSource.gallery);
+              // },
               child: Center(
                 child: Stack(
                   children: [
@@ -153,18 +61,18 @@ class _EditProfileState extends State<EditProfile> {
                         shape: BoxShape.circle,
                         color: Colors.deepPurple,
                       ),
-                      child: profileImage != null && profileImage!.isNotEmpty
-                          ? ClipOval(
-                              child: Image.memory(
-                                profileImage!,
-                                fit: BoxFit.cover,
-                              ),
-                            )
-                          : const Icon(
-                              Icons.person,
-                              size: 60,
-                              color: Colors.white,
-                            ),
+                      // child: profileImage != null && profileImage!.isNotEmpty
+                      //     ? ClipOval(
+                      //         child: Image.memory(
+                      //           profileImage!,
+                      //           fit: BoxFit.cover,
+                      //         ),
+                      //       )
+                      //     : const Icon(
+                      //         Icons.person,
+                      //         size: 60,
+                      //         color: Colors.white,
+                      //       ),
                     ),
                     Positioned(
                       bottom: 0,
@@ -204,8 +112,6 @@ class _EditProfileState extends State<EditProfile> {
                 addressController, "Address", "Please Enter Address"),
             _buildTextField(
                 departmentController, "Department", "Working Department"),
-            _buildTextField(fatherNameController, "Father's Name", ""),
-            _buildTextField(motherNameController, "Mother's Name", ""),
             const SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -224,7 +130,7 @@ class _EditProfileState extends State<EditProfile> {
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    saveProfile();
+                    // saveProfile();
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.deepPurple,
@@ -257,9 +163,9 @@ class _EditProfileState extends State<EditProfile> {
           suffixIcon: isPassword
               ? IconButton(
                   onPressed: () {
-                    setState(() {
-                      showPassword = !showPassword;
-                    });
+                    // setState(() {
+                    //   showPassword = !showPassword;
+                    // });
                   },
                   icon: const Icon(
                     Icons.remove_red_eye,

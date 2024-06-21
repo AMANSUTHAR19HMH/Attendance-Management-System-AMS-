@@ -24,7 +24,7 @@ class TeacherLoginScreenState extends State<TeacherLoginScreen> {
 
       // Check if the logged-in user is a teacher
       DocumentReference teacherDoc = FirebaseFirestore.instance
-          .collection('teachers') // Ensure this matches your Firestore collection name
+          .collection("teachers")
           .doc(userCredential.user!.uid);
 
       DocumentSnapshot docSnapshot = await teacherDoc.get();
@@ -89,10 +89,10 @@ class TeacherLoginScreenState extends State<TeacherLoginScreen> {
               ),
               SizedBox(height: size.height * 0.04),
               // Email and Password TextFields
-              _reusableTextField(
-                  "Enter Email", Icons.email_outlined, false, emailTextController),
-              _reusableTextField(
-                  "Enter Password", Icons.lock_outline, true, passwordTextController),
+              _reusableTextField("Enter Email", Icons.email_outlined, false,
+                  emailTextController),
+              _reusableTextField("Enter Password", Icons.lock_outline, true,
+                  passwordTextController),
               SizedBox(height: size.height * 0.04),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 25),
@@ -132,8 +132,8 @@ class TeacherLoginScreenState extends State<TeacherLoginScreen> {
   }
 
   // Reusable TextField Widget
-  Padding _reusableTextField(
-      String text, IconData icon, bool isPasswordType, TextEditingController controller) {
+  Padding _reusableTextField(String text, IconData icon, bool isPasswordType,
+      TextEditingController controller) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 10),
       child: TextField(
@@ -155,8 +155,9 @@ class TeacherLoginScreenState extends State<TeacherLoginScreen> {
             borderSide: const BorderSide(width: 0, style: BorderStyle.none),
           ),
         ),
-        keyboardType:
-        isPasswordType ? TextInputType.visiblePassword : TextInputType.emailAddress,
+        keyboardType: isPasswordType
+            ? TextInputType.visiblePassword
+            : TextInputType.emailAddress,
       ),
     );
   }

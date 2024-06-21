@@ -1,3 +1,4 @@
+import 'package:attendance_management_system_ams/StartupDash.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +17,7 @@ class ManageStudentsScreen extends StatefulWidget {
 
 class _ManageStudentsScreenState extends State<ManageStudentsScreen> {
   final CollectionReference usersCollection =
-  FirebaseFirestore.instance.collection('users');
+      FirebaseFirestore.instance.collection('users');
   final FirebaseAuth _auth = FirebaseAuth.instance;
   User? currentUser;
   bool isAdmin = false;
@@ -32,7 +33,7 @@ class _ManageStudentsScreenState extends State<ManageStudentsScreen> {
     if (currentUser != null) {
       try {
         DocumentSnapshot userSnapshot =
-        await usersCollection.doc(currentUser!.uid).get();
+            await usersCollection.doc(currentUser!.uid).get();
         if (userSnapshot.exists) {
           setState(() {
             isAdmin = true; // Assuming admin based on existence of user
@@ -59,7 +60,7 @@ class _ManageStudentsScreenState extends State<ManageStudentsScreen> {
               await _auth.signOut();
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(builder: (context) => const LoginScreen()),
+                MaterialPageRoute(builder: (context) => const LoginDash()),
               );
             },
           ),
@@ -82,42 +83,42 @@ class _ManageStudentsScreenState extends State<ManageStudentsScreen> {
                 title: Text(user['email']),
                 trailing: isAdmin
                     ? Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    IconButton(
-                      icon: const Icon(Icons.edit),
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => EditUserScreen(
-                              userId: user.id,
-                              user: user,
-                            ),
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          IconButton(
+                            icon: const Icon(Icons.edit),
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => EditUserScreen(
+                                    userId: user.id,
+                                    user: user,
+                                  ),
+                                ),
+                              );
+                            },
                           ),
-                        );
-                      },
-                    ),
-                    IconButton(
-                      icon: const Icon(Icons.delete),
-                      onPressed: () {
-                        usersCollection.doc(user.id).delete();
-                      },
-                    ),
-                    IconButton(
-                      icon: const Icon(Icons.view_list),
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                UserDetailsScreen(user: user),
+                          IconButton(
+                            icon: const Icon(Icons.delete),
+                            onPressed: () {
+                              usersCollection.doc(user.id).delete();
+                            },
                           ),
-                        );
-                      },
-                    ),
-                  ],
-                )
+                          IconButton(
+                            icon: const Icon(Icons.view_list),
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      UserDetailsScreen(user: user),
+                                ),
+                              );
+                            },
+                          ),
+                        ],
+                      )
                     : null,
               );
             },
@@ -126,14 +127,14 @@ class _ManageStudentsScreenState extends State<ManageStudentsScreen> {
       ),
       floatingActionButton: isAdmin
           ? FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => AddUserScreen()),
-          );
-        },
-        child: const Icon(Icons.add),
-      )
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => AddUserScreen()),
+                );
+              },
+              child: const Icon(Icons.add),
+            )
           : null,
     );
   }

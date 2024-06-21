@@ -73,7 +73,7 @@ class AdminLoginScreenState extends State<AdminLoginScreen> {
           children: [
             SizedBox(height: size.height * 0.03),
             Text(
-              "Hello Admin!",
+              "Admin",
               textAlign: TextAlign.center,
               style: TextStyle(
                 fontWeight: FontWeight.bold,
