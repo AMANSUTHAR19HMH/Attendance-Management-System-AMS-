@@ -1,0 +1,304 @@
+[33mcommit 5b373b7267fe407296dcff34b528f458bae80d35[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmaster[m[33m, [m[1;31morigin/master[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: janhviwadhwa <janhviwadhwa972@gmail.com>
+Date:   Fri Jun 21 18:40:11 2024 +0530
+
+    teacher dashboard created, mark attandance completed
+
+[33mcommit 42b9a0f3e3aca5109d7480927ed3492d82c6d5ee[m
+Author: shivamsaklani <shivasaklani1@gmail.com>
+Date:   Mon Jun 17 23:08:16 2024 +0530
+
+    UI Login Page Teacher Section
+
+[33mcommit 55ca9f4251bad03a19cb8b102a7ff5888caf51cb[m
+Author: Girish Jagadish Sonune <116879201+GirishSonune@users.noreply.github.com>
+Date:   Sat Jun 15 08:59:27 2024 +0530
+
+    Update pubspec.yaml
+
+[33mcommit c5f80b8197acba76891974b3c0e72f8c9ef3927d[m
+Author: Girish Jagadish Sonune <116879201+GirishSonune@users.noreply.github.com>
+Date:   Sat Jun 15 08:57:44 2024 +0530
+
+    Update AdminLoginScreen.dart
+    
+    Changes in UI.
+    Update new Simple UI.
+
+[33mcommit 32898ad64aa99016ed1d128eeb7a7f9b15c948fa[m
+Author: Girish Jagadish Sonune <116879201+GirishSonune@users.noreply.github.com>
+Date:   Sat Jun 15 08:55:32 2024 +0530
+
+    Update LoginScreen.dart
+    
+    Change in UI.
+
+[33mcommit 252b9f5736c17fc2db6044209a394242581d3e93[m
+Author: Girish Jagadish Sonune <116879201+GirishSonune@users.noreply.github.com>
+Date:   Sat Jun 15 08:53:12 2024 +0530
+
+    Update SignupScreen.dart
+    
+    Changes in UI.
+    Update new UI.
+
+[33mcommit f45df82b586b9e0f7227e9052b8f7348cd27a10d[m
+Author: shivamsaklani <shivasaklani1@gmail.com>
+Date:   Thu Jun 13 12:53:18 2024 +0530
+
+    Modified StartupDash file
+    
+    UI Modified
+
+[33mcommit 76ac483ddec0dfea90e53a6cebdb3950f895d990[m
+Author: shivamsaklani <shivasaklani1@gmail.com>
+Date:   Thu Jun 13 09:15:55 2024 +0530
+
+    Dash For Privileged Login
+    
+    Now user can choose among Admin, Teacher, Student in flutter application
+
+[33mcommit 3d5054633ba11db63ccf201e9ea4b34ee79e6257[m
+Author: shivamsaklani <shivasaklani1@gmail.com>
+Date:   Tue Jun 11 23:08:29 2024 +0530
+
+    Navigation Bugs Resolved
+    
+    Bugs Resolved for navigating to another screens in application
+
+[33mcommit be2faec5ac37cc409ed158286c582cdd3d4fda1d[m
+Author: shivamsaklani <shivasaklani1@gmail.com>
+Date:   Tue Jun 11 22:51:39 2024 +0530
+
+    minor bugs resolved
+    
+    reduced problems in dart files from approx 200 to 76
+
+[33mcommit 8658aad68c9056ae7ec071f3feb239de034e9f34[m
+Author: AMANSUTHAR19HMH <sutharbarduaaman@gmail.com>
+Date:   Mon Jun 10 18:22:28 2024 +0530
+
+    Admin can add delete student(name,role,section,email) mark their attandance,allot the subjects to students,
+
+[33mcommit 8fb018086221cb82ad4197dd70dab1dec084adba[m
+Author: AMANSUTHAR19HMH <sutharbarduaaman@gmail.com>
+Date:   Sun Jun 9 15:39:10 2024 +0530
+
+    admin pannel corrected , event functionality build and admin  cannot signup
+
+[33mcommit 37b87faa24a05bb4851598514ee3456c6a764f2c[m
+Author: AMANSUTHAR19HMH <sutharbarduaaman@gmail.com>
+Date:   Sat Jun 8 13:59:28 2024 +0530
+
+    admin  pannel created for student enrolment , events, subjects and  view attandance
+
+[33mcommit 9db338f57b8f7eed8ec71a03353d02a290562c85[m
+Author: AMANSUTHAR19HMH <sutharbarduaaman@gmail.com>
+Date:   Sat Jun 8 01:24:03 2024 +0530
+
+    Qr Scanner and Qr genrated  profile updation and showing form database
+
+[33mcommit c2df6e20106137eb8ac1862ee1c0f6e0e63154a4[m
+Author: AMANSUTHAR19HMH <sutharbarduaaman@gmail.com>
+Date:   Fri Jun 7 02:41:17 2024 +0530
+
+    nav bar current user's email and name dispalyed and profile data stored in  database
+
+[33mcommit f76c88a0491913595d2d6bec1bf6b7fa57dba7ce[m
+Merge: 5beb4fd abb71d0
+Author: Shivam saklani <shivasaklani1@gmail.com>
+Date:   Thu Jun 6 11:07:05 2024 +0530
+
+    Merge pull request #8 from AMANSUTHAR19HMH/shivamsaklani
+    
+    Major Issues due to Github Merge Conflict Resolved Manually
+
+[33mcommit abb71d0e0cb4ba08a88dbd364bfcb595e6054bf0[m
+Author: shivamsaklani <shivasaklani1@gmail.com>
+Date:   Thu Jun 6 11:04:50 2024 +0530
+
+    Major Issues due to Github Merge Conflict Resolved Manually
+    
+    Merge Conflict resolved manually due to github
+
+[33mcommit 5beb4fdc1bed353eca17aec5166a52f70eb379e5[m
+Merge: e422016 d64cb89
+Author: Shivam saklani <shivasaklani1@gmail.com>
+Date:   Wed Jun 5 17:41:11 2024 +0530
+
+    Merge pull request #7 from AMANSUTHAR19HMH/revert-4-Shivam-Saklani
+    
+    Revert "NavBar and Bottom menu Bar implemented"
+
+[33mcommit d64cb89dcf099031403438f1614e96fb88d22438[m
+Author: Shivam saklani <shivasaklani1@gmail.com>
+Date:   Wed Jun 5 17:21:40 2024 +0530
+
+    Revert "NavBar and Bottom menu Bar implemented"
+
+[33mcommit e42201662e18c9b83375c77091374b4ff70fbf95[m
+Merge: aafad18 439a1aa
+Author: Shivam saklani <shivasaklani1@gmail.com>
+Date:   Wed Jun 5 17:20:13 2024 +0530
+
+    Merge pull request #6 from AMANSUTHAR19HMH/revert-5-master
+    
+    Revert "Profile page "
+
+[33mcommit 439a1aa8795a5874aad83d0e8566d1d004fffeb3[m
+Author: Shivam saklani <shivasaklani1@gmail.com>
+Date:   Wed Jun 5 17:19:58 2024 +0530
+
+    Revert "Profile page "
+
+[33mcommit aafad183c3557c5bb6cf531bfdc72e2c05cab477[m
+Merge: 0557805 9d52456
+Author: Shivam saklani <shivasaklani1@gmail.com>
+Date:   Wed Jun 5 12:45:24 2024 +0530
+
+    Merge pull request #5 from shivamsaklani/master
+    
+    Profile page
+
+[33mcommit 9d52456973d2a26ae66877ef66bfab9875c0faa1[m
+Merge: 3d88adc 0557805
+Author: Shivam saklani <shivasaklani1@gmail.com>
+Date:   Wed Jun 5 12:38:04 2024 +0530
+
+    Merge branch 'master' into master
+
+[33mcommit 3d88adc7fdc89d0c85c917e3b67bb29db9433787[m
+Author: shivamsaklani <shivasaklani1@gmail.com>
+Date:   Wed Jun 5 12:32:37 2024 +0530
+
+    Profile Image Backend added using Flutter
+    
+    edited profile image screen and added backend with firebase
+
+[33mcommit c39104fc3db0b30dfdaa00988ea018947a10ade7[m
+Author: shivamsaklani <shivasaklani1@gmail.com>
+Date:   Wed Jun 5 12:27:52 2024 +0530
+
+    Minor Changes
+    
+    Minor Changes
+
+[33mcommit 05578058cda16caf2357f308014abace8177da9b[m
+Merge: 18c8788 a5762b9
+Author: Shivam saklani <shivasaklani1@gmail.com>
+Date:   Wed Jun 5 12:20:17 2024 +0530
+
+    Merge pull request #4 from AMANSUTHAR19HMH/Shivam-Saklani
+    
+    NavBar and Bottom menu Bar implemented
+
+[33mcommit a5762b9af5595a5695ecb143a874697d28a26acc[m[33m ([m[1;31morigin/Shivam-Saklani[m[33m)[m
+Merge: cc394af 18c8788
+Author: Shivam saklani <shivasaklani1@gmail.com>
+Date:   Wed Jun 5 12:20:04 2024 +0530
+
+    Merge branch 'master' into Shivam-Saklani
+
+[33mcommit cc394af5de3e84840bdf5a4f196ffb5645fef649[m
+Author: shivamsaklani <shivasaklani1@gmail.com>
+Date:   Wed Jun 5 01:10:35 2024 +0530
+
+    NavBar and Bottom menu Bar implemented
+    
+    Basic changes in Dashboard
+
+[33mcommit 18c8788556ce13b6b285d5306809adf8a26c5e7c[m
+Author: AMANSUTHAR19HMH <sutharbarduaaman@gmail.com>
+Date:   Tue Jun 4 12:53:23 2024 +0530
+
+    app icon done
+
+[33mcommit a2ea09d93f309777d50314a5d85bccefab0e78e4[m
+Author: AMANSUTHAR19HMH <sutharbarduaaman@gmail.com>
+Date:   Tue Jun 4 02:41:11 2024 +0530
+
+    login sign up done and asigned two task  logout ,profile and  attendance  in dashboard
+
+[33mcommit ddb84f796bfa164f04d47455dce1c1d90700c433[m
+Merge: 566f4f9 ecfca58
+Author: AMANSUTHAR19HMH <sutharbarduaaman@gmail.com>
+Date:   Tue Jun 4 02:26:43 2024 +0530
+
+    Merge remote-tracking branch 'origin/Shivam-Saklani' into second
+    
+    # Conflicts:
+    #       lib/Dashboard/DashBoard.dart
+    #       lib/authntication/LoginScreen.dart
+    #       macos/Flutter/GeneratedPluginRegistrant.swift
+    #       pubspec.lock
+    #       pubspec.yaml
+
+[33mcommit 566f4f953fbf86dbbe422e80b9434752700f87b9[m[33m ([m[1;31morigin/second[m[33m)[m
+Author: AMANSUTHAR19HMH <sutharbarduaaman@gmail.com>
+Date:   Tue Jun 4 02:21:07 2024 +0530
+
+    login sign up done and asigned two task  logout and attendance  in dashboard
+
+[33mcommit ecfca582cdeffcdc67521bc025ade47060b9ffbe[m
+Author: shivamsaklani <shivasaklani1@gmail.com>
+Date:   Tue Jun 4 02:09:11 2024 +0530
+
+    Made Profile page
+    
+    Profile page done on 4/6/24
+
+[33mcommit 68fce5e8306653b6b2ad4dfc78bb5dfafc85ca08[m
+Author: AMANSUTHAR19HMH <sutharbarduaaman@gmail.com>
+Date:   Tue Jun 4 01:16:10 2024 +0530
+
+    minor issue fixed
+
+[33mcommit 81a77c387c87cbb34271ca5c89d14338d1b9759e[m
+Merge: 146aca5 673130f
+Author: Shivam saklani <shivasaklani1@gmail.com>
+Date:   Sun Jun 2 01:28:46 2024 +0530
+
+    Merge pull request #2 from AMANSUTHAR19HMH/Shivam-Saklani
+    
+    DashBoard Implementation
+
+[33mcommit 673130f4e3481797a5f3ca6c6b17b9c6211b2ba3[m
+Author: shivamsaklani <shivasaklani1@gmail.com>
+Date:   Sun Jun 2 01:24:49 2024 +0530
+
+    DashBoard Implementation
+    
+    Basic UI Components for Dashboard Screen
+
+[33mcommit 146aca5262fa2b0e1b86848813bcdbbd7c1bc127[m
+Merge: edd3b32 162e455
+Author: AMANSUTHAR19HMH <145781269+AMANSUTHAR19HMH@users.noreply.github.com>
+Date:   Thu May 30 22:33:38 2024 +0530
+
+    Merge pull request #1 from AMANSUTHAR19HMH/second
+    
+    Second
+
+[33mcommit 162e45515e2b689b8b8a444a614906d84b94a7cc[m
+Author: AMANSUTHAR19HMH <sutharbarduaaman@gmail.com>
+Date:   Thu May 30 21:52:29 2024 +0530
+
+    Login SignUp ui done
+
+[33mcommit 4838b0aa41b78770398bfbd95711fb51765b9503[m
+Author: AMANSUTHAR19HMH <sutharbarduaaman@gmail.com>
+Date:   Thu May 30 21:50:37 2024 +0530
+
+    signup and login ui done
+
+[33mcommit edd3b32e800b306fc1247d5a5134c3f6bb848d57[m
+Author: Vasu9056 <vasu81121@gmail.com>
+Date:   Tue May 28 12:25:14 2024 +0600
+
+    attendense_screen, attendense_controller
+
+[33mcommit a43d4785b1f3fdd176cd58e6127fcac47028e006[m
+Author: AMANSUTHAR19HMH <sutharbarduaaman@gmail.com>
+Date:   Mon May 27 15:24:57 2024 +0530
+
+    Splash Screen Done
