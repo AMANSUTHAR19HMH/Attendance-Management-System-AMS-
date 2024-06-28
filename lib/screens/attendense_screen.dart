@@ -1,45 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-
-import '../controller/attendense_controller.dart';
-
+import '../Dashboard/AttendancePieChart.dart';
+import '../controller/attendense_controller.dart'; // Adjust the path as per your project structure
 class AttendanceScreen extends StatelessWidget {
-  final AttendanceController attendanceController =
-      Get.put(AttendanceController());
+  final AttendanceController attendanceController = Get.put(AttendanceController());
 
-  AttendanceScreen({super.key});
+  AttendanceScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    attendanceController.fetchUsers();
+    // Fetch users and attendance initially
+    attendanceController.fetchUsersAndAttendance();
 
     return Scaffold(
       appBar: AppBar(
         title: Text('Attendance List', style: GoogleFonts.montserrat()),
-        actions: [
-          TextButton(
-            onPressed: () {
-              showSessionNameDialog(context);
-            },
-            child: const Text(
-              'Save Attendance',
-              style: TextStyle(color: Colors.blue),
-            ),
-          ),
-          TextButton(
-            onPressed: () {
-              attendanceController.refreshAttendance();
-            },
-            child: const Text(
-              'Refresh',
-              style: TextStyle(color: Colors.blue),
-            ),
-          ),
-        ],
       ),
       body: Obx(() {
-        if (attendanceController.users.isEmpty) {
+        if (attendanceController.users.isEmpty || attendanceController.attendance.isEmpty) {
           return Center(
             child: CircularProgressIndicator(),
           );
@@ -48,55 +27,28 @@ class AttendanceScreen extends StatelessWidget {
             itemCount: attendanceController.users.length,
             itemBuilder: (context, index) {
               final user = attendanceController.users[index];
-              return ListTile(
-                title: Text('${user.fullName}'),
-                subtitle: Text('${user.email} - ${user.phone}'),
-                trailing: Obx(() => Checkbox(
-                      value: user.isPresent.value,
-                      onChanged: (value) {
-                        attendanceController.toggleAttendance(index);
-                      },
-                    )),
+              final userAttendance = attendanceController.attendance
+                  .where((attendance) => attendance.userId == user.id)
+                  .toList();
+
+              return ExpansionTile(
+                title: Text(user.fullName),
+                children: userAttendance.map((attendanceData) {
+                  return ListTile(
+                    title: Text(attendanceData.date),
+                    subtitle: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: attendanceData.data.entries.map((entry) {
+                        return Text('${entry.key}: ${entry.value}');
+                      }).toList(),
+                    ),
+                  );
+                }).toList(),
               );
             },
           );
         }
       }),
-    );
-  }
-
-  // Method to show dialog for entering session name
-  void showSessionNameDialog(BuildContext context) {
-    String sessionName = '';
-
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Enter Session Name'),
-          content: TextField(
-            onChanged: (value) {
-              sessionName = value;
-            },
-            decoration: InputDecoration(hintText: 'Session Name'),
-          ),
-          actions: <Widget>[
-            TextButton(
-              child: Text('Save'),
-              onPressed: () {
-                attendanceController.saveAttendance(sessionName);
-                Navigator.of(context).pop();
-              },
-            ),
-            TextButton(
-              child: Text('Cancel'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
     );
   }
 }

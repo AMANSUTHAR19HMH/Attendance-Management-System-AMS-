@@ -8,11 +8,17 @@ class ManageAttendanceScreen extends StatefulWidget {
 }
 
 class _ManageAttendanceScreenState extends State<ManageAttendanceScreen> {
-  final Map<String, Map<String, Map<String, int>>> attendanceMap = {}; // userId -> date -> subject -> attendance status
+  final Map<String, Map<String, Map<String, int>>> attendanceMap = {
+  }; // userId -> date -> subject -> attendance status
   final TextEditingController dateController = TextEditingController();
   DateTime? selectedDate;
   String? selectedSubject;
-  final List<String> subjects = ['Math', 'Science', 'History', 'English']; // Example subjects
+  final List<String> subjects = [
+    'Math',
+    'Science',
+    'History',
+    'English'
+  ]; // Example subjects
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +47,8 @@ class _ManageAttendanceScreenState extends State<ManageAttendanceScreen> {
                       if (pickedDate != null) {
                         setState(() {
                           selectedDate = pickedDate;
-                          dateController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
+                          dateController.text =
+                              DateFormat('yyyy-MM-dd').format(pickedDate);
                         });
                       }
                     },
@@ -68,7 +75,8 @@ class _ManageAttendanceScreenState extends State<ManageAttendanceScreen> {
           ),
           Expanded(
             child: StreamBuilder<QuerySnapshot>(
-              stream: FirebaseFirestore.instance.collection('users').snapshots(),
+              stream: FirebaseFirestore.instance.collection('users')
+                  .snapshots(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Center(child: CircularProgressIndicator());
@@ -85,20 +93,26 @@ class _ManageAttendanceScreenState extends State<ManageAttendanceScreen> {
                 return ListView.builder(
                   itemCount: snapshot.data!.docs.length,
                   itemBuilder: (context, index) {
-                    var userData = snapshot.data!.docs[index].data() as Map<String, dynamic>;
+                    var userData = snapshot.data!.docs[index].data() as Map<
+                        String,
+                        dynamic>;
                     var userId = snapshot.data!.docs[index].id;
                     var userName = userData['fullName'];
                     var userEmail = userData['email'];
                     var userPhone = userData['phone'];
 
                     var attendanceData = attendanceMap[userId] ?? {};
-                    var subjectData = attendanceData[selectedDateAsString] ?? {};
+                    var subjectData = attendanceData[selectedDateAsString] ??
+                        {};
 
                     return ListTile(
                       title: Text(userName),
                       subtitle: Text('$userEmail - $userPhone'),
                       trailing: DropdownButton<String>(
-                        value: subjectData[selectedSubject] != null && subjectData[selectedSubject] == 1 ? 'Present' : 'Absent',
+                        value: subjectData[selectedSubject] != null &&
+                            subjectData[selectedSubject] == 1
+                            ? 'Present'
+                            : 'Absent',
                         items: <String>['Present', 'Absent']
                             .map((String value) {
                           return DropdownMenuItem<String>(
@@ -109,8 +123,10 @@ class _ManageAttendanceScreenState extends State<ManageAttendanceScreen> {
                         onChanged: (String? newValue) {
                           setState(() {
                             if (newValue != null) {
-                              subjectData[selectedSubject!] = newValue == 'Present' ? 1 : 0;
-                              attendanceData[selectedDateAsString] = subjectData;
+                              subjectData[selectedSubject!] =
+                              newValue == 'Present' ? 1 : 0;
+                              attendanceData[selectedDateAsString] =
+                                  subjectData;
                               attendanceMap[userId] = attendanceData;
                             }
                           });
@@ -131,7 +147,10 @@ class _ManageAttendanceScreenState extends State<ManageAttendanceScreen> {
     );
   }
 
-  String get selectedDateAsString => selectedDate != null ? DateFormat('yyyy-MM-dd').format(selectedDate!) : '';
+  String get selectedDateAsString =>
+      selectedDate != null
+          ? DateFormat('yyyy-MM-dd').format(selectedDate!)
+          : '';
 
   void saveAttendance() async {
     final date = dateController.text.trim();
@@ -166,14 +185,18 @@ class _ManageAttendanceScreenState extends State<ManageAttendanceScreen> {
 
       if (alreadyMarked) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Attendance already marked for this subject on $date')),
+          SnackBar(content: Text(
+              'Attendance already marked for this subject on $date')),
         );
         return;
       }
 
+      // Iterate over attendanceMap to update Firestore documents
       attendanceMap.forEach((userId, attendanceData) {
-        DocumentReference userRef = FirebaseFirestore.instance.collection('users').doc(userId);
-        int status = attendanceData[date]![selectedSubject!] ?? 1; // Assuming default is 'Present' = 1
+        DocumentReference userRef = FirebaseFirestore.instance.collection(
+            'users').doc(userId);
+        int status = attendanceData[date]![selectedSubject!] ??
+            1; // Assuming default is 'Present' = 1
         batch.update(userRef, {'attendance.$date.${selectedSubject!}': status});
       });
 
