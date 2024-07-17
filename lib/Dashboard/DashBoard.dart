@@ -4,13 +4,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
-import 'package:google_nav_bar/google_nav_bar.dart';
 
 import '../Dashboard/profile.dart';
-import '../authntication/LoginScreen.dart';
 import '../controller/UserProfileQRCode.dart';
 import '../screens/EventsScreen.dart';
-import '../screens/ProfileScreen.dart';
+
 import '../screens/attendense_screen.dart';
 import 'navbar.dart';
 
@@ -25,18 +23,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: const NavbarTop(),
-      appBar: AppBar(
-        foregroundColor: Colors.white,
-        backgroundColor: Colors.purple,
-        title: const Text(
-          "Dashboard",
-          style: TextStyle(
-            color: Colors.white,
-          ),
-        ),
-        elevation: 1,
-      ),
       body: ListView(
         padding: EdgeInsets.zero,
         children: [
@@ -45,8 +31,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
             color: Theme.of(context).primaryColor,
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 30),
-              decoration: const BoxDecoration(
-                color: Colors.white,
+              decoration: BoxDecoration(
+                color: Theme.of(context).scaffoldBackgroundColor,
               ),
               child: GridView.count(
                 crossAxisCount: 2,
@@ -80,45 +66,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
           ),
         ],
       ),
-      // Bottom Navigation  //
-      bottomNavigationBar: Container(
-        color: Colors.purple,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
-          child: GNav(
-            backgroundColor: Colors.purple,
-            color: Colors.white,
-            activeColor: Colors.grey,
-            padding: const EdgeInsets.all(8),
-            gap: 8,
-            tabs: [
-              GButton(
-                icon: Icons.dashboard,
-              ),
-              GButton(
-                icon: Icons.calendar_month_rounded,
-                onPressed: () {
-                  Navigator.pushNamed(context, '/AttendanceScreen');
-                },
-              ),
-              GButton(
-                icon: Icons.notifications,
-              ),
-              GButton(
-                icon: Icons.person,
-                onPressed: () {
-                  // Navigate to ProfileScreen
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const ProfileScreen()),
-                  );
-                },
-              ),
-            ],
-          ),
-        ),
-      ),
     );
   }
 
@@ -147,15 +94,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
         } else if (title == 'Events') {
           Get.to(EventsScreen());
         } else if (title == 'Profile') {
-          Get.to(Profile());
-          // }
-          // else if (title == 'Admin') {
-          //   Navigator.push(
-          //     context,
-          //     MaterialPageRoute(builder: (context) => AdminLoginScreen()),
-          //   );
+          Get.to(() => Profile());
         } else if (title == 'Logout') {
-          Get.to(LoginDash());
+          _showLogoutConfirmation(context);
         } else {
           // Handle navigation for other items
         }
@@ -197,7 +138,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   void _logoutAndNavigateToLogin(BuildContext context) {
     Navigator.of(context).pushReplacement(
-      MaterialPageRoute(builder: (context) => const LoginScreen()),
+      MaterialPageRoute(builder: (context) => const LoginDash()),
     );
   }
 
@@ -217,6 +158,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
             ),
             TextButton(
               onPressed: () {
+                FirebaseAuth.instance.signOut;
                 _logoutAndNavigateToLogin(context);
               },
               child: const Text("Yes"),

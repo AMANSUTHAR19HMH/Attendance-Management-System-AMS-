@@ -1,3 +1,6 @@
+import 'package:attendance_management_system_ams/Dashboard/profile.dart';
+import 'package:attendance_management_system_ams/StartupDash.dart';
+import 'package:attendance_management_system_ams/authntication/LoginScreen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -37,6 +40,7 @@ class NavbarTop extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Drawer(
+      backgroundColor: Color.fromARGB(255, 215, 85, 219),
       child: ListView(
         padding: EdgeInsets.zero,
         children: [
@@ -71,14 +75,16 @@ class NavbarTop extends StatelessWidget {
             leading: const Icon(Icons.dashboard),
             title: const Text("Dashboard"),
             onTap: () {
-              Navigator.pushNamed(context, '/Dashboard');
+              Navigator.popAndPushNamed(context, '/Dashboard');
             },
           ),
           ListTile(
             leading: const Icon(Icons.person),
             title: const Text("Profile"),
             onTap: () {
-              Navigator.pushNamed(context, '/profile');
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(builder: (context) => const Profile()),
+              );
             },
           ),
           ListTile(
@@ -98,12 +104,44 @@ class NavbarTop extends StatelessWidget {
             leading: const Icon(Icons.logout_sharp),
             title: const Text("Logout"),
             onTap: () {
-              FirebaseAuth.instance.signOut();
-              Navigator.pushReplacementNamed(context, '/');
+              _showLogoutConfirmation(context);
             },
           ),
         ],
       ),
+    );
+  }
+
+  void _logoutAndNavigateToLogin(BuildContext context) {
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(builder: (context) => const LoginDash()),
+    );
+  }
+
+  void _showLogoutConfirmation(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text("Logout"),
+          content: const Text("Are you sure you want to logout?"),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text("No"),
+            ),
+            TextButton(
+              onPressed: () {
+                FirebaseAuth.instance.signOut;
+                _logoutAndNavigateToLogin(context);
+              },
+              child: const Text("Yes"),
+            ),
+          ],
+        );
+      },
     );
   }
 }

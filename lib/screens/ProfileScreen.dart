@@ -24,7 +24,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     String? userId = FirebaseAuth.instance.currentUser?.uid;
     if (userId != null) {
       Map<String, dynamic> profileData =
-      await _profileService.getUserProfile(userId);
+          await _profileService.getUserProfile(userId);
       setState(() {
         _profileData = profileData;
       });
@@ -37,9 +37,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Profile'),
-      ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20.0),
         child: Column(
