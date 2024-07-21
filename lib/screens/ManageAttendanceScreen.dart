@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart'; // Import for date formatting
 
 class ManageAttendanceScreen extends StatefulWidget {
+  const ManageAttendanceScreen({super.key});
+
   @override
   _ManageAttendanceScreenState createState() => _ManageAttendanceScreenState();
 }
@@ -19,7 +21,7 @@ class _ManageAttendanceScreenState extends State<ManageAttendanceScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Manage Attendance'),
+        title: const Text('Manage Attendance'),
       ),
       body: Column(
         children: [
@@ -31,7 +33,7 @@ class _ManageAttendanceScreenState extends State<ManageAttendanceScreen> {
                   child: TextField(
                     controller: dateController,
                     readOnly: true,
-                    decoration: InputDecoration(labelText: 'Date (YYYY-MM-DD)'),
+                    decoration: const InputDecoration(labelText: 'Date (YYYY-MM-DD)'),
                     onTap: () async {
                       DateTime? pickedDate = await showDatePicker(
                         context: context,
@@ -48,9 +50,9 @@ class _ManageAttendanceScreenState extends State<ManageAttendanceScreen> {
                     },
                   ),
                 ),
-                SizedBox(width: 16),
+                const SizedBox(width: 16),
                 DropdownButton<String>(
-                  hint: Text('Select Subject'),
+                  hint: const Text('Select Subject'),
                   value: selectedSubject,
                   onChanged: (String? newValue) {
                     setState(() {
@@ -72,13 +74,13 @@ class _ManageAttendanceScreenState extends State<ManageAttendanceScreen> {
               stream: FirebaseFirestore.instance.collection('users').snapshots(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(child: CircularProgressIndicator());
+                  return const Center(child: CircularProgressIndicator());
                 }
                 if (snapshot.hasError) {
                   return Center(child: Text('Error: ${snapshot.error}'));
                 }
                 if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-                  return Center(child: Text('No users found.'));
+                  return const Center(child: Text('No users found.'));
                 }
 
                 return ListView.builder(
@@ -117,7 +119,7 @@ class _ManageAttendanceScreenState extends State<ManageAttendanceScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: saveAttendance,
-        child: Icon(Icons.save),
+        child: const Icon(Icons.save),
       ),
     );
   }
@@ -142,7 +144,7 @@ class _ManageAttendanceScreenState extends State<ManageAttendanceScreen> {
 
     if (date.isEmpty || subject == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Please select a date and subject')),
+        const SnackBar(content: Text('Please select a date and subject')),
       );
       return;
     }
@@ -157,12 +159,12 @@ class _ManageAttendanceScreenState extends State<ManageAttendanceScreen> {
 
       await attendanceRef.set(userAttendance);
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Attendance updated successfully')),
+        const SnackBar(content: Text('Attendance updated successfully')),
       );
     } catch (e) {
       print('Error updating attendance: $e');
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Failed to update attendance')),
+        const SnackBar(content: Text('Failed to update attendance')),
       );
     }
   }
@@ -172,14 +174,14 @@ class _ManageAttendanceScreenState extends State<ManageAttendanceScreen> {
 
     if (date.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Please enter the date')),
+        const SnackBar(content: Text('Please enter the date')),
       );
       return;
     }
 
     if (selectedSubject == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Please select a subject')),
+        const SnackBar(content: Text('Please select a subject')),
       );
       return;
     }

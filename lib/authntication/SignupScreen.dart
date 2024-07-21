@@ -60,7 +60,7 @@ class SignupScreenState extends State<SignupScreen> {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       body: Container(
-        margin: EdgeInsets.only(top: 40),
+        margin: const EdgeInsets.only(top: 40),
         decoration: const BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
@@ -110,7 +110,7 @@ class SignupScreenState extends State<SignupScreen> {
                         onTap: _signup,
                         child: Container(
                           padding: const EdgeInsets.symmetric(vertical: 20),
-                          margin: EdgeInsets.only(top: 40),
+                          margin: const EdgeInsets.only(top: 40),
                           decoration: BoxDecoration(
                             color: const Color(0xffFD6B68),
                             borderRadius: BorderRadius.circular(15),

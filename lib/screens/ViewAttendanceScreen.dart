@@ -2,16 +2,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class ViewAttendanceScreen extends StatelessWidget {
-  final CollectionReference attendanceCollection = FirebaseFirestore.instance.collection('attendance');
+  final CollectionReference attendanceCollection =
+      FirebaseFirestore.instance.collection('attendance');
 
   ViewAttendanceScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('View Attendance'),
-      ),
       body: StreamBuilder<QuerySnapshot>(
         stream: attendanceCollection.snapshots(),
         builder: (context, snapshot) {
@@ -32,10 +30,12 @@ class ViewAttendanceScreen extends StatelessWidget {
               final attendance = record.data() as Map<String, dynamic>;
 
               // Display all fields in the document
-              final fields = attendance.entries.map((entry) => '${entry.key}: ${entry.value}').join('\n');
+              final fields = attendance.entries
+                  .map((entry) => '${entry.key}: ${entry.value}')
+                  .join('\n');
 
               return ListTile(
-                title: Text('Attendance Record'),
+                title: const Text('Attendance Record'),
                 subtitle: Text(fields.isEmpty ? 'No Attendance Data' : fields),
                 onTap: () {
                   // Handle tap event if needed

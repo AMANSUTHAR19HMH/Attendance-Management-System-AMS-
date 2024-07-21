@@ -53,11 +53,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 children: [
                   _buildProfilePicture(), // Display profile picture
                   const SizedBox(height: 20.0),
-                  Text('Name: ${_profileData['fullName']}'),
+                  Text('Name: ${_profileData['username']}'),
                   Text('Email: ${_profileData['email']}'),
                   Text('Phone: ${_profileData['phone']}'),
                   Text('Address: ${_profileData['address']}'),
-                  Text('Department: ${_profileData['department']}'),
+                  Text('Class: ${_profileData['Class']}'),
                   Text('Father\'s Name: ${_profileData['fatherName']}'),
                   Text('Mother\'s Name: ${_profileData['motherName']}'),
                   // Add more fields as needed

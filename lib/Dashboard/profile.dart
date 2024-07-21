@@ -1,37 +1,14 @@
 import 'dart:typed_data';
 
-import 'package:attendance_management_system_ams/Dashboard/DashBoard.dart';
 import 'package:attendance_management_system_ams/Dashboard/StudentDashboard.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart'; // Import Firebase Auth
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
-  runApp(const Profile());
-}
-
-class Profile extends StatelessWidget {
-  const Profile({Key? key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Profile',
-      theme: ThemeData(primarySwatch: Colors.deepPurple),
-      home: const EditProfile(),
-    );
-  }
-}
-
 class EditProfile extends StatefulWidget {
-  const EditProfile({Key? key});
+  const EditProfile({super.key});
 
   @override
   State<EditProfile> createState() => _EditProfileState();
@@ -70,11 +47,11 @@ class _EditProfileState extends State<EditProfile> {
 
         // Update user profile data in Firestore
         await FirebaseFirestore.instance.collection('users').doc(user.uid).set({
-          'fullName': fullNameController.text,
+          'username': fullNameController.text,
           'email': emailController.text,
           'phone': phoneController.text,
           'address': addressController.text,
-          'department': departmentController.text,
+          'Class': departmentController.text,
           'fatherName': fatherNameController.text,
           'motherName': motherNameController.text,
           'profilePictureUrl': imageUrl, // Add profile picture URL
@@ -200,8 +177,7 @@ class _EditProfileState extends State<EditProfile> {
                 phoneController, "Phone no", "Please Enter 10 digits"),
             _buildTextField(
                 addressController, "Address", "Please Enter Address"),
-            _buildTextField(
-                departmentController, "Department", "Working Department"),
+            _buildTextField(departmentController, "Class", "Class"),
             _buildTextField(fatherNameController, "Father's Name", ""),
             _buildTextField(motherNameController, "Mother's Name", ""),
             const SizedBox(height: 20),
@@ -210,7 +186,7 @@ class _EditProfileState extends State<EditProfile> {
               children: [
                 OutlinedButton(
                   onPressed: () {
-                    // Cancel action
+                    Navigator.maybePop(context);
                   },
                   child: const Text(
                     "Cancel",
@@ -244,8 +220,7 @@ class _EditProfileState extends State<EditProfile> {
   }
 
   Widget _buildTextField(
-      TextEditingController controller, String labelText, String placeholder,
-      {bool isPassword = false}) {
+      TextEditingController controller, String labelText, String placeholder) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 20),
       child: TextField(

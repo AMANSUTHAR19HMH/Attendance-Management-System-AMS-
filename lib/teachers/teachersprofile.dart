@@ -1,7 +1,9 @@
-import 'package:attendance_management_system_ams/StartupDash.dart';
-import 'package:attendance_management_system_ams/teachers/TeacherDashboard.dart';
+import 'dart:typed_data';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
 class teachersprofile extends StatefulWidget {
@@ -15,11 +17,74 @@ class _teachersprofileState extends State<teachersprofile> {
   final TextEditingController fullNameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
   final TextEditingController addressController = TextEditingController();
   final TextEditingController departmentController = TextEditingController();
 
+  Uint8List? profileImage;
+
+  Future<void> pickImage(ImageSource source) async {
+    final ImagePicker imagePicker = ImagePicker();
+    XFile? pickedImage = await imagePicker.pickImage(source: source);
+    if (pickedImage != null) {
+      Uint8List bytes = await pickedImage.readAsBytes();
+      setState(() {
+        profileImage = bytes;
+      });
+    }
+  }
+
   bool showPassword = false;
+  void saveProfile() async {
+    try {
+      // Get the current user
+      User? user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        // Upload profile image to Firebase Storage
+        String imageUrl = await uploadProfileImage();
+
+        // Update user profile data in Firestore
+        await FirebaseFirestore.instance
+            .collection('teachers')
+            .doc(user.uid)
+            .set({
+          'username': fullNameController.text,
+          'email': emailController.text,
+          'phone': phoneController.text,
+          'address': addressController.text,
+          'department': departmentController.text,
+          'profilePictureUrl': imageUrl, // Add profile picture URL
+          // Add other fields here
+        });
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Profile saved successfully')),
+        );
+      }
+    } catch (error) {
+      print('Error saving profile: $error');
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Failed to save profile')),
+      );
+    }
+  }
+
+  Future<String> uploadProfileImage() async {
+    // Get a reference to the location where the profile image will be stored
+    Reference storageReference = FirebaseStorage.instance
+        .ref()
+        .child('profile_images')
+        .child('${DateTime.now().millisecondsSinceEpoch}.jpg');
+
+    // Upload the image to Firebase Storage
+    UploadTask uploadTask = storageReference.putData(profileImage!);
+
+    // Wait for the upload to complete and return the download URL
+    TaskSnapshot snapshot = await uploadTask.whenComplete(() {});
+    String downloadUrl = await snapshot.ref.getDownloadURL();
+
+    return downloadUrl;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,7 +97,7 @@ class _teachersprofileState extends State<teachersprofile> {
             color: Colors.deepPurple,
           ),
           onPressed: () {
-            Get.to(TeacherDashboard());
+            Navigator.maybePop(context);
           },
         ),
       ),
@@ -48,9 +113,9 @@ class _teachersprofileState extends State<teachersprofile> {
             ),
             const SizedBox(height: 20),
             GestureDetector(
-              // onTap: () {
-              //   pickImage(ImageSource.gallery);
-              // },
+              onTap: () {
+                pickImage(ImageSource.gallery);
+              },
               child: Center(
                 child: Stack(
                   children: [
@@ -61,18 +126,18 @@ class _teachersprofileState extends State<teachersprofile> {
                         shape: BoxShape.circle,
                         color: Colors.deepPurple,
                       ),
-                      // child: profileImage != null && profileImage!.isNotEmpty
-                      //     ? ClipOval(
-                      //         child: Image.memory(
-                      //           profileImage!,
-                      //           fit: BoxFit.cover,
-                      //         ),
-                      //       )
-                      //     : const Icon(
-                      //         Icons.person,
-                      //         size: 60,
-                      //         color: Colors.white,
-                      //       ),
+                      child: profileImage != null && profileImage!.isNotEmpty
+                          ? ClipOval(
+                              child: Image.memory(
+                                profileImage!,
+                                fit: BoxFit.cover,
+                              ),
+                            )
+                          : const Icon(
+                              Icons.person,
+                              size: 60,
+                              color: Colors.white,
+                            ),
                     ),
                     Positioned(
                       bottom: 0,
@@ -106,18 +171,15 @@ class _teachersprofileState extends State<teachersprofile> {
             _buildTextField(
                 phoneController, "Phone no", "Please Enter 10 digits"),
             _buildTextField(
-                passwordController, "Password", "Enter Your Password",
-                isPassword: true),
-            _buildTextField(
                 addressController, "Address", "Please Enter Address"),
-            _buildTextField(
-                departmentController, "Department", "Working Department"),
+            _buildTextField(departmentController, "Subject", "Subject"),
             const SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 OutlinedButton(
                   onPressed: () {
+                    Navigator.maybePop(context);
                     // Cancel action
                   },
                   child: const Text(
@@ -130,7 +192,7 @@ class _teachersprofileState extends State<teachersprofile> {
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    // saveProfile();
+                    saveProfile();
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.deepPurple,
@@ -160,19 +222,6 @@ class _teachersprofileState extends State<teachersprofile> {
         controller: controller,
         obscureText: isPassword ? showPassword : false,
         decoration: InputDecoration(
-          suffixIcon: isPassword
-              ? IconButton(
-                  onPressed: () {
-                    // setState(() {
-                    //   showPassword = !showPassword;
-                    // });
-                  },
-                  icon: const Icon(
-                    Icons.remove_red_eye,
-                    color: Colors.deepPurple,
-                  ),
-                )
-              : null,
           labelText: labelText,
           floatingLabelBehavior: FloatingLabelBehavior.always,
           hintText: placeholder,

@@ -6,11 +6,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 
 import '../Dashboard/profile.dart';
-import '../controller/UserProfileQRCode.dart';
 import '../screens/EventsScreen.dart';
-
-import '../screens/attendense_screen.dart';
-import 'navbar.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -45,21 +41,23 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 mainAxisSpacing: 30,
                 // DashBoard Icons
                 children: [
-                  itemDashboard('Attendance', FontAwesomeIcons.calendar,
-                      Colors.blueAccent),
-                  itemDashboard('QR Attendance', Icons.qr_code_scanner_rounded,
-                      Colors.green),
                   // QR Attendance icon
-                  itemDashboard('Notifications', FontAwesomeIcons.bell,
-                      Colors.yellowAccent.shade400),
-                  itemDashboard(
-                      'Events', FontAwesomeIcons.star, Colors.orangeAccent),
-                  itemDashboard('Profile', FontAwesomeIcons.user,
-                      Colors.greenAccent.shade700),
+                  itemDashboard(() {}, 'Notifications', FontAwesomeIcons.bell,
+                      Colors.yellowAccent.shade400, context),
+                  itemDashboard(() {
+                    Get.to(EventsScreen());
+                  }, 'Events', FontAwesomeIcons.star, Colors.orangeAccent,
+                      context),
+                  itemDashboard(() {
+                    Get.to(const EditProfile());
+                  }, 'Profile', FontAwesomeIcons.user,
+                      Colors.greenAccent.shade700, context),
                   // itemDashboard(
                   //     'Admin', FontAwesomeIcons.userLock, Colors.cyan.shade900),
-                  itemDashboard('Logout', CommunityMaterialIcons.logout,
-                      Colors.red.shade400),
+                  itemDashboard(() {
+                    _showLogoutConfirmation(context);
+                  }, 'Logout', CommunityMaterialIcons.logout,
+                      Colors.red.shade400, context),
                 ],
               ),
             ),
@@ -70,55 +68,28 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   // DashBoard Icons Function to store details of icons
-  Widget itemDashboard(String title, IconData iconData, Color background) {
-    return GestureDetector(
-      onTap: () {
-        if (title == 'Attendance') {
-          Get.to(AttendanceScreen());
-        } else if (title == 'QR Attendance') {
-          // Get the current user ID from Firebase Authentication
-          String? userId = FirebaseAuth.instance.currentUser?.uid;
-          if (userId != null) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => UserProfileQRCode(
-                  userId: userId,
-                ),
-              ),
-            );
-          } else {
-            // Handle scenario when user is not logged in
-            print('User is not logged in.');
-          }
-        } else if (title == 'Events') {
-          Get.to(EventsScreen());
-        } else if (title == 'Profile') {
-          Get.to(() => Profile());
-        } else if (title == 'Logout') {
-          _showLogoutConfirmation(context);
-        } else {
-          // Handle navigation for other items
-        }
-      },
-      child: Container(
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(10),
-          boxShadow: [
-            BoxShadow(
-              offset: const Offset(0, 5),
-              color: Theme.of(context).primaryColor.withOpacity(.2),
-              spreadRadius: 4,
-              blurRadius: 3,
-            ),
-          ],
-        ),
+  Widget itemDashboard(VoidCallback onTapCallback, String title,
+      IconData iconData, Color background, BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(10),
+        boxShadow: [
+          BoxShadow(
+            offset: const Offset(0, 5),
+            color: Theme.of(context).primaryColor.withOpacity(.2),
+            spreadRadius: 4,
+            blurRadius: 3,
+          ),
+        ],
+      ),
+      child: GestureDetector(
+        onTap: onTapCallback,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
-              padding: const EdgeInsets.all(10),
+              padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
                 color: background,
                 shape: BoxShape.circle,

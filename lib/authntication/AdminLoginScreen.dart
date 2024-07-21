@@ -57,8 +57,8 @@ class AdminLoginScreenState extends State<AdminLoginScreen> {
     return Scaffold(
       appBar: null,
       body: Container(
-        margin: EdgeInsets.only(top: 40),
-        decoration: BoxDecoration(
+        margin: const EdgeInsets.only(top: 40),
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             colors: [
@@ -72,7 +72,7 @@ class AdminLoginScreenState extends State<AdminLoginScreen> {
             child: ListView(
           children: [
             SizedBox(height: size.height * 0.03),
-            Text(
+            const Text(
               "Admin",
               textAlign: TextAlign.center,
               style: TextStyle(
@@ -82,7 +82,7 @@ class AdminLoginScreenState extends State<AdminLoginScreen> {
               ),
             ),
             const SizedBox(height: 15),
-            Text(
+            const Text(
               "Wellcome to Zidio Development \n Attendance App",
               textAlign: TextAlign.center,
               style: TextStyle(
@@ -101,12 +101,13 @@ class AdminLoginScreenState extends State<AdminLoginScreen> {
                 children: [
                   // for sign in buttonon
                   InkWell(
+                    onTap: _adminLogin,
                     child: Container(
                       width: size.width,
                       padding: const EdgeInsets.symmetric(vertical: 20),
-                      margin: EdgeInsets.only(top: 40),
+                      margin: const EdgeInsets.only(top: 40),
                       decoration: BoxDecoration(
-                        color: Color(0xffFD6B68),
+                        color: const Color(0xffFD6B68),
                         borderRadius: BorderRadius.circular(15),
                       ),
                       child: const Center(
@@ -120,7 +121,6 @@ class AdminLoginScreenState extends State<AdminLoginScreen> {
                         ),
                       ),
                     ),
-                    onTap: _adminLogin,
                   ),
                 ],
               ),

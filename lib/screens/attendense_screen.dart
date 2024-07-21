@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../Dashboard/AttendancePieChart.dart';
 import '../controller/attendense_controller.dart'; // Adjust the path as per your project structure
 class AttendanceScreen extends StatelessWidget {
   final AttendanceController attendanceController = Get.put(AttendanceController());
 
-  AttendanceScreen({Key? key}) : super(key: key);
+  AttendanceScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +18,7 @@ class AttendanceScreen extends StatelessWidget {
       ),
       body: Obx(() {
         if (attendanceController.users.isEmpty || attendanceController.attendance.isEmpty) {
-          return Center(
+          return const Center(
             child: CircularProgressIndicator(),
           );
         } else {

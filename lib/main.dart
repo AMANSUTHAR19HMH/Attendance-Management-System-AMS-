@@ -1,9 +1,11 @@
 import 'package:attendance_management_system_ams/Dashboard/DashBoard.dart';
+import 'package:attendance_management_system_ams/Dashboard/StudentDashboard.dart';
 import 'package:attendance_management_system_ams/Dashboard/profile.dart';
 import 'package:attendance_management_system_ams/StartupDash.dart';
 import 'package:attendance_management_system_ams/authntication/SignupScreen.dart';
 import 'package:attendance_management_system_ams/authntication/TeacherLogin.dart';
 import 'package:attendance_management_system_ams/screens/attendense_screen.dart';
+import 'package:attendance_management_system_ams/teachers/teachersprofile.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
@@ -28,8 +30,8 @@ class MyApp extends StatelessWidget {
         '/': (context) => const LoginDash(),
         '/LoginScreen': (context) => const StudentLoginScreen(),
         '/SignupScreen': (context) => const SignupScreen(),
-        '/Dashboard': (context) => const DashboardScreen(),
-        '/profile': (context) => const Profile(),
+        '/Dashboard': (context) => const StudentDashboardScreen(),
+        '/profile': (context) => const teachersprofile(),
         '/AttendanceScreen': (context) => AttendanceScreen(),
         '/Teacherlogin': (context) => TeacherLoginScreen(),
       },

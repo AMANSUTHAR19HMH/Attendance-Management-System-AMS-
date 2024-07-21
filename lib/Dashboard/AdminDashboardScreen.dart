@@ -1,6 +1,6 @@
 import 'package:attendance_management_system_ams/Dashboard/QrScanner.dart';
-import 'package:attendance_management_system_ams/screens/ManageAttendanceScreen.dart';
 import 'package:attendance_management_system_ams/screens/ManageTeachers.dart';
+import 'package:attendance_management_system_ams/teachers/TeacherDashboard.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -17,12 +17,61 @@ class AdminDashboardScreen extends StatefulWidget {
 }
 
 class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
+  int _selectedIndex = 0;
+
+  static final List<Widget> _widgetOptions = <Widget>[
+    const MarkAttendance(),
+    ViewAttendanceScreen(),
+    const MoreDetails(),
+  ];
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Admin Dashboard'),
-      ),
+        appBar: AppBar(
+          title: const Text('Admin Dashboard'),
+        ),
+        body: _widgetOptions.elementAt(_selectedIndex),
+        bottomNavigationBar: BottomNavigationBar(
+          unselectedItemColor: Colors.grey,
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: Icon(Icons.check_circle),
+              label: 'Mark Attendance',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.list),
+              label: 'View Attendance',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.more_horiz_sharp),
+              label: 'More',
+            ),
+          ],
+          currentIndex: _selectedIndex,
+          selectedItemColor: const Color.fromARGB(255, 253, 143, 0),
+          onTap: _onItemTapped,
+        ));
+  }
+}
+
+class MoreDetails extends StatefulWidget {
+  const MoreDetails({super.key});
+
+  @override
+  State<MoreDetails> createState() => _MoreDetailsState();
+}
+
+class _MoreDetailsState extends State<MoreDetails> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
       body: GridView.count(
         crossAxisCount: 2,
         children: [
@@ -33,11 +82,7 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
           }),
           _buildDashboardItem('Manage Teachers',
               'assets/CustomIcons/teacher.png', Colors.pinkAccent, () {
-            Get.to(ManageTeachersScreen());
-          }),
-          _buildDashboardItem('Manage Attendance',
-              'assets/CustomIcons/Attendance.png', Colors.green, () {
-            Get.to(ManageAttendanceScreen());
+            Get.to(const ManageTeachersScreen());
           }),
           _buildDashboardItem('Manage Events', 'assets/CustomIcons/Event.png',
               const Color.fromARGB(212, 255, 153, 0), () {
@@ -50,10 +95,6 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
           _buildDashboardItem('Qr Scanner', "assets/CustomIcons/Qr_scan.png",
               const Color.fromARGB(255, 57, 176, 39), () {
             Get.to(const QrScanner());
-          }),
-          _buildDashboardItem('View Attendance', "assets/CustomIcons/View.png",
-              const Color.fromARGB(206, 244, 67, 54), () {
-            Get.to(ViewAttendanceScreen());
           }),
         ],
       ),

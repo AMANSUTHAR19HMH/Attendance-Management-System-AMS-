@@ -11,7 +11,7 @@ class UserDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final details = user['details'] ?? {};
+    final details = user['subjects'] ?? {};
     final subjects = user['subjects'] ?? [];
     final attendance = user['attendance'] ?? {};
 
@@ -36,13 +36,16 @@ class UserDetailsScreen extends StatelessWidget {
             for (var subject in subjects) Text(subject),
             const SizedBox(height: 10),
             const Text('Attendance:'),
-            for (var date in attendance.keys) Text('$date: ${attendance[date]}'),
+            for (var date in attendance.keys)
+              Text('$date: ${attendance[date]}'),
             const SizedBox(height: 10),
             ElevatedButton(
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => AllotSubjectsScreen(userId: user.id)),
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          AllotSubjectsScreen(userId: user.id)),
                 );
               },
               child: const Text('Allot Subjects'),
@@ -51,7 +54,8 @@ class UserDetailsScreen extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => ManageAttendanceScreen()),
+                  MaterialPageRoute(
+                      builder: (context) => const ManageAttendanceScreen()),
                 );
               },
               child: const Text('Manage Attendance'),

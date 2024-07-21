@@ -1,6 +1,5 @@
 import 'package:attendance_management_system_ams/Dashboard/profile.dart';
 import 'package:attendance_management_system_ams/StartupDash.dart';
-import 'package:attendance_management_system_ams/authntication/LoginScreen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -23,16 +22,15 @@ class NavbarTop extends StatelessWidget {
 
       if (userDoc.exists) {
         Map<String, dynamic> data = userDoc.data() as Map<String, dynamic>;
-        print("Fetched data: $data"); // Debug output
+
         return {
-          "fullName": data["fullName"] ?? "No Name",
+          "fullName": data["username"] ?? "No Name",
           "email": data["email"] ?? "No Email",
         };
       } else {
         throw Exception("User document does not exist");
       }
     } catch (e) {
-      print("Error fetching user data: $e"); // Debug output
       throw Exception("Error fetching user data: $e");
     }
   }
@@ -40,7 +38,7 @@ class NavbarTop extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      backgroundColor: Color.fromARGB(255, 215, 85, 219),
+      backgroundColor: const Color.fromARGB(255, 215, 85, 219),
       child: ListView(
         padding: EdgeInsets.zero,
         children: [
@@ -72,35 +70,29 @@ class NavbarTop extends StatelessWidget {
             },
           ),
           ListTile(
+            textColor: Colors.white,
+            iconColor: Colors.white,
             leading: const Icon(Icons.dashboard),
             title: const Text("Dashboard"),
             onTap: () {
-              Navigator.popAndPushNamed(context, '/Dashboard');
+              Navigator.maybePop(context);
             },
           ),
           ListTile(
+            textColor: Colors.white,
+            iconColor: Colors.white,
             leading: const Icon(Icons.person),
             title: const Text("Profile"),
             onTap: () {
               Navigator.of(context).pushReplacement(
-                MaterialPageRoute(builder: (context) => const Profile()),
+                MaterialPageRoute(builder: (context) => const EditProfile()),
               );
             },
           ),
-          ListTile(
-            leading: const Icon(Icons.calendar_today_outlined),
-            title: const Text("Attendance"),
-            onTap: () {
-              Navigator.pushNamed(context, '/AttendanceScreen');
-            },
-          ),
-          ListTile(
-            leading: const Icon(Icons.notifications),
-            title: const Text("Notifications"),
-            onTap: () {},
-          ),
           const Divider(),
           ListTile(
+            textColor: Colors.white,
+            iconColor: Colors.white,
             leading: const Icon(Icons.logout_sharp),
             title: const Text("Logout"),
             onTap: () {

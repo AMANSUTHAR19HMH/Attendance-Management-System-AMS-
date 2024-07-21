@@ -1,5 +1,6 @@
 import 'package:attendance_management_system_ams/Dashboard/DashBoard.dart';
 import 'package:attendance_management_system_ams/StartupDash.dart';
+import 'package:attendance_management_system_ams/screens/ViewAttendanceScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -7,7 +8,6 @@ import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:line_icons/line_icons.dart';
 
 import '../Dashboard/profile.dart';
-import '../authntication/LoginScreen.dart';
 import '../controller/UserProfileQRCode.dart';
 import '../screens/EventsScreen.dart';
 import '../screens/ProfileScreen.dart';
@@ -15,7 +15,7 @@ import '../screens/attendense_screen.dart';
 import 'navbar.dart';
 
 class StudentDashboardScreen extends StatefulWidget {
-  const StudentDashboardScreen({Key? key}) : super(key: key);
+  const StudentDashboardScreen({super.key});
 
   @override
   _StudentDashboardScreenState createState() => _StudentDashboardScreenState();
@@ -24,10 +24,11 @@ class StudentDashboardScreen extends StatefulWidget {
 class _StudentDashboardScreenState extends State<StudentDashboardScreen> {
   int _selectedIndex = 0;
 
-  static List<Widget> _widgetOptions = <Widget>[
-    DashboardScreen(), // Assuming this is your main dashboard screen
+  static final List<Widget> _widgetOptions = <Widget>[
+    const DashboardScreen(), // Assuming this is your main dashboard screen
     UserProfileQRCode(userId: FirebaseAuth.instance.currentUser?.uid ?? ""),
-    ProfileScreen(),
+    const ProfileScreen(),
+    ViewAttendanceScreen(),
   ];
 
   void _onItemTapped(int index) {
@@ -41,7 +42,7 @@ class _StudentDashboardScreenState extends State<StudentDashboardScreen> {
     return Scaffold(
         drawer: const NavbarTop(),
         appBar: AppBar(
-          foregroundColor: Color.fromARGB(255, 215, 85, 219),
+          foregroundColor: const Color.fromARGB(255, 215, 85, 219),
           title: const Text(
             "Dashboard",
             style: TextStyle(
@@ -52,10 +53,9 @@ class _StudentDashboardScreenState extends State<StudentDashboardScreen> {
           actions: [
             IconButton(
                 onPressed: () {
-                  Navigator.maybePop(context);
-                  FirebaseAuth.instance.signOut();
+                  _showLogoutConfirmation(context);
                 },
-                icon: Icon(Icons.logout))
+                icon: const Icon(Icons.logout))
           ],
         ),
         body: Center(
@@ -63,7 +63,7 @@ class _StudentDashboardScreenState extends State<StudentDashboardScreen> {
         ),
         bottomNavigationBar: Container(
           decoration: BoxDecoration(
-            color: Color.fromARGB(255, 215, 85, 219),
+            color: const Color.fromARGB(255, 215, 85, 219),
             boxShadow: [
               BoxShadow(
                 blurRadius: 20,
@@ -73,17 +73,17 @@ class _StudentDashboardScreenState extends State<StudentDashboardScreen> {
           ),
           child: SafeArea(
             child: Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 10.0, vertical: 8),
+              padding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 8),
               child: GNav(
-                rippleColor: Color.fromARGB(255, 255, 255, 255),
+                rippleColor: const Color.fromARGB(255, 255, 255, 255),
                 hoverColor: Colors.grey[100]!,
-                gap: 8,
+                gap: 3,
                 activeColor: Colors.black,
                 iconSize: 24,
-                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-                duration: Duration(milliseconds: 400),
-                tabBackgroundColor: Color.fromARGB(255, 255, 255, 255),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
+                duration: const Duration(milliseconds: 400),
+                tabBackgroundColor: const Color.fromARGB(255, 255, 255, 255),
                 color: const Color.fromARGB(255, 255, 255, 255),
                 tabs: [
                   GButton(
@@ -91,6 +91,14 @@ class _StudentDashboardScreenState extends State<StudentDashboardScreen> {
                     text: 'Home',
                     onPressed: () {
                       _onItemTapped(0);
+                    },
+                  ),
+                  GButton(
+                    icon: LineIcons.list,
+                    text: "View Attendance",
+                    textStyle: const TextStyle(overflow: TextOverflow.ellipsis),
+                    onPressed: () {
+                      _onItemTapped(3);
                     },
                   ),
                   GButton(
@@ -142,10 +150,10 @@ class _StudentDashboardScreenState extends State<StudentDashboardScreen> {
           Get.to(EventsScreen());
         } else if (title == 'Profile') {
           Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (context) => const Profile()),
+            MaterialPageRoute(builder: (context) => const EditProfile()),
           );
         } else if (title == 'Logout') {
-          Get.to(LoginDash());
+          Get.to(const LoginDash());
         } else {
           // Handle navigation for other items
         }
@@ -186,8 +194,9 @@ class _StudentDashboardScreenState extends State<StudentDashboardScreen> {
   }
 
   void _logoutAndNavigateToLogin(BuildContext context) {
+    FirebaseAuth.instance.signOut();
     Navigator.of(context).pushReplacement(
-      MaterialPageRoute(builder: (context) => const StudentLoginScreen()),
+      MaterialPageRoute(builder: (context) => const LoginDash()),
     );
   }
 

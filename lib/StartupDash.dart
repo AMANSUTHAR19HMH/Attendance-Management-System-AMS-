@@ -9,7 +9,7 @@ import 'authntication/LoginScreen.dart';
 import 'authntication/TeacherLogin.dart';
 
 class LoginDash extends StatefulWidget {
-  const LoginDash({Key? key}) : super(key: key);
+  const LoginDash({super.key});
 
   @override
   State<LoginDash> createState() => _LoginDashState();
@@ -33,7 +33,7 @@ class _LoginDashState extends State<LoginDash> {
                     Colors.purple.withOpacity(1.0),
                     BlendMode.softLight,
                   ),
-                  image: AssetImage(
+                  image: const AssetImage(
                     "assets/CustomIcons/Dashboard.jpg",
                   ),
                 ),
@@ -44,13 +44,13 @@ class _LoginDashState extends State<LoginDash> {
                 "AMS",
                 style: GoogleFonts.lato(
                   fontSize: 40,
-                  color: Color.fromARGB(255, 168, 122, 35),
+                  color: const Color.fromARGB(255, 168, 122, 35),
                 ),
               ),
             ),
             Expanded(
               child: Padding(
-                padding: EdgeInsets.all(10),
+                padding: const EdgeInsets.all(10),
                 child: Container(
                   decoration: BoxDecoration(
                     color: Theme.of(context).scaffoldBackgroundColor,
@@ -65,7 +65,7 @@ class _LoginDashState extends State<LoginDash> {
                     ),
                     child: GridView.count(
                       crossAxisCount: 2,
-                      physics: NeverScrollableScrollPhysics(),
+                      physics: const NeverScrollableScrollPhysics(),
                       padding: const EdgeInsets.only(
                         top: 50,
                         bottom: 20,
@@ -98,23 +98,23 @@ Widget itemDashboard(String title, String iconData, Color background) {
   return GestureDetector(
     onTap: () {
       if (title == 'USER') {
-        Get.to(StudentLoginScreen());
+        Get.to(const StudentLoginScreen());
       } else if (title == 'ADMIN') {
-        Get.to(AdminLoginScreen());
+        Get.to(const AdminLoginScreen());
       } else if (title == 'TEACHER') {
-        Get.to(TeacherLoginScreen());
+        Get.to(const TeacherLoginScreen());
       } else if (title == 'EXIT') {
         exit(0);
       }
     },
     child: Container(
-      margin: EdgeInsets.all(16.0), // Adjust margin for spacing
+      margin: const EdgeInsets.all(16.0), // Adjust margin for spacing
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(10),
-        boxShadow: [
+        boxShadow: const [
           BoxShadow(
-            offset: const Offset(0, 5),
+            offset: Offset(0, 5),
             color: Color.fromRGBO(20, 30, 40, 0.5),
             spreadRadius: 2,
             blurRadius: 3,
@@ -140,7 +140,7 @@ Widget itemDashboard(String title, String iconData, Color background) {
           const SizedBox(height: 8),
           Text(
             title,
-            style: TextStyle(fontSize: 18), // Adjust text style as needed
+            style: const TextStyle(fontSize: 18), // Adjust text style as needed
           ),
         ],
       ),

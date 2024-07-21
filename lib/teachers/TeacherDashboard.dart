@@ -1,7 +1,6 @@
 import 'package:attendance_management_system_ams/screens/EventsScreen.dart';
 import 'package:attendance_management_system_ams/screens/ManageStudentsScreen.dart';
 import 'package:attendance_management_system_ams/screens/ViewAttendanceScreen.dart';
-import 'package:attendance_management_system_ams/teachers/Classes.dart';
 import 'package:attendance_management_system_ams/teachers/teachersprofile.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -18,11 +17,10 @@ class TeacherDashboard extends StatefulWidget {
 class _TeacherDashboardState extends State<TeacherDashboard> {
   int _selectedIndex = 0;
 
-  static const List<Widget> _widgetOptions = <Widget>[
-    ClassSchedule(),
-    MarkAttendance(),
-    ViewAttendance(),
-    PersonalInfo(),
+  static final List<Widget> _widgetOptions = <Widget>[
+    const MarkAttendance(),
+    ViewAttendanceScreen(),
+    const PersonalInfo(),
   ];
 
   void _onItemTapped(int index) {
@@ -44,10 +42,6 @@ class _TeacherDashboardState extends State<TeacherDashboard> {
         unselectedItemColor: Colors.grey,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.schedule),
-            label: 'Class Schedule',
-          ),
-          BottomNavigationBarItem(
             icon: Icon(Icons.check_circle),
             label: 'Mark Attendance',
           ),
@@ -63,20 +57,6 @@ class _TeacherDashboardState extends State<TeacherDashboard> {
         currentIndex: _selectedIndex,
         selectedItemColor: const Color.fromARGB(255, 253, 143, 0),
         onTap: _onItemTapped,
-      ),
-    );
-  }
-}
-
-class ClassSchedule extends StatelessWidget {
-  const ClassSchedule({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Center(
-      child: Text(
-        'Class Schedule',
-        style: TextStyle(fontSize: 24),
       ),
     );
   }
@@ -105,9 +85,6 @@ class _MarkAttendanceState extends State<MarkAttendance> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Mark Attendance'),
-      ),
       body: Column(
         children: [
           Padding(
@@ -118,7 +95,7 @@ class _MarkAttendanceState extends State<MarkAttendance> {
                   child: TextField(
                     controller: dateController,
                     readOnly: true,
-                    decoration: InputDecoration(labelText: 'Date (YYYY-MM-DD)'),
+                    decoration: const InputDecoration(labelText: 'Date (YYYY-MM-DD)'),
                     onTap: () async {
                       DateTime? pickedDate = await showDatePicker(
                         context: context,
@@ -136,9 +113,9 @@ class _MarkAttendanceState extends State<MarkAttendance> {
                     },
                   ),
                 ),
-                SizedBox(width: 16),
+                const SizedBox(width: 16),
                 DropdownButton<String>(
-                  hint: Text('Select Subject'),
+                  hint: const Text('Select Subject'),
                   value: selectedSubject,
                   onChanged: (String? newValue) {
                     setState(() {
@@ -161,7 +138,7 @@ class _MarkAttendanceState extends State<MarkAttendance> {
                   FirebaseFirestore.instance.collection('users').snapshots(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(child: CircularProgressIndicator());
+                  return const Center(child: CircularProgressIndicator());
                 }
 
                 if (snapshot.hasError) {
@@ -169,7 +146,7 @@ class _MarkAttendanceState extends State<MarkAttendance> {
                 }
 
                 if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-                  return Center(child: Text('No users found.'));
+                  return const Center(child: Text('No users found.'));
                 }
 
                 return ListView.builder(
@@ -226,7 +203,7 @@ class _MarkAttendanceState extends State<MarkAttendance> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: saveAttendance,
-        child: Icon(Icons.save),
+        child: const Icon(Icons.save),
       ),
     );
   }
@@ -240,14 +217,14 @@ class _MarkAttendanceState extends State<MarkAttendance> {
 
     if (date.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Please enter the date')),
+        const SnackBar(content: Text('Please enter the date')),
       );
       return;
     }
 
     if (selectedSubject == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Please select a subject')),
+        const SnackBar(content: Text('Please select a subject')),
       );
       return;
     }
@@ -286,28 +263,14 @@ class _MarkAttendanceState extends State<MarkAttendance> {
       await batch.commit();
 
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Attendance updated successfully')),
+        const SnackBar(content: Text('Attendance updated successfully')),
       );
     } catch (e) {
       print('Error updating attendance: $e');
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Failed to update attendance')),
+        const SnackBar(content: Text('Failed to update attendance')),
       );
     }
-  }
-}
-
-class ViewAttendance extends StatelessWidget {
-  const ViewAttendance({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Center(
-      child: Text(
-        'View Attendance',
-        style: TextStyle(fontSize: 24),
-      ),
-    );
   }
 }
 
@@ -320,10 +283,6 @@ class PersonalInfo extends StatelessWidget {
       body: GridView.count(
         crossAxisCount: 2,
         children: [
-          _buildDashboardItem(
-              'Classes', 'assets/CustomIcons/Student.png', Colors.blue, () {
-            Get.to(Class());
-          }),
           _buildDashboardItem('Events', 'assets/CustomIcons/Event.png',
               const Color.fromARGB(212, 255, 153, 0), () {
             Get.to(EventsScreen());
@@ -332,7 +291,7 @@ class PersonalInfo extends StatelessWidget {
               'Manage Students',
               "assets/CustomIcons/managestudents.png",
               const Color.fromARGB(255, 57, 176, 39), () {
-            Get.to(ManageStudentsScreen());
+            Get.to(const ManageStudentsScreen());
           }),
           _buildDashboardItem('View Attendance', "assets/CustomIcons/View.png",
               const Color.fromARGB(206, 244, 67, 54), () {
@@ -341,8 +300,8 @@ class PersonalInfo extends StatelessWidget {
           _buildDashboardItem(
               'Teachers Profile',
               "assets/CustomIcons/profile.png",
-              Color.fromARGB(206, 61, 19, 233), () {
-            Get.to(teachersprofile());
+              const Color.fromARGB(206, 61, 19, 233), () {
+            Get.to(const teachersprofile());
           }),
         ],
       ),

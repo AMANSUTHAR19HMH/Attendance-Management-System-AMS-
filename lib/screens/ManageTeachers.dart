@@ -1,3 +1,7 @@
+import 'package:attendance_management_system_ams/studetns/students%20detail.dart';
+import 'package:attendance_management_system_ams/studetns/studentseditscreen.dart';
+import 'package:attendance_management_system_ams/teachers/AddTeacher.dart';
+import 'package:attendance_management_system_ams/teachers/EditTeachers.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -46,91 +50,89 @@ class _ManageTeachersScreenState extends State<ManageTeachersScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Manage Teachers'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.logout),
-            onPressed: () async {
-              await _auth.signOut();
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (context) => const LoginDash()),
-              );
-            },
-          ),
-        ],
-      ),
-      body: StreamBuilder<QuerySnapshot>(
-        stream: usersCollection.snapshots(),
-        builder: (context, snapshot) {
-          if (!snapshot.hasData) {
-            return const Center(child: CircularProgressIndicator());
-          }
-
-          final users = snapshot.data!.docs;
-
-          return ListView.builder(
-            itemCount: users.length,
-            itemBuilder: (context, index) {
-              final user = users[index];
-              return ListTile(
-                title: Text(user['email']),
-                trailing: isAdmin
-                    ? Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          IconButton(
-                            icon: const Icon(Icons.edit),
-                            onPressed: () {
-                              // Navigator.push(
-                              //   context,
-                              //   MaterialPageRoute(
-                              //     builder: (context) => EditUserScreen(
-                              //       userId: user.id,
-                              //       user: user,
-                              //     ),
-                              //   ),
-                              // );
-                            },
-                          ),
-                          IconButton(
-                            icon: const Icon(Icons.delete),
-                            onPressed: () {
-                              usersCollection.doc(user.id).delete();
-                            },
-                          ),
-                          IconButton(
-                            icon: const Icon(Icons.view_list),
-                            onPressed: () {
-                              // Navigator.push(
-                              //   context,
-                              //   MaterialPageRoute(
-                              //     builder: (context) =>
-                              //         UserDetailsScreen(user: user),
-                              //   ),
-                              // );
-                            },
-                          ),
-                        ],
-                      )
-                    : null,
-              );
-            },
-          );
-        },
-      ),
-      floatingActionButton: isAdmin
-          ? FloatingActionButton(
-              onPressed: () {
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(builder: (context) => AddUserScreen()),
-                // );
+        appBar: AppBar(
+          title: const Text('Manage Teachers'),
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.logout),
+              onPressed: () async {
+                await _auth.signOut();
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => const LoginDash()),
+                );
               },
-              child: const Icon(Icons.add),
-            )
-          : null,
-    );
+            ),
+          ],
+        ),
+        body: StreamBuilder<QuerySnapshot>(
+          stream: usersCollection.snapshots(),
+          builder: (context, snapshot) {
+            if (!snapshot.hasData) {
+              return const Center(child: CircularProgressIndicator());
+            }
+
+            final users = snapshot.data!.docs;
+
+            return ListView.builder(
+              itemCount: users.length,
+              itemBuilder: (context, index) {
+                final user = users[index];
+                return ListTile(
+                    title: Column(
+                  children: [
+                    Text(user['email']),
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        IconButton(
+                          icon: const Icon(Icons.edit),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => EditTeachers(
+                                  userId: user.id,
+                                  user: user,
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                        IconButton(
+                          icon: const Icon(Icons.delete),
+                          onPressed: () {
+                            usersCollection.doc(user.id).delete();
+                          },
+                        ),
+                        IconButton(
+                          icon: const Icon(Icons.view_list),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    UserDetailsScreen(user: user),
+                              ),
+                            );
+                          },
+                        ),
+                      ],
+                    ),
+                  ],
+                ));
+              },
+            );
+          },
+        ),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => AddTeacher()),
+            );
+          },
+          child: const Icon(Icons.add),
+        ));
   }
 }

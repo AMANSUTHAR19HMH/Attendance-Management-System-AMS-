@@ -1,5 +1,3 @@
-import 'dart:ui';
-import 'package:attendance_management_system_ams/Dashboard/DashBoard.dart';
 import 'package:attendance_management_system_ams/Dashboard/StudentDashboard.dart';
 import 'package:attendance_management_system_ams/authntication/AdminLoginScreen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -60,7 +58,7 @@ class StudentLoginScreenState extends State<StudentLoginScreen> {
     return Scaffold(
       appBar: null,
       body: Container(
-        margin: EdgeInsets.only(top: 40),
+        margin: const EdgeInsets.only(top: 40),
         decoration: const BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
@@ -104,9 +102,10 @@ class StudentLoginScreenState extends State<StudentLoginScreen> {
                 children: [
                   // for sign in button
                   InkWell(
+                    onTap: _login,
                     child: Container(
                       padding: const EdgeInsets.symmetric(vertical: 20),
-                      margin: EdgeInsets.only(top: 40),
+                      margin: const EdgeInsets.only(top: 40),
                       decoration: BoxDecoration(
                         color: const Color(0xffFD6B68),
                         borderRadius: BorderRadius.circular(15),
@@ -122,7 +121,6 @@ class StudentLoginScreenState extends State<StudentLoginScreen> {
                         ),
                       ),
                     ),
-                    onTap: _login,
                   ),
                   SizedBox(height: size.height * 0.07),
                   InkWell(
