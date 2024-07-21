@@ -3,9 +3,9 @@ import 'package:attendance_management_system_ams/screens/ManageStudentsScreen.da
 import 'package:attendance_management_system_ams/screens/ViewAttendanceScreen.dart';
 import 'package:attendance_management_system_ams/teachers/Classes.dart';
 import 'package:attendance_management_system_ams/teachers/teachersprofile.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 
 class TeacherDashboard extends StatefulWidget {
@@ -105,6 +105,9 @@ class _MarkAttendanceState extends State<MarkAttendance> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Mark Attendance'),
+      ),
       body: Column(
         children: [
           Padding(
@@ -175,9 +178,12 @@ class _MarkAttendanceState extends State<MarkAttendance> {
                     var userData = snapshot.data!.docs[index].data()
                         as Map<String, dynamic>;
                     var userId = snapshot.data!.docs[index].id;
-                    var userName = userData['fullName'];
-                    var userEmail = userData['email'];
-                    var userPhone = userData['phone'];
+                    var userName = userData['username'] ?? 'Unknown';
+                    var userEmail = userData['email'] ?? 'No email';
+                    var userPhone = userData['phone'] ?? 'No phone';
+
+                    print('User ID: $userId');
+                    print('User Name: $userName');
 
                     var attendanceData = attendanceMap[userId] ?? {};
                     var subjectData =
@@ -272,7 +278,7 @@ class _MarkAttendanceState extends State<MarkAttendance> {
       attendanceMap.forEach((userId, attendanceData) {
         DocumentReference userRef =
             FirebaseFirestore.instance.collection('users').doc(userId);
-        int status = attendanceData[date]![selectedSubject!] ??
+        int status = attendanceData[date]?[selectedSubject!] ??
             1; // Assuming default is 'Present' = 1
         batch.update(userRef, {'attendance.$date.${selectedSubject!}': status});
       });

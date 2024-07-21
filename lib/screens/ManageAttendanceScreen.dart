@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart'; // Add this import for date formatting
+import 'package:intl/intl.dart'; // Import for date formatting
 
 class ManageAttendanceScreen extends StatefulWidget {
   @override
@@ -8,17 +8,12 @@ class ManageAttendanceScreen extends StatefulWidget {
 }
 
 class _ManageAttendanceScreenState extends State<ManageAttendanceScreen> {
-  final Map<String, Map<String, Map<String, int>>> attendanceMap = {
-  }; // userId -> date -> subject -> attendance status
   final TextEditingController dateController = TextEditingController();
   DateTime? selectedDate;
   String? selectedSubject;
-  final List<String> subjects = [
-    'Math',
-    'Science',
-    'History',
-    'English'
-  ]; // Example subjects
+  final List<String> subjects = ['Math', 'Science', 'History', 'English'];
+
+  get date_ => null; // Example subjects
 
   @override
   Widget build(BuildContext context) {
@@ -47,8 +42,7 @@ class _ManageAttendanceScreenState extends State<ManageAttendanceScreen> {
                       if (pickedDate != null) {
                         setState(() {
                           selectedDate = pickedDate;
-                          dateController.text =
-                              DateFormat('yyyy-MM-dd').format(pickedDate);
+                          dateController.text = DateFormat('yyyy-MM-dd').format(pickedDate);
                         });
                       }
                     },
@@ -75,17 +69,14 @@ class _ManageAttendanceScreenState extends State<ManageAttendanceScreen> {
           ),
           Expanded(
             child: StreamBuilder<QuerySnapshot>(
-              stream: FirebaseFirestore.instance.collection('users')
-                  .snapshots(),
+              stream: FirebaseFirestore.instance.collection('users').snapshots(),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Center(child: CircularProgressIndicator());
                 }
-
                 if (snapshot.hasError) {
                   return Center(child: Text('Error: ${snapshot.error}'));
                 }
-
                 if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
                   return Center(child: Text('No users found.'));
                 }
@@ -93,26 +84,16 @@ class _ManageAttendanceScreenState extends State<ManageAttendanceScreen> {
                 return ListView.builder(
                   itemCount: snapshot.data!.docs.length,
                   itemBuilder: (context, index) {
-                    var userData = snapshot.data!.docs[index].data() as Map<
-                        String,
-                        dynamic>;
+                    var userData = snapshot.data!.docs[index].data() as Map<String, dynamic>;
                     var userId = snapshot.data!.docs[index].id;
-                    var userName = userData['fullName'];
+                    var userName = userData['username'];
                     var userEmail = userData['email'];
-                    var userPhone = userData['phone'];
-
-                    var attendanceData = attendanceMap[userId] ?? {};
-                    var subjectData = attendanceData[selectedDateAsString] ??
-                        {};
 
                     return ListTile(
                       title: Text(userName),
-                      subtitle: Text('$userEmail - $userPhone'),
+                      subtitle: Text(userEmail),
                       trailing: DropdownButton<String>(
-                        value: subjectData[selectedSubject] != null &&
-                            subjectData[selectedSubject] == 1
-                            ? 'Present'
-                            : 'Absent',
+                        value: _getAttendanceStatus(userId),
                         items: <String>['Present', 'Absent']
                             .map((String value) {
                           return DropdownMenuItem<String>(
@@ -121,15 +102,9 @@ class _ManageAttendanceScreenState extends State<ManageAttendanceScreen> {
                           );
                         }).toList(),
                         onChanged: (String? newValue) {
-                          setState(() {
-                            if (newValue != null) {
-                              subjectData[selectedSubject!] =
-                              newValue == 'Present' ? 1 : 0;
-                              attendanceData[selectedDateAsString] =
-                                  subjectData;
-                              attendanceMap[userId] = attendanceData;
-                            }
-                          });
+                          if (newValue != null) {
+                            _updateAttendance(userId, newValue);
+                          }
                         },
                       ),
                     );
@@ -148,9 +123,49 @@ class _ManageAttendanceScreenState extends State<ManageAttendanceScreen> {
   }
 
   String get selectedDateAsString =>
-      selectedDate != null
-          ? DateFormat('yyyy-MM-dd').format(selectedDate!)
-          : '';
+      selectedDate != null ? DateFormat('yyyy-MM-dd').format(selectedDate!) : '';
+
+  String _getAttendanceStatus(String userId) {
+    final date = selectedDateAsString;
+    final subject = selectedSubject;
+    if (date.isNotEmpty && subject != null) {
+      // Fetch attendance status from Firestore
+      // Placeholder logic: Replace with actual Firestore fetch
+      return 'Absent'; // Default status
+    }
+    return 'Absent'; // Default status if no date/subject selected
+  }
+
+  void _updateAttendance(String userId, String status) async {
+    final date = selectedDateAsString;
+    final subject = selectedSubject;
+
+    if (date.isEmpty || subject == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Please select a date and subject')),
+      );
+      return;
+    }
+
+    try {
+      // Update the attendance data in Firestore
+      DocumentReference attendanceRef = FirebaseFirestore.instance.collection('attendance').doc('$date_$subject');
+      DocumentSnapshot attendanceSnapshot = await attendanceRef.get();
+
+      Map<String, dynamic> userAttendance = attendanceSnapshot.exists ? attendanceSnapshot.data() as Map<String, dynamic> : {};
+      userAttendance[userId] = status == 'Present' ? 1 : 0;
+
+      await attendanceRef.set(userAttendance);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Attendance updated successfully')),
+      );
+    } catch (e) {
+      print('Error updating attendance: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to update attendance')),
+      );
+    }
+  }
 
   void saveAttendance() async {
     final date = dateController.text.trim();
@@ -169,47 +184,6 @@ class _ManageAttendanceScreenState extends State<ManageAttendanceScreen> {
       return;
     }
 
-    try {
-      WriteBatch batch = FirebaseFirestore.instance.batch();
-
-      // Check if attendance has already been marked for the selected subject on the selected date
-      bool alreadyMarked = false;
-
-      attendanceMap.forEach((userId, attendanceData) {
-        var subjectData = attendanceData[date];
-        if (subjectData != null && subjectData.containsKey(selectedSubject!)) {
-          alreadyMarked = true;
-          return;
-        }
-      });
-
-      if (alreadyMarked) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(
-              'Attendance already marked for this subject on $date')),
-        );
-        return;
-      }
-
-      // Iterate over attendanceMap to update Firestore documents
-      attendanceMap.forEach((userId, attendanceData) {
-        DocumentReference userRef = FirebaseFirestore.instance.collection(
-            'users').doc(userId);
-        int status = attendanceData[date]![selectedSubject!] ??
-            1; // Assuming default is 'Present' = 1
-        batch.update(userRef, {'attendance.$date.${selectedSubject!}': status});
-      });
-
-      await batch.commit();
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Attendance updated successfully')),
-      );
-    } catch (e) {
-      print('Error updating attendance: $e');
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Failed to update attendance')),
-      );
-    }
+    // The save functionality might not be needed if updating attendance in real-time
   }
 }

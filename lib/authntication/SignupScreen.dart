@@ -1,5 +1,6 @@
 import 'package:attendance_management_system_ams/Dashboard/DashBoard.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 // Import your DashboardScreen
@@ -16,17 +17,25 @@ class SignupScreenState extends State<SignupScreen> {
   final TextEditingController emailTextController = TextEditingController();
   final TextEditingController userNameTextController = TextEditingController();
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
   Future<void> _signup() async {
     try {
       UserCredential userCredential =
-          await _auth.createUserWithEmailAndPassword(
+      await _auth.createUserWithEmailAndPassword(
         email: emailTextController.text,
         password: passwordTextController.text,
       );
 
       // Set display name
       await userCredential.user?.updateDisplayName(userNameTextController.text);
+
+      // Add the user to Firestore 'users' collection
+      await _firestore.collection('users').doc(userCredential.user?.uid).set({
+        'email': emailTextController.text,
+        'username': userNameTextController.text,
+        // Add more fields if needed
+      });
 
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Signup successful')),
@@ -37,7 +46,7 @@ class SignupScreenState extends State<SignupScreen> {
         context,
         MaterialPageRoute(
             builder: (context) =>
-                const DashboardScreen()), // Replace with your actual dashboard screen
+            const DashboardScreen()), // Replace with your actual dashboard screen
       );
     } on FirebaseAuthException catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -46,7 +55,6 @@ class SignupScreenState extends State<SignupScreen> {
     }
   }
 
-  @override
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -65,65 +73,65 @@ class SignupScreenState extends State<SignupScreen> {
         ),
         child: SafeArea(
             child: ListView(
-          children: [
-            SizedBox(height: size.height * 0.03),
-            const Text(
-              "Hello User!",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 37,
-                color: Color(0xff353047),
-              ),
-            ),
-            const SizedBox(height: 15),
-            const Text(
-              "Wellcome to Zidio Development \n Attendance App",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  fontSize: 27, color: Color(0xff6F6B7A), height: 1.2),
-            ),
-            SizedBox(height: size.height * 0.04),
-            // for username and password
-            const SizedBox(height: 30),
-            reusableTextField("Enter UserName", Icons.person_outline, false,
-                userNameTextController),
-            reusableTextField("Enter Email", Icons.email_outlined, false,
-                emailTextController),
-            reusableTextField("Enter Password", Icons.lock_outline, true,
-                passwordTextController),
-            SizedBox(height: size.height * 0.04),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 25),
-              child: Column(
-                children: [
-                  // for sign in button
-                  InkWell(
-                    onTap: _signup,
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(vertical: 20),
-                      margin: EdgeInsets.only(top: 40),
-                      decoration: BoxDecoration(
-                        color: const Color(0xffFD6B68),
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                      child: const Center(
-                        child: Text(
-                          "Sign Up",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                            fontSize: 22,
+              children: [
+                SizedBox(height: size.height * 0.03),
+                const Text(
+                  "Hello User!",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 37,
+                    color: Color(0xff353047),
+                  ),
+                ),
+                const SizedBox(height: 15),
+                const Text(
+                  "Wellcome to Zidio Development \n Attendance App",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      fontSize: 27, color: Color(0xff6F6B7A), height: 1.2),
+                ),
+                SizedBox(height: size.height * 0.04),
+                // for username and password
+                const SizedBox(height: 30),
+                reusableTextField("Enter UserName", Icons.person_outline, false,
+                    userNameTextController),
+                reusableTextField("Enter Email", Icons.email_outlined, false,
+                    emailTextController),
+                reusableTextField("Enter Password", Icons.lock_outline, true,
+                    passwordTextController),
+                SizedBox(height: size.height * 0.04),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 25),
+                  child: Column(
+                    children: [
+                      // for sign in button
+                      InkWell(
+                        onTap: _signup,
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(vertical: 20),
+                          margin: EdgeInsets.only(top: 40),
+                          decoration: BoxDecoration(
+                            color: const Color(0xffFD6B68),
+                            borderRadius: BorderRadius.circular(15),
+                          ),
+                          child: const Center(
+                            child: Text(
+                              "Sign Up",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                                fontSize: 22,
+                              ),
+                            ),
                           ),
                         ),
                       ),
-                    ),
+                    ],
                   ),
-                ],
-              ),
-            ),
-          ],
-        )),
+                ),
+              ],
+            )),
       ),
     );
   }

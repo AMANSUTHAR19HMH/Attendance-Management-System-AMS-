@@ -1,59 +1,61 @@
-import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 
-class EditUserScreen extends StatelessWidget {
+class EditUserScreen extends StatefulWidget {
+  final String userId;
   final DocumentSnapshot user;
 
-  const EditUserScreen({super.key, required this.user, required String userId});
+  const EditUserScreen({required this.userId, required this.user, super.key});
+
+  @override
+  _EditUserScreenState createState() => _EditUserScreenState();
+}
+
+class _EditUserScreenState extends State<EditUserScreen> {
+  late TextEditingController emailController;
+  late TextEditingController usernameController;
+
+  @override
+  void initState() {
+    super.initState();
+    emailController = TextEditingController(text: widget.user['email']);
+    usernameController = TextEditingController(text: widget.user['username']);
+  }
+
+  Future<void> _updateUser() async {
+    await FirebaseFirestore.instance.collection('users').doc(widget.userId).update({
+      'email': emailController.text,
+      'username': usernameController.text,
+    });
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('User updated successfully')),
+    );
+
+    Navigator.pop(context);
+  }
 
   @override
   Widget build(BuildContext context) {
-    final TextEditingController emailController = TextEditingController(text: user['email']);
-    final TextEditingController roleController = TextEditingController(text: user['role']);
-    final TextEditingController sectionController = TextEditingController(text: user['section']);
-
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Edit User'),
-      ),
+      appBar: AppBar(title: const Text('Edit User')),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
             TextField(
+              controller: usernameController,
+              decoration: const InputDecoration(labelText: 'Username'),
+            ),
+            TextField(
               controller: emailController,
               decoration: const InputDecoration(labelText: 'Email'),
-            ),
-            TextField(
-              controller: roleController,
-              decoration: const InputDecoration(labelText: 'Role'),
-            ),
-            TextField(
-              controller: sectionController,
-              decoration: const InputDecoration(labelText: 'Section'),
+              keyboardType: TextInputType.emailAddress,
             ),
             const SizedBox(height: 20),
             ElevatedButton(
-              onPressed: () async {
-                final String email = emailController.text;
-                final String role = roleController.text;
-                final String section = sectionController.text;
-
-                if (email.isNotEmpty && role.isNotEmpty && section.isNotEmpty) {
-                  try {
-                    await FirebaseFirestore.instance.collection('users').doc(user.id).update({
-                      'email': email,
-                      'role': role,
-                      'section': section,
-                    });
-
-                    Navigator.of(context).pop();
-                  } catch (e) {
-                    print('Error: $e');
-                  }
-                }
-              },
-              child: const Text('Save'),
+              onPressed: _updateUser,
+              child: const Text('Update User'),
             ),
           ],
         ),

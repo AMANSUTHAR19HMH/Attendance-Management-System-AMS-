@@ -1,9 +1,7 @@
 import 'package:attendance_management_system_ams/Dashboard/DashBoard.dart';
 import 'package:attendance_management_system_ams/StartupDash.dart';
-import 'package:community_material_icon/community_material_icon.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:line_icons/line_icons.dart';
@@ -28,10 +26,8 @@ class _StudentDashboardScreenState extends State<StudentDashboardScreen> {
 
   static List<Widget> _widgetOptions = <Widget>[
     DashboardScreen(), // Assuming this is your main dashboard screen
-    UserProfileQRCode(
-        userId: FirebaseAuth.instance.currentUser?.uid ??
-            ""), // Placeholder, replace with appropriate screen/widget
-    ProfileScreen(), // Replace with the actual profile screen widget
+    UserProfileQRCode(userId: FirebaseAuth.instance.currentUser?.uid ?? ""),
+    ProfileScreen(),
   ];
 
   void _onItemTapped(int index) {
