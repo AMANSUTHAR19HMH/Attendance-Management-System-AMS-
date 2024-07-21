@@ -1,19 +1,20 @@
 import 'dart:ui';
 import 'package:attendance_management_system_ams/Dashboard/DashBoard.dart';
+import 'package:attendance_management_system_ams/Dashboard/StudentDashboard.dart';
+import 'package:attendance_management_system_ams/authntication/AdminLoginScreen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'AdminLoginScreen.dart';
 import 'SignupScreen.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class StudentLoginScreen extends StatefulWidget {
+  const StudentLoginScreen({super.key});
 
   @override
-  LoginScreenState createState() => LoginScreenState();
+  StudentLoginScreenState createState() => StudentLoginScreenState();
 }
 
-class LoginScreenState extends State<LoginScreen> {
+class StudentLoginScreenState extends State<StudentLoginScreen> {
   final TextEditingController passwordTextController = TextEditingController();
   final TextEditingController emailTextController = TextEditingController();
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -44,7 +45,7 @@ class LoginScreenState extends State<LoginScreen> {
       // Navigate to user dashboard after successful login
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => const DashboardScreen()),
+        MaterialPageRoute(builder: (context) => const StudentDashboardScreen()),
       );
     } on FirebaseAuthException catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(

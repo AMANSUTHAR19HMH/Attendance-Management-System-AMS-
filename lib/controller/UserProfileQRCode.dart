@@ -25,8 +25,10 @@ class _UserProfileQRCodeState extends State<UserProfileQRCode> {
   Future<void> fetchUserProfile() async {
     try {
       // Fetch the user profile from Firestore using the provided userId
-      DocumentSnapshot userProfile =
-      await FirebaseFirestore.instance.collection('users').doc(widget.userId).get();
+      DocumentSnapshot userProfile = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(widget.userId)
+          .get();
       setState(() {
         _profileData = userProfile.data() as Map<String, dynamic>;
       });
@@ -44,9 +46,6 @@ class _UserProfileQRCodeState extends State<UserProfileQRCode> {
     // You can add more profile fields as needed
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('User Profile QR Code'),
-      ),
       body: Center(
         child: FutureBuilder<Uint8List?>(
           future: generateQRCode(profileString),

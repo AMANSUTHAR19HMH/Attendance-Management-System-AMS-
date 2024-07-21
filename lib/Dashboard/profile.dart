@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:attendance_management_system_ams/Dashboard/DashBoard.dart';
+import 'package:attendance_management_system_ams/Dashboard/StudentDashboard.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart'; // Import Firebase Auth
 import 'package:firebase_core/firebase_core.dart';
@@ -72,7 +73,6 @@ class _EditProfileState extends State<EditProfile> {
           'fullName': fullNameController.text,
           'email': emailController.text,
           'phone': phoneController.text,
-          'password': passwordController.text,
           'address': addressController.text,
           'department': departmentController.text,
           'fatherName': fatherNameController.text,
@@ -110,8 +110,6 @@ class _EditProfileState extends State<EditProfile> {
     return downloadUrl;
   }
 
-  bool showPassword = false;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -124,7 +122,10 @@ class _EditProfileState extends State<EditProfile> {
             color: Colors.deepPurple,
           ),
           onPressed: () {
-            Get.to(DashboardScreen());
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(
+                  builder: (context) => const StudentDashboardScreen()),
+            );
           },
         ),
       ),
@@ -198,9 +199,6 @@ class _EditProfileState extends State<EditProfile> {
             _buildTextField(
                 phoneController, "Phone no", "Please Enter 10 digits"),
             _buildTextField(
-                passwordController, "Password", "Enter Your Password",
-                isPassword: true),
-            _buildTextField(
                 addressController, "Address", "Please Enter Address"),
             _buildTextField(
                 departmentController, "Department", "Working Department"),
@@ -252,21 +250,7 @@ class _EditProfileState extends State<EditProfile> {
       padding: const EdgeInsets.only(bottom: 20),
       child: TextField(
         controller: controller,
-        obscureText: isPassword ? showPassword : false,
         decoration: InputDecoration(
-          suffixIcon: isPassword
-              ? IconButton(
-                  onPressed: () {
-                    setState(() {
-                      showPassword = !showPassword;
-                    });
-                  },
-                  icon: const Icon(
-                    Icons.remove_red_eye,
-                    color: Colors.deepPurple,
-                  ),
-                )
-              : null,
           labelText: labelText,
           floatingLabelBehavior: FloatingLabelBehavior.always,
           hintText: placeholder,
