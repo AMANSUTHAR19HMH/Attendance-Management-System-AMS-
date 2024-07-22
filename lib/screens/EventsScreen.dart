@@ -30,20 +30,27 @@ class EventsScreen extends StatelessWidget {
             itemCount: events.length,
             itemBuilder: (context, index) {
               final event = events[index];
-              return ListTile(
-                title: Text(event['name'] ?? 'No Name'),
-                subtitle: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text('Location: ${event['location'] ?? 'No Location'}'),
-                    Text(
-                        'Organization: ${event['organization'] ?? 'No Organization'}'),
-                    Text(
-                        'Start Date: ${event['start_date'] ?? 'No Start Date'}'),
-                    Text('End Date: ${event['end_date'] ?? 'No End Date'}'),
-                    Text(
-                        'Description: ${event['description'] ?? 'No Description'}'),
-                  ],
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                child: Card(
+                  shadowColor: Colors.black,
+                  elevation: 5,
+                  child: ListTile(
+                    title: Text(event['name'] ?? 'No Name'),
+                    subtitle: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text('Location: ${event['location'] ?? 'No Location'}'),
+                        Text(
+                            'Organization: ${event['organization'] ?? 'No Organization'}'),
+                        Text(
+                            'Start Date: ${event['start_date'] ?? 'No Start Date'}'),
+                        Text('End Date: ${event['end_date'] ?? 'No End Date'}'),
+                        Text(
+                            'Description: ${event['description'] ?? 'No Description'}'),
+                      ],
+                    ),
+                  ),
                 ),
               );
             },

@@ -18,7 +18,7 @@ class _AddUserScreenState extends State<AddUserScreen> {
     try {
       UserCredential userCredential = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(
-          email: emailController.text, password: passwordController.text);
+              email: emailController.text, password: passwordController.text);
 
       await FirebaseFirestore.instance
           .collection('users')

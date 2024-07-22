@@ -3,6 +3,8 @@ import 'package:attendance_management_system_ams/screens/ManageStudentsScreen.da
 import 'package:attendance_management_system_ams/screens/ViewAttendanceScreen.dart';
 import 'package:attendance_management_system_ams/teachers/teachersprofile.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -95,7 +97,8 @@ class _MarkAttendanceState extends State<MarkAttendance> {
                   child: TextField(
                     controller: dateController,
                     readOnly: true,
-                    decoration: const InputDecoration(labelText: 'Date (YYYY-MM-DD)'),
+                    decoration:
+                        const InputDecoration(labelText: 'Date (YYYY-MM-DD)'),
                     onTap: () async {
                       DateTime? pickedDate = await showDatePicker(
                         context: context,
@@ -274,35 +277,132 @@ class _MarkAttendanceState extends State<MarkAttendance> {
   }
 }
 
-class PersonalInfo extends StatelessWidget {
+class PersonalInfo extends StatefulWidget {
   const PersonalInfo({super.key});
 
   @override
+  State<PersonalInfo> createState() => _PersonalInfoState();
+}
+
+class _PersonalInfoState extends State<PersonalInfo> {
+  DocumentReference teacherDoc =
+      FirebaseFirestore.instance.collection('teachers').doc();
+  @override
   Widget build(BuildContext context) {
+    User? teacher = FirebaseAuth.instance.currentUser;
+
+    if (teacher == null) {
+      // No user is signed in
+      return Scaffold(
+        appBar: AppBar(
+          title: Text('Teacher Profile'),
+        ),
+        body: Center(
+          child: Text('No Teacher is currently signed in.'),
+        ),
+      );
+    }
+    String userId = teacher.uid;
+
+    // Reference to the specific teacher document based on user ID
+    DocumentReference teacherDoc =
+        FirebaseFirestore.instance.collection('teachers').doc(userId);
+
     return Scaffold(
-      body: GridView.count(
-        crossAxisCount: 2,
+      body: Column(
+        mainAxisSize:
+            MainAxisSize.min, // Ensures the column doesn't expand unnecessarily
         children: [
-          _buildDashboardItem('Events', 'assets/CustomIcons/Event.png',
-              const Color.fromARGB(212, 255, 153, 0), () {
-            Get.to(EventsScreen());
-          }),
-          _buildDashboardItem(
-              'Manage Students',
-              "assets/CustomIcons/managestudents.png",
-              const Color.fromARGB(255, 57, 176, 39), () {
-            Get.to(const ManageStudentsScreen());
-          }),
-          _buildDashboardItem('View Attendance', "assets/CustomIcons/View.png",
-              const Color.fromARGB(206, 244, 67, 54), () {
-            Get.to(ViewAttendanceScreen());
-          }),
-          _buildDashboardItem(
-              'Teachers Profile',
-              "assets/CustomIcons/profile.png",
-              const Color.fromARGB(206, 61, 19, 233), () {
-            Get.to(const teachersprofile());
-          }),
+          Container(
+            padding: EdgeInsets.all(10.0),
+            child: FutureBuilder<DocumentSnapshot>(
+              future: teacherDoc.get(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(child: CircularProgressIndicator());
+                } else if (snapshot.hasError) {
+                  return Center(child: Text('Error: ${snapshot.error}'));
+                } else if (!snapshot.hasData || !snapshot.data!.exists) {
+                  return Center(child: Text('No data found'));
+                } else {
+                  // Extract data from the document
+                  var data = snapshot.data!.data() as Map<String, dynamic>;
+                  String name = data['username'] ?? 'No Name';
+                  String email = data['email'] ?? 'No Email';
+                  String profilePictureURL =
+                      data['profilePictureUrl'] ?? 'assets/default_profile.png';
+
+                  return Padding(
+                    padding: EdgeInsets.all(16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            CircleAvatar(
+                              backgroundImage: NetworkImage(profilePictureURL),
+                              radius: 30.0,
+                            ),
+                            SizedBox(height: 16.0),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Name: $name',
+                                    style: TextStyle(
+                                        fontSize: 20.0,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  Text(
+                                    'Email: $email',
+                                    style: TextStyle(fontSize: 16.0),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  );
+                }
+              },
+            ),
+          ),
+          const SizedBox(height: 20.0), // Adjusted height for spacing
+          Expanded(
+            child: GridView.count(
+              crossAxisCount: 2,
+              children: [
+                _buildDashboardItem(
+                  'Events',
+                  'assets/CustomIcons/Event.png',
+                  const Color.fromARGB(212, 255, 153, 0),
+                  () {
+                    Get.to(EventsScreen());
+                  },
+                ),
+                _buildDashboardItem(
+                  'Manage Students',
+                  'assets/CustomIcons/managestudents.png',
+                  const Color.fromARGB(255, 57, 176, 39),
+                  () {
+                    Get.to(const ManageStudentsScreen());
+                  },
+                ),
+                _buildDashboardItem(
+                  'Teachers Profile',
+                  'assets/CustomIcons/profile.png',
+                  const Color.fromARGB(206, 61, 19, 233),
+                  () {
+                    Get.to(const teachersprofile());
+                  },
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     );
