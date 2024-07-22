@@ -1,8 +1,5 @@
-import 'package:attendance_management_system_ams/studetns/alot%20Subjects.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-
-import '../screens/ManageAttendanceScreen.dart';
 
 class UserDetailsScreen extends StatelessWidget {
   final DocumentSnapshot user;

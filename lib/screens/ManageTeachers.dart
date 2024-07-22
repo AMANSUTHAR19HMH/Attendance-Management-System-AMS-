@@ -1,5 +1,4 @@
 import 'package:attendance_management_system_ams/studetns/students%20detail.dart';
-import 'package:attendance_management_system_ams/studetns/studentseditscreen.dart';
 import 'package:attendance_management_system_ams/teachers/AddTeacher.dart';
 import 'package:attendance_management_system_ams/teachers/EditTeachers.dart';
 import 'package:flutter/material.dart';

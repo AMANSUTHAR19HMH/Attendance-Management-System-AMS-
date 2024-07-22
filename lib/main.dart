@@ -1,6 +1,4 @@
-import 'package:attendance_management_system_ams/Dashboard/DashBoard.dart';
 import 'package:attendance_management_system_ams/Dashboard/StudentDashboard.dart';
-import 'package:attendance_management_system_ams/Dashboard/profile.dart';
 import 'package:attendance_management_system_ams/StartupDash.dart';
 import 'package:attendance_management_system_ams/authntication/SignupScreen.dart';
 import 'package:attendance_management_system_ams/authntication/TeacherLogin.dart';
