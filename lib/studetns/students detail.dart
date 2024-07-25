@@ -10,7 +10,7 @@ class UserDetailsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('User Details'),
+        title: const Text('Students Details'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),

@@ -90,6 +90,7 @@ class _ManageStudentsScreenState extends State<ManageStudentsScreen> {
               print("Building ListTile for user: ${user['username']}");
 
               return Card(
+                color: Color.fromARGB(255, 172, 174, 177),
                 margin:
                     const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
                 child: ListTile(

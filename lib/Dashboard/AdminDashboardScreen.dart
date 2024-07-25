@@ -1,6 +1,7 @@
 import 'package:attendance_management_system_ams/Dashboard/QrScanner.dart';
 import 'package:attendance_management_system_ams/screens/ManageTeachers.dart';
 import 'package:attendance_management_system_ams/teachers/TeacherDashboard.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -36,6 +37,15 @@ class _AdminDashboardScreenState extends State<AdminDashboardScreen> {
     return Scaffold(
         appBar: AppBar(
           title: const Text('Admin Dashboard'),
+          actions: [
+            IconButton(
+              onPressed: () => {
+                FirebaseAuth.instance.signOut(),
+                Navigator.maybePop(context),
+              },
+              icon: Icon(Icons.logout_outlined),
+            ),
+          ],
         ),
         body: _widgetOptions.elementAt(_selectedIndex),
         bottomNavigationBar: BottomNavigationBar(

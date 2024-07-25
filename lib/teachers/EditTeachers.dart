@@ -41,7 +41,7 @@ class _EditTeachersState extends State<EditTeachers> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Edit User')),
+      appBar: AppBar(title: const Text('Edit Teacher')),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(

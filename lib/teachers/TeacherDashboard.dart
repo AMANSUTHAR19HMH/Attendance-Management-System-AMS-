@@ -1,10 +1,10 @@
+import 'package:attendance_management_system_ams/StartupDash.dart';
 import 'package:attendance_management_system_ams/screens/EventsScreen.dart';
 import 'package:attendance_management_system_ams/screens/ManageStudentsScreen.dart';
 import 'package:attendance_management_system_ams/screens/ViewAttendanceScreen.dart';
 import 'package:attendance_management_system_ams/teachers/teachersprofile.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
@@ -36,6 +36,15 @@ class _TeacherDashboardState extends State<TeacherDashboard> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Teacher Dashboard'),
+        actions: [
+          IconButton(
+            onPressed: () => {
+              FirebaseAuth.instance.signOut(),
+              Navigator.maybePop(context),},
+    
+            icon: Icon(Icons.logout_outlined),
+          ),
+        ],
       ),
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
@@ -161,9 +170,6 @@ class _MarkAttendanceState extends State<MarkAttendance> {
                     var userName = userData['username'] ?? 'Unknown';
                     var userEmail = userData['email'] ?? 'No email';
                     var userPhone = userData['phone'] ?? 'No phone';
-
-                    print('User ID: $userId');
-                    print('User Name: $userName');
 
                     var attendanceData = attendanceMap[userId] ?? {};
                     var subjectData =
@@ -294,9 +300,6 @@ class _PersonalInfoState extends State<PersonalInfo> {
     if (teacher == null) {
       // No user is signed in
       return Scaffold(
-        appBar: AppBar(
-          title: Text('Teacher Profile'),
-        ),
         body: Center(
           child: Text('No Teacher is currently signed in.'),
         ),

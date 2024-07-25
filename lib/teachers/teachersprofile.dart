@@ -51,7 +51,7 @@ class _teachersprofileState extends State<teachersprofile> {
           'email': emailController.text,
           'phone': phoneController.text,
           'address': addressController.text,
-          'department': departmentController.text,
+          'Class': departmentController.text,
           'profilePictureUrl': imageUrl, // Add profile picture URL
           // Add other fields here
         });
